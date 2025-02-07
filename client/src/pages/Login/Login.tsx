@@ -1,5 +1,6 @@
 import logo from "../../assets/images/logo-white.png";
 import hide from "../../assets/images/hide.png";
+import view from "../../assets/images/view.png";
 const LoginPage = () => {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-blue-600">
@@ -33,7 +34,7 @@ const LoginPage = () => {
               className="w-full p-2 rounded-md border border-gray-300 focus:outline-none"
             />
             <span className="absolute right-3 top-3 cursor-pointer">
-              <img src={hide} alt="Hide Password Icon" className="w-5" />
+              <img src={view} alt="Hide Password Icon" className="w-5" />
             </span>
           </div>
         </div>

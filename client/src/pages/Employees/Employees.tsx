@@ -1,6 +1,7 @@
 import logo from "../../assets/images/logo-white.png";
 import accountIcon from "../../assets/images/account-white.png";
 import displayPic from "../../assets/images/displayPic.png";
+import remove from "../../assets/images/remove-user.png";
 
 const Employees = () => {
   return (
@@ -27,7 +28,7 @@ const Employees = () => {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex space-x-4 px-6 mb-5">
+      <div className="absolute top-20 right-2 mb-20">
         <button className="text-blue-600 px-4 py-1 rounded hover:border-2 hover:border-blue-600 hover:bg-blue-100 transition duration-300">
           Permanents
         </button>
@@ -43,15 +44,18 @@ const Employees = () => {
       </div>
 
       {/* Employee Grid */}
-      <div className="grid grid-cols-5 gap-6 px-6 py-6 mb-17">
+      <div className="grid grid-cols-5 gap-6 px-6 py-6 mb-23">
         {[...Array(10)].map((_, index) => (
           <div
             key={index}
-            className="bg-white shadow-md rounded-md p-4 flex flex-col items-center"
+            className="bg-white shadow-md rounded-md p-4 flex flex-col items-center relative"
           >
-            <div>
-              <img src={displayPic} alt="Employee Icon" className="w-16" />
-            </div>
+            <button className="absolute top-2 right-2">
+              <img src={remove} alt="Remove User" className="w-6" />
+            </button>
+
+            {/* Employee Image and Info */}
+            <img src={displayPic} alt="Employee Icon" className="w-16 mt-4" />
             <p className="mt-2 font-bold text-gray-800">Employee Name</p>
             <p className="text-sm text-gray-500">Position</p>
             <p className="text-xs text-gray-400">Department</p>
