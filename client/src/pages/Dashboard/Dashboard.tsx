@@ -45,17 +45,17 @@ const Dashboard = () => {
         <div className="mt-2">
           <button
             onClick={() => navigate("/employees")}
-            className="text-sm underline hover:text-blue-500"
+            className="text-sm underline hover:text-blue-500 cursor-pointer"
           >
             See List &gt; &gt;
           </button>
         </div>
         <div className="mt-6">
           <button
-            className="bg-green-500 text-white px-6 py-3 rounded-full text-lg font-bold flex items-center hover:bg-green-200"
+            className="bg-green-500 text-white px-6 py-3 rounded-full text-lg font-bold flex items-center hover:bg-green-200 cursor-pointer"
             onClick={() => navigate("/form")}
           >
-            GET STARTED
+            PDS Form
             <span className="ml-2 text-xl">
               <img src={arrow} alt="right-arrow" className="w-5" />
             </span>
