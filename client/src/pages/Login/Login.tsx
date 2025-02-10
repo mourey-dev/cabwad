@@ -1,7 +1,26 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../../assets/images/logo-white.png";
 import hide from "../../assets/images/hide.png";
 import view from "../../assets/images/view.png";
+
 const LoginPage = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    if (username === "admin123" && password === "admin") {
+      setError("");
+      navigate("/dashboard");
+    } else {
+      setError("Invalid username or password");
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-blue-600">
       {/* Logo */}
@@ -13,15 +32,22 @@ const LoginPage = () => {
       </h1>
 
       {/* Login Card */}
-      <div className="bg-blue-900 p-6 rounded-2xl shadow-lg w-70">
+      <div className="bg-blue-900 p-6 rounded-2xl shadow-lg w-72">
         <h2 className="text-white text-lg font-bold text-center mb-4">ADMIN</h2>
+
+        {/* Error Message */}
+        {error && (
+          <p className="text-red-500 text-sm text-center mb-2">{error}</p>
+        )}
 
         {/* Username Input */}
         <div className="mb-4">
           <label className="text-white text-sm">Username:</label>
           <input
             type="text"
-            className="w-full p-2 rounded-md border border-gray-300 focus:outline-none"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="w-full p-2 rounded-md border border-gray-300 focus:outline-none text-white"
           />
         </div>
 
@@ -30,17 +56,29 @@ const LoginPage = () => {
           <label className="text-white text-sm">Password:</label>
           <div className="relative">
             <input
-              type="password"
-              className="w-full p-2 rounded-md border border-gray-300 focus:outline-none"
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-2 rounded-md border border-gray-300 focus:outline-none text-white"
             />
-            <span className="absolute right-3 top-3 cursor-pointer">
-              <img src={view} alt="Hide Password Icon" className="w-5" />
+            <span
+              className="absolute right-3 top-3 cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              <img
+                src={showPassword ? hide : view}
+                alt="Toggle Password"
+                className="w-5"
+              />
             </span>
           </div>
         </div>
 
         {/* Login Button */}
-        <button className="w-40 bg-white text-blue-900 font-bold py-2 rounded-full hover:bg-gray-200 ml-9">
+        <button
+          onClick={handleLogin}
+          className="w-full bg-white text-blue-900 font-bold py-2 rounded-full hover:bg-gray-200 transition duration-300"
+        >
           LOGIN
         </button>
       </div>
