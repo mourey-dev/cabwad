@@ -42,6 +42,14 @@ const Dashboard = () => {
             <p className="text-2xl font-bold">##</p>
           </div>
         </div>
+        <div className="mt-2">
+          <button
+            onClick={() => navigate("/employees")}
+            className="text-sm underline hover:text-blue-500"
+          >
+            See List &gt; &gt;
+          </button>
+        </div>
         <div className="mt-6">
           <button
             className="bg-green-500 text-white px-6 py-3 rounded-full text-lg font-bold flex items-center hover:bg-green-200"
