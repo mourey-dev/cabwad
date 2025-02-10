@@ -1,6 +1,10 @@
 import profile from "../../assets/images/account-black.png";
 import arrow from "../../assets/images/right-arrow.png";
+import { useNavigate } from "react-router-dom";
+
 const Dashboard = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-blue-600 text-white flex flex-col">
       {/* Header */}
@@ -39,7 +43,10 @@ const Dashboard = () => {
           </div>
         </div>
         <div className="mt-6">
-          <button className="bg-green-500 text-white px-6 py-3 rounded-full text-lg font-bold flex items-center hover:bg-green-200">
+          <button
+            className="bg-green-500 text-white px-6 py-3 rounded-full text-lg font-bold flex items-center hover:bg-green-200"
+            onClick={() => navigate("/form")}
+          >
             GET STARTED
             <span className="ml-2 text-xl">
               <img src={arrow} alt="right-arrow" className="w-5" />

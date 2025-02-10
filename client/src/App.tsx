@@ -6,18 +6,20 @@ import JobOrders from "./pages/Employees/JobOrders";
 import Resigned from "./pages/Employees/Resigned";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import LoginPage from "./pages/Login/Login";
+import Forms from "./pages/Form/Form";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Employees />} />
+        <Route path="/employees" element={<Employees />} />
         <Route path="/permanents" element={<Permanents />} />
         <Route path="/casuals" element={<Casuals />} />
         <Route path="/jobOrders" element={<JobOrders />} />
         <Route path="/resigned" element={<Resigned />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/form" element={<Forms />} />
       </Routes>
     </Router>
   );
