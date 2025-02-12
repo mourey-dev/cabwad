@@ -1,12 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Jost:ital,wght@0,100..900;1,100..900&family=Krona+One&display=swap');
 @import "tailwindcss";
+
 
 @theme {
   --color-white: #ffffff;
   --color-blue: #005ce5;
   --color-light-blue: #4082e5;
   --color-dark-blue: #0c387b;
-  --colof-yellow: #ffb600;
+  --color-yellow: #ffb600;
   --color-light-green: #59db4e;
   --color-slate: #d6d6d6;
   --color-black: #000000;
+
+  --font-inter: "Inter", sans-serif;
+  --font-jost: "Jost", sans-serif;
+  --font-krona-one: "Krona One", sans-serif;
+
 }
+

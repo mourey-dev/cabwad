@@ -12,6 +12,7 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<LoginPage />} />
         <Route path="/employees" element={<Employees />} />
         <Route path="/permanents" element={<Permanents />} />
         <Route path="/casuals" element={<Casuals />} />

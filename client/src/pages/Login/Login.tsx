@@ -22,18 +22,18 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-blue-600">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-(--color-light-blue)">
       {/* Logo */}
       <img src={logo} alt="Cabuyao Water District Logo" className="w-24 mb-4" />
 
       {/* Title */}
-      <h1 className="text-white text-2xl font-bold mb-6">
+      <h1 className="text-white text-3xl font-krona-one mb-6">
         CABUYAO WATER DISTRICT
       </h1>
 
       {/* Login Card */}
       <div className="bg-blue-900 p-6 rounded-2xl shadow-lg w-72">
-        <h2 className="text-white text-lg font-bold text-center mb-4">ADMIN</h2>
+        <h2 className="text-white text-lg font-krona-one text-center mb-4">ADMIN</h2>
 
         {/* Error Message */}
         {error && (
@@ -41,52 +41,55 @@ const LoginPage = () => {
         )}
 
         {/* Username Input */}
-        <div className="mb-4">
-          <label className="text-white text-sm">Username:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full p-2 rounded-md border border-gray-300 focus:outline-none text-white"
-          />
-        </div>
-
-        {/* Password Input */}
-        <div className="mb-4">
-          <label className="text-white text-sm">Password:</label>
-          <div className="relative">
+        <form>
+          <div className="mb-4">
+            <label className="text-white text-sm font-inter">Username:</label>
             <input
-              type={showPassword ? "text" : "password"}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="w-full p-2 rounded-md border border-gray-300 focus:outline-none text-white"
             />
-            <span
-              className="absolute right-3 top-3 cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              <img
-                src={showPassword ? hide : view}
-                alt="Toggle Password"
-                className="w-5"
-              />
-            </span>
           </div>
-        </div>
+
+          {/* Password Input */}
+          <div className="mb-4">
+            <label className="text-white text-sm font-inter">Password:</label>
+            <div className="relative w-full">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-2 pr-10 rounded-md border border-gray-300 focus:outline-none text-white"
+              />
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                <img
+                  src={showPassword ? hide : view}
+                  alt="Toggle Password"
+                  className="w-5 h-5"
+                />
+              </button>
+            </div>
+          </div>
+        </form>
 
         {/* Login Button */}
         <button
           onClick={handleLogin}
-          className="w-full bg-white text-blue-900 font-bold py-2 rounded-full hover:bg-gray-200 transition duration-300 cursor-pointer"
+          className="w-full bg-white text-blue-900 text-sm font-krona-one py-2 rounded-full hover:bg-gray-200 transition duration-300 cursor-pointer"
         >
           LOGIN
         </button>
       </div>
 
       {/* Footer */}
-      <footer className="absolute bottom-0 w-full text-center bg-yellow-400 text-black text-sm p-2 mt-6">
+      <footer className="absolute bottom-0 w-full text-center bg-(--color-yellow) text-black text-sm p-4 mt-6 font-inter">
         COPYRIGHT © 2025 |{" "}
-        <span className="text-blue-700 font-bold">CABUYAO WATER DISTRICT</span>{" "}
+        <span className="text-blue-700 font-inter font-bold">CABUYAO WATER DISTRICT</span>{" "}
         ALL RIGHTS RESERVED
       </footer>
     </div>
