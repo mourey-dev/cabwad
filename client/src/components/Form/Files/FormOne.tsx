@@ -994,6 +994,236 @@ const FormOne = () => {
         <span className="relative col-span-1 border-2 border-t-0 text-center tracking-tighter">
           ELEMENTARY
         </span>
+        <input
+          type="text"
+          title="e_school_name"
+          className="col-span-1 border-2"
+        />
+        <input
+          type="text"
+          title="e_basic_education"
+          className="col-span-1 border-2"
+        />
+
+        <div className="col-span-2 grid grid-cols-5">
+          <div className="col-span-2 grid grid-cols-2">
+            <input
+              type="text"
+              title="e_pa_from"
+              className="col-span-1 border-2"
+            />
+            <input
+              type="text"
+              title="e_pa_to"
+              className="col-span-1 border-2"
+            />
+          </div>
+
+          <input type="text" title="e_earned" className="col-span-1 border-2" />
+          <input
+            type="text"
+            title="e_year_graduated"
+            className="col-span-1 border-2"
+          />
+          <input
+            type="text"
+            title="e_honor_received"
+            className="col-span-1 border-2"
+          />
+        </div>
+
+        <span className="relative col-span-1 border-2 border-t-0 text-center tracking-tighter">
+          SECONDARY
+        </span>
+        <input
+          type="text"
+          title="s_school_name"
+          className="col-span-1 border-2"
+        />
+        <input
+          type="text"
+          title="s_basic_education"
+          className="col-span-1 border-2"
+        />
+
+        <div className="col-span-2 grid grid-cols-5">
+          <div className="col-span-2 grid grid-cols-2">
+            <input
+              type="text"
+              title="s_pa_from"
+              className="col-span-1 border-2"
+            />
+            <input
+              type="text"
+              title="s_pa_to"
+              className="col-span-1 border-2"
+            />
+          </div>
+
+          <input type="text" title="e_earned" className="col-span-1 border-2" />
+          <input
+            type="text"
+            title="s_year_graduated"
+            className="col-span-1 border-2"
+          />
+          <input
+            type="text"
+            title="s_honor_received"
+            className="col-span-1 border-2"
+          />
+        </div>
+
+        {/* VOCATIONAL */}
+        <span className="relative col-span-1 border-2 border-t-0 text-center tracking-tighter">
+          VOCATIONAL / TRADE COURSE
+        </span>
+        <input
+          type="text"
+          title="v_school_name"
+          className="col-span-1 border-2"
+        />
+        <input
+          type="text"
+          title="v_basic_education"
+          className="col-span-1 border-2"
+        />
+
+        <div className="col-span-2 grid grid-cols-5">
+          <div className="col-span-2 grid grid-cols-2">
+            <input
+              type="text"
+              title="v_pa_from"
+              className="col-span-1 border-2"
+            />
+            <input
+              type="text"
+              title="v_pa_to"
+              className="col-span-1 border-2"
+            />
+          </div>
+
+          <input type="text" title="e_earned" className="col-span-1 border-2" />
+          <input
+            type="text"
+            title="v_year_graduated"
+            className="col-span-1 border-2"
+          />
+          <input
+            type="text"
+            title="v_honor_received"
+            className="col-span-1 border-2"
+          />
+        </div>
+
+        {/* COLLEGE */}
+        <span className="relative col-span-1 border-2 border-t-0 text-center tracking-tighter">
+          COLLEGE
+        </span>
+        <input
+          type="text"
+          title="c_school_name"
+          className="col-span-1 border-2"
+        />
+        <input
+          type="text"
+          title="c_basic_education"
+          className="col-span-1 border-2"
+        />
+
+        <div className="col-span-2 grid grid-cols-5">
+          <div className="col-span-2 grid grid-cols-2">
+            <input
+              type="text"
+              title="c_pa_from"
+              className="col-span-1 border-2"
+            />
+            <input
+              type="text"
+              title="c_pa_to"
+              className="col-span-1 border-2"
+            />
+          </div>
+
+          <input type="text" title="e_earned" className="col-span-1 border-2" />
+          <input
+            type="text"
+            title="c_year_graduated"
+            className="col-span-1 border-2"
+          />
+          <input
+            type="text"
+            title="c_honor_received"
+            className="col-span-1 border-2"
+          />
+        </div>
+
+        {/* GRADUATE STUDIES */}
+        <span className="relative col-span-1 border-2 border-t-0 text-center tracking-tighter">
+          GRADUATE STUDIES
+        </span>
+        <input
+          type="text"
+          title="ga_school_name"
+          className="col-span-1 border-2"
+        />
+        <input
+          type="text"
+          title="ga_basic_education"
+          className="col-span-1 border-2"
+        />
+
+        <div className="col-span-2 grid grid-cols-5">
+          <div className="col-span-2 grid grid-cols-2">
+            <input
+              type="text"
+              title="ga_pa_from"
+              className="col-span-1 border-2"
+            />
+            <input
+              type="text"
+              title="ga_pa_to"
+              className="col-span-1 border-2"
+            />
+          </div>
+
+          <input type="text" title="e_earned" className="col-span-1 border-2" />
+          <input
+            type="text"
+            title="ga_year_graduated"
+            className="col-span-1 border-2"
+          />
+          <input
+            type="text"
+            title="ga_honor_received"
+            className="col-span-1 border-2"
+          />
+        </div>
+
+        <span className="col-span-5 border-2 border-black text-center text-[.7rem] text-red-600">
+          (Continue on separate sheet if necessary)
+        </span>
+
+        {/* SIGNATURE */}
+        <label
+          htmlFor="eb_signature"
+          className="col-span-1 border-2 text-center font-bold"
+        >
+          SIGNATURE
+        </label>
+        <input type="text" id="eb_signature" className="col-span-2 border-2" />
+
+        {/* SIGNATURE DATE */}
+        <label
+          htmlFor="eb_signature_date"
+          className="col-span-1 border-2 text-center font-bold"
+        >
+          DATE
+        </label>
+        <input
+          type="text"
+          id="eb_signature_date"
+          className="col-span-1 border-2"
+        />
       </div>
     </form>
   );

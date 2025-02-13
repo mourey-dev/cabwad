@@ -1,9 +1,9 @@
-import FormOne from "../../components/Form/FormOne.tsx";
+import { Form as FormComponent } from "../../components";
 
 const Form = () => {
   return (
     <div className="min-h-full">
-      <FormOne />
+      <FormComponent />
     </div>
   );
 };
