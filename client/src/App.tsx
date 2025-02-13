@@ -7,6 +7,7 @@ import Resigned from "./pages/Employees/Resigned";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import LoginPage from "./pages/Login/Login";
 import Forms from "./pages/Form/Form";
+import FormThree from "./components/Form/Files/FormFour";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/form" element={<Forms />} />
+        <Route path="/form-four" element={<FormThree />} />
       </Routes>
     </Router>
   );
