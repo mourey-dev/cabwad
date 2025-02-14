@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class PersonalInformationConfig(AppConfig):
+class PersonalDataSheetConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'personal_information'
+    name = 'personal_data_sheet'
