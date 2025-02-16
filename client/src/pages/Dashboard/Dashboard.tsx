@@ -81,7 +81,7 @@ const Dashboard = () => {
         <div className="mt-6">
           <button
             className="bg-green-500 text-white px-6 py-3 rounded-full text-lg font-bold flex items-center hover:bg-green-300 cursor-pointer"
-            onClick={() => navigate("/form")}
+            onClick={() => navigate("/form/1")}
           >
             PDS Form
             <span className="ml-2 text-xl">
