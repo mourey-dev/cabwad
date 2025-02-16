@@ -1,4 +1,3 @@
-import print from "../../../assets/images/printer.png";
 import arrow from "../../../assets/images/right-arrow.png";
 
 import { useForm } from "react-hook-form";
@@ -11,12 +10,6 @@ const FormThree = () => {
 
   return (
     <div>
-      <div className="relative">
-        <button className="absolute right-0 cursor-pointer">
-          <img src={print} alt="print-button" className="mt-15 mr-15 h-7 w-7" />
-        </button>
-      </div>
-
       <form
         className="mx-auto my-12 w-[1001px] border-4 bg-white"
         onSubmit={handleSubmit(onSubmit)}

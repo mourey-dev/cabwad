@@ -1,16 +1,8 @@
-import print from "../../../assets/images/printer.png";
 import arrow from "../../../assets/images/right-arrow.png";
-import { useState } from "react";
-import ModalForm from "../../../pages/Form/ModalForm";
+
 import { useForm } from "react-hook-form";
 
 const FormOne = () => {
-  const [showModal, setShowModal] = useState(true);
-  const [employmentType, setEmploymentType] = useState("");
-  const [department, setDepartment] = useState("");
-
-  const employmentTypes = ["Permanent", "Casual", "Job Order"];
-
   const { register, handleSubmit } = useForm();
   const onSubmit = (data: any) => {
     console.log(data);
@@ -18,12 +10,6 @@ const FormOne = () => {
 
   return (
     <div>
-      <div className="relative">
-        <button type="button" className="absolute right-0 cursor-pointer">
-          <img src={print} alt="print-button" className="mt-15 mr-15 h-7 w-7" />
-        </button>
-      </div>
-
       <form
         className="mx-auto my-12 grid h-full w-[1001px] border-4 bg-white"
         onSubmit={handleSubmit(onSubmit)}
@@ -53,7 +39,7 @@ const FormOne = () => {
             </p>
             <div>
               <div className="flex">
-                <div className="flex items-center gap-1">
+                <div className="flex items-center gap-0.5">
                   <span className="text-[.9rem]">
                     Print legibly. Tick appropriate boxes
                   </span>
@@ -68,7 +54,7 @@ const FormOne = () => {
                   <span className="px-1 text-[.7rem] font-bold">
                     DO NOT ABBREVIATE.
                   </span>
-                  <span className="border-2 bg-gray-600 text-[.6rem] tracking-tighter">
+                  <span className="border-2 bg-gray-600 text-[.6rem] tracking-tighter text-white">
                     1. CS ID No.
                   </span>
                   <span className="w-36 border-2 pr-1 text-right text-[.6rem] tracking-tighter">
@@ -1470,19 +1456,6 @@ const FormOne = () => {
             <img src={arrow} alt="arrow-right" className="h-5 w-5" />
           </button>
         </div>
-      </div>
-
-      <div>
-        {/* Modal */}
-        <ModalForm
-          showModal={showModal}
-          setShowModal={setShowModal}
-          employmentType={employmentType}
-          setEmploymentType={setEmploymentType}
-          department={department}
-          setDepartment={setDepartment}
-          employmentTypes={employmentTypes}
-        />
       </div>
     </div>
   );
