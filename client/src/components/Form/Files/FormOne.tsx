@@ -1,85 +1,39 @@
-import profile from "../../../assets/images/account-black.png";
 import print from "../../../assets/images/printer.png";
 import arrow from "../../../assets/images/right-arrow.png";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ModalForm from "../../../pages/Form/ModalForm";
-import Pagination from "../../../components/Pagination";
 import { useForm } from "react-hook-form";
 
 const FormOne = () => {
-  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(true);
   const [employmentType, setEmploymentType] = useState("");
   const [department, setDepartment] = useState("");
-  const [showDropdown, setShowDropdown] = useState(false);
 
   const employmentTypes = ["Permanent", "Casual", "Job Order"];
-
-  const handleLogout = () => {
-    console.log("User logged out");
-    navigate("/");
-  };
 
   const { register, handleSubmit } = useForm();
   const onSubmit = (data: any) => {
     console.log(data);
   };
 
-
-
   return (
-    <div className="min-h-screen bg-blue-600 text-black flex flex-col">
-      <header className="bg-white text-black flex justify-between items-center p-4 shadow-md">
-        <div className="flex items-center">
-          <img
-            src="/logo.png"
-            alt="Cabuyao Water District"
-            className="h-8 mr-2"
-          />
-            <h1 className="font-jost">Cabuyao Water District</h1>
-        </div>
-        <nav className="flex items-center space-x-4">
-          <a
-            href="/dashboard"
-            className="text-blue-700 font-semibold mr-10"
-          >
-            HOME
-          </a>
-          <div className="relative">
-            <button
-              className="cursor-pointer"
-              onClick={() => setShowDropdown(!showDropdown)}
-            >
-              <img src={profile} alt="profile-logo" className="w-6 h-6" />
-            </button>
-
-            {/* Dropdown Menu */}
-            {showDropdown && (
-              <div className="absolute right-0 mt-2 w-36 bg-white border rounded-md shadow-lg">
-                <button
-                  onClick={handleLogout}
-                  className="block w-full text-left px-4 py-1 text-gray-700 rounded-md hover:bg-gray-400"
-                >
-                  Log Out
-                </button>
-              </div>
-            )}
-          </div>
-        </nav>
-      </header>
-
-      <div className="relative ">
-        <button className="absolute cursor-pointer right-0">
-          <img src={print} alt="print-button" className="w-7 h-7 mt-15 mr-15" />
+    <div>
+      <div className="relative">
+        <button type="button" className="absolute right-0 cursor-pointer">
+          <img src={print} alt="print-button" className="mt-15 mr-15 h-7 w-7" />
         </button>
       </div>
 
-      <form className="mx-auto my-12 grid h-full w-[1001px] border-4 bg-white" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className="mx-auto my-12 grid h-full w-[1001px] border-4 bg-white"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         {/* First Grid Row */}
         <div className="1fr relative">
           <div className="absolute flex flex-col">
-            <span className="text-[.8rem] font-bold italic">CS Form No. 212</span>
+            <span className="text-[.8rem] font-bold italic">
+              CS Form No. 212
+            </span>
             <span className="text-[.7rem] font-bold italic">Revised 2017</span>
           </div>
 
@@ -94,8 +48,8 @@ const FormOne = () => {
               administrative/criminal case/s against the person concerned.
             </p>
             <p className="text-[.9rem] font-bold tracking-tight italic">
-              READ THE ATTACHED GUIDE TO FILLING OUT THE PERSONAL DATA SHEET (PDS)
-              BEFORE ACCOMPLISHING THE PDS FORM.
+              READ THE ATTACHED GUIDE TO FILLING OUT THE PERSONAL DATA SHEET
+              (PDS) BEFORE ACCOMPLISHING THE PDS FORM.
             </p>
             <div>
               <div className="flex">
@@ -114,10 +68,10 @@ const FormOne = () => {
                   <span className="px-1 text-[.7rem] font-bold">
                     DO NOT ABBREVIATE.
                   </span>
-                  <span className="border-2 text-[.6rem] tracking-tighter bg-gray-600">
+                  <span className="border-2 bg-gray-600 text-[.6rem] tracking-tighter">
                     1. CS ID No.
                   </span>
-                  <span className="w-36 border-2 pr-1 text-right text-[.6rem] tracking-tighter ">
+                  <span className="w-36 border-2 pr-1 text-right text-[.6rem] tracking-tighter">
                     (Do not fill up. For CSC use only)
                   </span>
                 </div>
@@ -136,7 +90,7 @@ const FormOne = () => {
         <div className="grid grid-cols-5">
           <label
             htmlFor="personal_surname"
-            className="col-span-1 border-2 border-b-0 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 border-b-0 bg-gray-300 tracking-tighter"
           >
             &nbsp;2. SURNAME
           </label>
@@ -148,7 +102,7 @@ const FormOne = () => {
           />
           <label
             htmlFor="personal_first_name"
-            className="col-span-1 border-2 border-y-0 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 border-y-0 bg-gray-300 tracking-tighter"
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FIRST NAME
           </label>
@@ -174,7 +128,7 @@ const FormOne = () => {
           </div>
           <label
             htmlFor="personal_last_name"
-            className="col-span-1 border-2 border-t-0 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 border-t-0 bg-gray-300 tracking-tighter"
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MIDDLE NAME
           </label>
@@ -186,7 +140,7 @@ const FormOne = () => {
           />
           <label
             htmlFor="personal_last_name"
-            className="col-span-1 border-2 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 tracking-tighter"
           >
             &nbsp;3. DATE OF BIRTH
             <span className="block text-[.9rem]">
@@ -202,7 +156,7 @@ const FormOne = () => {
 
           <div className="col-span-3 row-span-3 grid grid-cols-3 border-2">
             <div className="col-span-1 border-r-2 bg-gray-300">
-              <span className="tracking-tighter ">&nbsp;16. CITIZENSHIP</span>
+              <span className="tracking-tighter">&nbsp;16. CITIZENSHIP</span>
               <div>
                 <span className="text-[.7rem]">
                   If holder of dual citizenship,
@@ -215,15 +169,30 @@ const FormOne = () => {
 
             <div className="col-span-2">
               <div className="inline-block">
-                <input type="checkbox" id="citizen_filipino" className="mx-2" {...register("citizen_filipino")} />
+                <input
+                  type="checkbox"
+                  id="citizen_filipino"
+                  className="mx-2"
+                  {...register("citizen_filipino")}
+                />
                 <label htmlFor="citizen_filipino">Filipino</label>
               </div>
               <div className="ml-4 inline-block">
-                <input type="checkbox" id="citizen_dual" className="mx-2" {...register("citizen_dual")} />
+                <input
+                  type="checkbox"
+                  id="citizen_dual"
+                  className="mx-2"
+                  {...register("citizen_dual")}
+                />
                 <label htmlFor="citizen_dual">Dual Citizen</label>
               </div>
               <div className="mt-4 inline-block text-right">
-                <input type="checkbox" id="citizen_by_birth" className="mx-2" {...register("citizen_by_birth")} />
+                <input
+                  type="checkbox"
+                  id="citizen_by_birth"
+                  className="mx-2"
+                  {...register("citizen_by_birth")}
+                />
                 <label htmlFor="citizen_by_birth">by birth</label>
               </div>
               <div className="inline-block">
@@ -256,7 +225,7 @@ const FormOne = () => {
 
           <label
             htmlFor="personal_birth_place"
-            className="col-span-1 border-2 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 tracking-tighter"
           >
             &nbsp;4. PLACE OF BIRTH
           </label>
@@ -266,53 +235,86 @@ const FormOne = () => {
             className="col-span-1 border-2 p-2"
             {...register("personal_birth_place")}
           />
-          <span className="col-span-1 border-2 tracking-tighter bg-gray-300">
+          <span className="col-span-1 border-2 bg-gray-300 tracking-tighter">
             &nbsp;5. SEX
           </span>
           <div className="col-span-1 flex justify-center gap-4 border-2 p-2">
             <div className="flex gap-1">
-              <input type="checkbox" id="personal_male" {...register("personal_male")}/>
+              <input
+                type="checkbox"
+                id="personal_male"
+                {...register("personal_male")}
+              />
               <label htmlFor="personal_male">Male</label>
             </div>
             <div className="flex gap-1">
-              <input type="checkbox" id="personal_female" {...register("personal_female")}/>
+              <input
+                type="checkbox"
+                id="personal_female"
+                {...register("personal_female")}
+              />
               <label htmlFor="personal_female">Female</label>
             </div>
           </div>
 
-          <span className="col-span-1 border-2 tracking-tighter bg-gray-300">
+          <span className="col-span-1 border-2 bg-gray-300 tracking-tighter">
             &nbsp;6. CIVIL STATUS
           </span>
           <div className="col-span-1 grid grid-cols-2 border-2 p-2">
             <div className="flex gap-1">
-              <input type="checkbox" id="personal_civil_single" {...register("personal_civil_single")}/>
+              <input
+                type="checkbox"
+                id="personal_civil_single"
+                {...register("personal_civil_single")}
+              />
               <label htmlFor="personal_civil_single">Single</label>
             </div>
             <div className="flex gap-1">
-              <input type="checkbox" id="personal_civil_married" {...register("personal_civil_married")}/>
+              <input
+                type="checkbox"
+                id="personal_civil_married"
+                {...register("personal_civil_married")}
+              />
               <label htmlFor="personal_civil_married">Married</label>
             </div>
             <div className="flex gap-1">
-              <input type="checkbox" id="personal_civil_widowed" {...register("personal_civil_widowed")}/>
+              <input
+                type="checkbox"
+                id="personal_civil_widowed"
+                {...register("personal_civil_widowed")}
+              />
               <label htmlFor="personal_civil_widowed">Widowed</label>
             </div>
             <div className="flex gap-1">
-              <input type="checkbox" id="personal_civil_separated" {...register("personal_civil_separated")}/>
+              <input
+                type="checkbox"
+                id="personal_civil_separated"
+                {...register("personal_civil_separated")}
+              />
               <label htmlFor="personal_civil_separated">Separated</label>
             </div>
             <div className="flex gap-1">
-              <input type="checkbox" id="personal_civil_other" {...register("personal_civil_other")}/>
+              <input
+                type="checkbox"
+                id="personal_civil_other"
+                {...register("personal_civil_other")}
+              />
               <label htmlFor="personal_civil_other">Other/s:</label>
             </div>
           </div>
 
           <div className="col-span-3 row-span-3 grid grid-cols-4 grid-rows-5">
-            <span className="col-span-1 row-span-4 border-2 border-b-0 text-[.7rem] tracking-tighter bg-gray-300">
+            <span className="col-span-1 row-span-4 border-2 border-b-0 bg-gray-300 text-[.7rem] tracking-tighter">
               &nbsp;17. RESIDENTIAL ADDRESS
             </span>
             <div className="col-span-3 row-span-4 grid">
               <div className="relative border-2">
-                <input type="text" id="ra_house" className="w-[50%] border-b-2" {...register("ra_house")}/>
+                <input
+                  type="text"
+                  id="ra_house"
+                  className="w-[50%] border-b-2"
+                  {...register("ra_house")}
+                />
                 <label
                   htmlFor="ra_house"
                   className="absolute bottom-0 left-15 text-[.7rem]"
@@ -359,7 +361,12 @@ const FormOne = () => {
                 </label>
               </div>
               <div className="relative border-2">
-                <input type="text" id="ra_city" className="w-[50%] border-b-2" {...register("ra_city")} />
+                <input
+                  type="text"
+                  id="ra_city"
+                  className="w-[50%] border-b-2"
+                  {...register("ra_city")}
+                />
                 <label
                   htmlFor="ra_city"
                   className="absolute bottom-0 left-15 text-[.7rem]"
@@ -382,16 +389,21 @@ const FormOne = () => {
             </div>
             <label
               htmlFor="ra_zip"
-              className="col-span-1 border-2 border-t-0 text-center tracking-tighter bg-gray-300"
+              className="col-span-1 border-2 border-t-0 bg-gray-300 text-center tracking-tighter"
             >
               Zip Code
             </label>
-            <input type="text" id="ra_zip" className="col-span-3 border" {...register("ra_zip")} />
+            <input
+              type="text"
+              id="ra_zip"
+              className="col-span-3 border"
+              {...register("ra_zip")}
+            />
           </div>
 
           <label
             htmlFor="personal_height"
-            className="col-span-1 border-2 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 tracking-tighter"
           >
             &nbsp;7. HEIGHT (m)
           </label>
@@ -403,7 +415,7 @@ const FormOne = () => {
           />
           <label
             htmlFor="personal_weight"
-            className="col-span-1 border-2 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 tracking-tighter"
           >
             &nbsp;8. WEIGHT (kg)
           </label>
@@ -416,7 +428,7 @@ const FormOne = () => {
 
           <label
             htmlFor="personal_blood_type"
-            className="col-span-1 border-2 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 tracking-tighter"
           >
             &nbsp;9. BLOOD TYPE
           </label>
@@ -428,12 +440,17 @@ const FormOne = () => {
           />
 
           <div className="col-span-3 row-span-4 grid grid-cols-4 grid-rows-5">
-            <span className="col-span-1 row-span-4 border-2 border-b-0 text-[.7rem] tracking-tighter bg-gray-300">
+            <span className="col-span-1 row-span-4 border-2 border-b-0 bg-gray-300 text-[.7rem] tracking-tighter">
               &nbsp;18. PERMANENT ADDRESS
             </span>
             <div className="col-span-3 row-span-4 grid">
               <div className="relative border-2">
-                <input type="text" id="pa_house" className="w-[50%] border-b-2" {...register("pa_house")}/>
+                <input
+                  type="text"
+                  id="pa_house"
+                  className="w-[50%] border-b-2"
+                  {...register("pa_house")}
+                />
                 <label
                   htmlFor="pa_house"
                   className="absolute bottom-0 left-15 text-[.7rem]"
@@ -471,7 +488,7 @@ const FormOne = () => {
                   id="pa_barangay"
                   className="w-[50%] border-b-2"
                   {...register("pa_barangay")}
-                />  
+                />
                 <label
                   htmlFor="pa_barangay"
                   className="absolute right-25 bottom-0 text-[.7rem]"
@@ -480,7 +497,12 @@ const FormOne = () => {
                 </label>
               </div>
               <div className="relative border-2">
-                <input type="text" id="ra_city" className="w-[50%] border-b-2" {...register("ra_city")}/>
+                <input
+                  type="text"
+                  id="ra_city"
+                  className="w-[50%] border-b-2"
+                  {...register("ra_city")}
+                />
                 <label
                   htmlFor="pa_city"
                   className="absolute bottom-0 left-15 text-[.7rem]"
@@ -503,16 +525,21 @@ const FormOne = () => {
             </div>
             <label
               htmlFor="pa_zip"
-              className="col-span-1 border-2 border-t-0 text-center tracking-tighter bg-gray-300"
+              className="col-span-1 border-2 border-t-0 bg-gray-300 text-center tracking-tighter"
             >
               Zip Code
             </label>
-            <input type="text" id="pa_zip" className="col-span-3 border" {...register("pa_zip")}/>
+            <input
+              type="text"
+              id="pa_zip"
+              className="col-span-3 border"
+              {...register("pa_zip")}
+            />
           </div>
 
           <label
             htmlFor="personal_gsis_no"
-            className="col-span-1 border-2 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 tracking-tighter"
           >
             &nbsp;10. GSIS ID NO.
           </label>
@@ -524,7 +551,7 @@ const FormOne = () => {
           />
           <label
             htmlFor="personal_pagibig_no"
-            className="col-span-1 border-2 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 tracking-tighter"
           >
             &nbsp;11. PAG-IBIG ID NO.
           </label>
@@ -536,7 +563,7 @@ const FormOne = () => {
           />
           <label
             htmlFor="personal_philhealth_no"
-            className="col-span-1 border-2 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 tracking-tighter"
           >
             &nbsp;12. PHILHEALTH NO.
           </label>
@@ -549,7 +576,7 @@ const FormOne = () => {
 
           <label
             htmlFor="personal_sss_no"
-            className="col-span-1 border-2 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 tracking-tighter"
           >
             &nbsp;13. SSS NO.
           </label>
@@ -563,7 +590,7 @@ const FormOne = () => {
           <div className="col-span-3 grid grid-cols-4">
             <label
               htmlFor="personal_telephone"
-              className="col-span-1 border-2 tracking-tighter bg-gray-300"
+              className="col-span-1 border-2 bg-gray-300 tracking-tighter"
             >
               &nbsp;19. TELEPHONE NO.
             </label>
@@ -577,7 +604,7 @@ const FormOne = () => {
 
           <label
             htmlFor="personal_tin_no"
-            className="col-span-1 border-2 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 tracking-tighter"
           >
             &nbsp;14. TIN NO.
           </label>
@@ -591,7 +618,7 @@ const FormOne = () => {
           <div className="col-span-3 grid grid-cols-4">
             <label
               htmlFor="personal_mobile"
-              className="col-span-1 border-2 tracking-tighter bg-gray-300"
+              className="col-span-1 border-2 bg-gray-300 tracking-tighter"
             >
               &nbsp;20. MOBILE NO.
             </label>
@@ -605,7 +632,7 @@ const FormOne = () => {
 
           <label
             htmlFor="personal_agency_no"
-            className="col-span-1 border-2 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 tracking-tighter"
           >
             &nbsp;15. AGENCY EMPLOYEE NO.
           </label>
@@ -619,7 +646,7 @@ const FormOne = () => {
           <div className="col-span-3 grid grid-cols-4">
             <label
               htmlFor="personal_email"
-              className="col-span-1 border-2 tracking-tighter bg-gray-300"
+              className="col-span-1 border-2 bg-gray-300 tracking-tighter"
             >
               &nbsp;21. E-MAIL ADDRESS (if any)
             </label>
@@ -642,7 +669,7 @@ const FormOne = () => {
         <div className="grid grid-cols-5">
           <label
             htmlFor="spouse_surname"
-            className="col-span-1 border-2 border-b-0 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 border-b-0 bg-gray-300 tracking-tighter"
           >
             &nbsp;22. SPOUSE'S SURNAME
           </label>
@@ -654,10 +681,10 @@ const FormOne = () => {
           />
 
           <div className="col-span-2 grid grid-cols-3">
-            <span className="col-span-2 block border-2 text-[.9rem] tracking-tighter bg-gray-300">
+            <span className="col-span-2 block border-2 bg-gray-300 text-[.9rem] tracking-tighter">
               &nbsp;23. NAME of CHILDREN <br /> (Write full name and list all)
             </span>
-            <span className="col-span-1 border-2 tracking-tighter bg-gray-300 text-center">
+            <span className="col-span-1 border-2 bg-gray-300 text-center tracking-tighter">
               &nbsp;DATE OF BIRTH (mm/dd/yyyy)
             </span>
           </div>
@@ -665,7 +692,7 @@ const FormOne = () => {
           {/* SPOUSE FIRST NAME */}
           <label
             htmlFor="spouse_first_name"
-            className="col-span-1 border-2 border-y-0 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 border-y-0 bg-gray-300 tracking-tighter"
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FIRST NAME
           </label>
@@ -711,7 +738,7 @@ const FormOne = () => {
           {/* SPOUSE MIDDLE NAME */}
           <label
             htmlFor="spouse_middle_name"
-            className="col-span-1 border-2 border-y-0 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 border-y-0 bg-gray-300 tracking-tighter"
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;MIDDLE NAME
           </label>
@@ -741,7 +768,7 @@ const FormOne = () => {
           {/* SPOUSE OCCUPATION */}
           <label
             htmlFor="spouse_occupation"
-            className="col-span-1 border-2 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 tracking-tighter"
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OCCUPATION
           </label>
@@ -771,7 +798,7 @@ const FormOne = () => {
           {/* SPOUSE EMPLOYER */}
           <label
             htmlFor="spouse_employer"
-            className="col-span-1 border-2 text-[.9rem] tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 text-[.9rem] tracking-tighter"
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EMPLOYER/BUSINESS NAME
           </label>
@@ -801,7 +828,7 @@ const FormOne = () => {
           {/* SPOUSE BUSINESS ADDRESS */}
           <label
             htmlFor="spouse_business_address"
-            className="col-span-1 border-2 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 tracking-tighter"
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BUSINESS ADDRESS
           </label>
@@ -831,7 +858,7 @@ const FormOne = () => {
           {/* SPOUSE TELEPHONE */}
           <label
             htmlFor="spouse_telephone"
-            className="col-span-1 border-2 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 tracking-tighter"
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TELEPHONE NO.
           </label>
@@ -861,7 +888,7 @@ const FormOne = () => {
           {/* FATHER SURNAME */}
           <label
             htmlFor="father_surname"
-            className="col-span-1 border-2 border-b-0 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 border-b-0 bg-gray-300 tracking-tighter"
           >
             &nbsp;24. FATHER'S SURNAME
           </label>
@@ -891,7 +918,7 @@ const FormOne = () => {
           {/* FATHER FIRST NAME */}
           <label
             htmlFor="father_first_name"
-            className="col-span-1 border-2 border-y-0 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 border-y-0 bg-gray-300 tracking-tighter"
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FIRST NAME
           </label>
@@ -937,7 +964,7 @@ const FormOne = () => {
           {/* FATHER MIDDLE NAME */}
           <label
             htmlFor="father_middle_name"
-            className="col-span-1 border-2 border-t-0 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 border-t-0 bg-gray-300 tracking-tighter"
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MIDDLE NAME
           </label>
@@ -967,7 +994,7 @@ const FormOne = () => {
           {/* MOTHER'S MAIDEN NAME */}
           <label
             htmlFor="mother_maiden_name"
-            className="col-span-1 border-2 border-b-0 text-[.9rem] tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 border-b-0 bg-gray-300 text-[.9rem] tracking-tighter"
           >
             &nbsp;25. MOTHER'S MAIDEN NAME
           </label>
@@ -997,7 +1024,7 @@ const FormOne = () => {
           {/* MOTHER SURNAME */}
           <label
             htmlFor="mother_surname"
-            className="col-span-1 border-2 border-y-0 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 border-y-0 bg-gray-300 tracking-tighter"
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; SURNAME
           </label>
@@ -1027,7 +1054,7 @@ const FormOne = () => {
           {/* MOTHER FIRST NAME */}
           <label
             htmlFor="mother_first_name"
-            className="col-span-1 border-2 border-y-0 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 border-y-0 bg-gray-300 tracking-tighter"
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FIRST NAME
           </label>
@@ -1073,7 +1100,7 @@ const FormOne = () => {
           {/* MOTHER MIDDLE NAME */}
           <label
             htmlFor="mother_middle_name"
-            className="col-span-1 border-2 border-t-0 tracking-tighter bg-gray-300"
+            className="col-span-1 border-2 border-t-0 bg-gray-300 tracking-tighter"
           >
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MIDDLE NAME
           </label>
@@ -1085,7 +1112,7 @@ const FormOne = () => {
           />
 
           {/* EXTRA INFO IF NECESSARY */}
-          <span className="col-span-2 py-2 text-center text-red-500 font-bold italic bg-gray-200">
+          <span className="col-span-2 bg-gray-200 py-2 text-center font-bold text-red-500 italic">
             (Continue on separate sheet if necessary)
           </span>
         </div>
@@ -1098,44 +1125,44 @@ const FormOne = () => {
         </div>
 
         <div className="grid grid-cols-5">
-          <span className="relative col-span-1 border-2 border-t-0 text-center tracking-tighter bg-gray-300">
-            <span className="absolute top-0 left-0 ">26.</span>
+          <span className="relative col-span-1 border-2 border-t-0 bg-gray-300 text-center tracking-tighter">
+            <span className="absolute top-0 left-0">26.</span>
             LEVEL
           </span>
-          <span className="col-span-1 border-2 border-t-0 text-center tracking-tighter bg-gray-300">
+          <span className="col-span-1 border-2 border-t-0 bg-gray-300 text-center tracking-tighter">
             NAME OF SCHOOL
             <span className="block">(Write in full)</span>
           </span>
-          <span className="col-span-1 border-2 border-t-0 text-center text-[.8rem] tracking-tighter bg-gray-300">
+          <span className="col-span-1 border-2 border-t-0 bg-gray-300 text-center text-[.8rem] tracking-tighter">
             BASIC EDUCATION/DEGREE/COURSE
             <span className="block">(Write in full)</span>
           </span>
 
           <div className="col-span-2 grid grid-cols-5">
             <div className="col-span-2 grid grid-cols-2 grid-rows-2">
-              <span className="col-span-2 row-span-1 border-b-2 text-center text-[.7rem] bg-gray-300">
+              <span className="col-span-2 row-span-1 border-b-2 bg-gray-300 text-center text-[.7rem]">
                 PERIOD OF ATTENDANCE
               </span>
-              <span className="col-span-1 row-span-1 border-r-2 text-center text-[.7rem] bg-gray-300">
+              <span className="col-span-1 row-span-1 border-r-2 bg-gray-300 text-center text-[.7rem]">
                 FROM
               </span>
-              <span className="col-span-1 row-span-1 text-center text-[.7rem] bg-gray-300">
+              <span className="col-span-1 row-span-1 bg-gray-300 text-center text-[.7rem]">
                 TO
               </span>
             </div>
 
-            <span className="col-span-1 border-x-2 text-center text-[.7rem] bg-gray-300">
+            <span className="col-span-1 border-x-2 bg-gray-300 text-center text-[.7rem]">
               HIGHEST LEVEL/ UNITS EARNED
             </span>
-            <span className="col-span-1 border-r-2 text-center text-[.7rem] bg-gray-300">
+            <span className="col-span-1 border-r-2 bg-gray-300 text-center text-[.7rem]">
               YEAR GRADUATED
             </span>
-            <span className="col-span-1 text-center text-[.7rem] bg-gray-300">
+            <span className="col-span-1 bg-gray-300 text-center text-[.7rem]">
               SCHOLARSHIP/ ACADEMIC HONORS RECEIVED
             </span>
           </div>
 
-          <span className="relative col-span-1 border-2 border-t-0 text-center tracking-tighter bg-gray-300">
+          <span className="relative col-span-1 border-2 border-t-0 bg-gray-300 text-center tracking-tighter">
             ELEMENTARY
           </span>
           <input
@@ -1167,7 +1194,11 @@ const FormOne = () => {
               />
             </div>
 
-            <input type="text" title="e_earned" className="col-span-1 border-2" />
+            <input
+              type="text"
+              title="e_earned"
+              className="col-span-1 border-2"
+            />
             <input
               type="text"
               title="e_year_graduated"
@@ -1182,7 +1213,7 @@ const FormOne = () => {
             />
           </div>
 
-          <span className="relative col-span-1 border-2 border-t-0 text-center tracking-tighter bg-gray-300">
+          <span className="relative col-span-1 border-2 border-t-0 bg-gray-300 text-center tracking-tighter">
             SECONDARY
           </span>
           <input
@@ -1214,7 +1245,12 @@ const FormOne = () => {
               />
             </div>
 
-            <input type="text" title="e_earned" className="col-span-1 border-2" {...register("e_earned")}/>
+            <input
+              type="text"
+              title="e_earned"
+              className="col-span-1 border-2"
+              {...register("e_earned")}
+            />
             <input
               type="text"
               title="s_year_graduated"
@@ -1230,7 +1266,7 @@ const FormOne = () => {
           </div>
 
           {/* VOCATIONAL */}
-          <span className="relative col-span-1 border-2 border-t-0 text-center tracking-tighter bg-gray-300">
+          <span className="relative col-span-1 border-2 border-t-0 bg-gray-300 text-center tracking-tighter">
             VOCATIONAL / TRADE COURSE
           </span>
           <input
@@ -1262,7 +1298,12 @@ const FormOne = () => {
               />
             </div>
 
-            <input type="text" title="e_earned" className="col-span-1 border-2" {...register("e_earned")} />
+            <input
+              type="text"
+              title="e_earned"
+              className="col-span-1 border-2"
+              {...register("e_earned")}
+            />
             <input
               type="text"
               title="v_year_graduated"
@@ -1278,7 +1319,7 @@ const FormOne = () => {
           </div>
 
           {/* COLLEGE */}
-          <span className="relative col-span-1 border-2 border-t-0 text-center tracking-tighter bg-gray-300">
+          <span className="relative col-span-1 border-2 border-t-0 bg-gray-300 text-center tracking-tighter">
             COLLEGE
           </span>
           <input
@@ -1310,7 +1351,11 @@ const FormOne = () => {
               />
             </div>
 
-            <input type="text" title="e_earned" className="col-span-1 border-2" />
+            <input
+              type="text"
+              title="e_earned"
+              className="col-span-1 border-2"
+            />
             <input
               type="text"
               title="c_year_graduated"
@@ -1326,7 +1371,7 @@ const FormOne = () => {
           </div>
 
           {/* GRADUATE STUDIES */}
-          <span className="relative col-span-1 border-2 border-t-0 text-center tracking-tighter bg-gray-300">
+          <span className="relative col-span-1 border-2 border-t-0 bg-gray-300 text-center tracking-tighter">
             GRADUATE STUDIES
           </span>
           <input
@@ -1358,7 +1403,12 @@ const FormOne = () => {
               />
             </div>
 
-            <input type="text" title="e_earned" className="col-span-1 border-2" {...register("e_earned")}/>
+            <input
+              type="text"
+              title="e_earned"
+              className="col-span-1 border-2"
+              {...register("e_earned")}
+            />
             <input
               type="text"
               title="ga_year_graduated"
@@ -1373,23 +1423,28 @@ const FormOne = () => {
             />
           </div>
 
-          <span className="col-span-5 border-2 border-black text-center text-[.7rem] text-red-500 italic font-bold bg-gray-200">
+          <span className="col-span-5 border-2 border-black bg-gray-200 text-center text-[.7rem] font-bold text-red-500 italic">
             (Continue on separate sheet if necessary)
           </span>
 
           {/* SIGNATURE */}
           <label
             htmlFor="eb_signature"
-            className="col-span-1 border-2 text-center font-bold bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 text-center font-bold"
           >
             SIGNATURE
           </label>
-          <input type="text" id="eb_signature" className="col-span-2 border-2" {...register("eb_signature")}/>
+          <input
+            type="text"
+            id="eb_signature"
+            className="col-span-2 border-2"
+            {...register("eb_signature")}
+          />
 
           {/* SIGNATURE DATE */}
           <label
             htmlFor="eb_signature_date"
-            className="col-span-1 border-2 text-center font-bold bg-gray-300"
+            className="col-span-1 border-2 bg-gray-300 text-center font-bold"
           >
             DATE
           </label>
@@ -1400,48 +1455,36 @@ const FormOne = () => {
             {...register("eb_signature_date")}
           />
         </div>
-    </form>
+      </form>
 
-    <div className="relative h-full flex justify-end items-end p-4">
-      <div className="flex items-center gap-4">
-        <p className="text-white italic text-sm">CS FORM 212 (Revised 2017), Page 1 of 4</p>
-        <button 
-        className="flex items-center gap-2 bg-green-500 rounded-full hover:bg-green-300 cursor-pointer p-4"
-        onClick={() => navigate("/form/2")}>
-          <span className="text-white font-semibold">Next</span>
-          <img src={arrow} alt="arrow-right" className="w-5 h-5" />
-        </button>
+      <div className="relative flex h-full items-end justify-end p-4">
+        <div className="flex items-center gap-4">
+          <p className="text-sm text-white italic">
+            CS FORM 212 (Revised 2017), Page 1 of 4
+          </p>
+          <button
+            className="flex cursor-pointer items-center gap-2 rounded-full bg-green-500 p-4 hover:bg-green-300"
+            // onClick={() => navigate("/form/2")}
+          >
+            <span className="font-semibold text-white">Next</span>
+            <img src={arrow} alt="arrow-right" className="h-5 w-5" />
+          </button>
+        </div>
+      </div>
+
+      <div>
+        {/* Modal */}
+        <ModalForm
+          showModal={showModal}
+          setShowModal={setShowModal}
+          employmentType={employmentType}
+          setEmploymentType={setEmploymentType}
+          department={department}
+          setDepartment={setDepartment}
+          employmentTypes={employmentTypes}
+        />
       </div>
     </div>
-
-    <Pagination />
-
-    <div>
-      {/* Footer */}
-        <footer className="bg-yellow-500 text-black text-center p-4 font-inter">
-        <p>
-          COPYRIGHT © 2025 |{" "}
-          <span className="text-blue-700 font-semibold font-inter">
-            CABUYAO WATER DISTRICT
-          </span>{" "}
-          ALL RIGHTS RESERVED
-        </p>
-      </footer>
-
-      {/* Modal */}
-      <ModalForm
-        showModal={showModal}
-        setShowModal={setShowModal}
-        employmentType={employmentType}
-        setEmploymentType={setEmploymentType}
-        department={department}
-        setDepartment={setDepartment}
-        employmentTypes={employmentTypes}
-      />
-    </div>
-    </div>
-    
-
   );
 };
 export default FormOne;

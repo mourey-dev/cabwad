@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
-import leftArrow from "../assets/images/left-arrow-pagination.png";
-import rightArrow from "../assets/images/right-arrow-pagination.png";
+import leftArrow from "../../../assets/images/left-arrow-pagination.png";
+import rightArrow from "../../../assets/images/right-arrow-pagination.png";
 
 const Pagination = ({ totalPages = 4 }) => {
   const { page } = useParams();
@@ -14,14 +14,15 @@ const Pagination = ({ totalPages = 4 }) => {
   };
 
   return (
-    <div className="flex items-center space-x-2 justify-center mt-4">
+    <div className="mt-4 flex items-center justify-center space-x-2">
       {/* Previous Button */}
       <button
+        type="button"
         className="mb-3 disabled:opacity-50"
         onClick={() => goToPage(currentPage - 1)}
         disabled={currentPage === 1}
       >
-        <img src={leftArrow} alt="left-arrow" className="w-5 h-5" />
+        <img src={leftArrow} alt="left-arrow" className="h-5 w-5" />
       </button>
 
       {/* Page Numbers */}
@@ -30,7 +31,7 @@ const Pagination = ({ totalPages = 4 }) => {
         return (
           <button
             key={pageNumber}
-            className={`px-2 border rounded-full font-semibold mb-3 ${
+            className={`mb-3 rounded-full border px-2 font-semibold ${
               currentPage === pageNumber
                 ? "bg-yellow-500 text-white"
                 : "hover:bg-gray-200"
@@ -44,11 +45,12 @@ const Pagination = ({ totalPages = 4 }) => {
 
       {/* Next Button */}
       <button
+        type="button"
         className="mb-3 disabled:opacity-50"
         onClick={() => goToPage(currentPage + 1)}
         disabled={currentPage === totalPages}
       >
-        <img src={rightArrow} alt="right-arrow" className="w-5 h-5" />
+        <img src={rightArrow} alt="right-arrow" className="h-5 w-5" />
       </button>
     </div>
   );

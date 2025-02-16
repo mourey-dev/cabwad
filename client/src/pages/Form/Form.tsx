@@ -1,9 +1,11 @@
-import { Form as FormComponent } from "../../components";
+import { Form as FormComponent, Header, Footer } from "../../components";
 
 const Form = () => {
   return (
-    <div className="min-h-full">
+    <div className="flex min-h-screen flex-col bg-blue-600 text-black">
+      <Header />
       <FormComponent />
+      <Footer />
     </div>
   );
 };
