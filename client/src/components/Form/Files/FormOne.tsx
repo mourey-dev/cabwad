@@ -1,19 +1,17 @@
 import arrow from "../../../assets/images/right-arrow.png";
 
 import { useForm } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
+import PDSForm from "../../../types/form";
 
-const FormOne = () => {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
+type FormOneProps = {
+  register: UseFormRegister<PDSForm>;
+};
 
+const FormOne = ({ register }: FormOneProps) => {
   return (
     <div>
-      <form
-        className="mx-auto my-12 grid h-full w-[1001px] border-4 bg-white"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form className="mx-auto my-12 grid h-full w-[1001px] border-4 bg-white">
         {/* First Grid Row */}
         <div className="1fr relative">
           <div className="absolute flex flex-col">
@@ -84,7 +82,7 @@ const FormOne = () => {
             type="text"
             id="personal_surname"
             className="col-span-4 border-2 p-2"
-            {...register("personal_surname")}
+            {...register("personal_information.username")}
           />
           <label
             htmlFor="personal_first_name"
@@ -96,7 +94,7 @@ const FormOne = () => {
             type="text"
             id="personal_first_name"
             className="col-span-3 border-2 p-2"
-            {...register("personal_first_name")}
+            {...register("personal_information.first_name")}
           />
           <div className="relative border-2 bg-gray-300">
             <label
@@ -109,7 +107,7 @@ const FormOne = () => {
               type="text"
               id="personal_name_extension"
               className="w-full p-2 align-text-bottom"
-              {...register("personal_name_extension")}
+              {...register("personal_information.name_extension")}
             />
           </div>
           <label
@@ -122,7 +120,7 @@ const FormOne = () => {
             type="text"
             id="personal_middle_name"
             className="col-span-4 border-2 p-2"
-            {...register("personal_middle_name")}
+            {...register("personal_information.middle_name")}
           />
           <label
             htmlFor="personal_last_name"

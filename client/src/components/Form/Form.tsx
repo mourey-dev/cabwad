@@ -7,8 +7,11 @@ import FormFour from "./Files/FormFour";
 import Pagination from "./Pagination";
 import ModalForm from "../../pages/Form/ModalForm";
 
+import PDSForm from "../../types/form";
+
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 type RouteParams = Record<string, string | undefined>;
 
@@ -20,6 +23,7 @@ const Form = () => {
   const { page } = useParams<RouteParams>();
   const navigate = useNavigate();
   const currentPage: number = Number(page) || 1;
+  const { register } = useForm<PDSForm>();
 
   const forms: Record<number, JSX.Element> = {
     1: <FormOne />,
