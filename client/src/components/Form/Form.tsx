@@ -26,7 +26,7 @@ const Form = () => {
   const { register } = useForm<PDSForm>();
 
   const forms: Record<number, JSX.Element> = {
-    1: <FormOne />,
+    1: <FormOne register={register} />,
     2: <FormTwo />,
     3: <FormThree />,
     4: <FormFour />,
