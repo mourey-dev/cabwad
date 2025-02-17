@@ -13,12 +13,12 @@ type PersonalInformation = {
   first_name: string;
   middle_name: string;
   name_extension: string;
-  birth_date: Date;
+  birth_date: string;
   birth_place: string;
   sex: string;
   civil_status: string;
-  height: number;
-  weight: number;
+  height: string;
+  weight: string;
   blood_type: string;
   gsis_no: string;
   pagibig_no: string;
@@ -27,10 +27,10 @@ type PersonalInformation = {
   tin_no: string;
   agency_no: string;
   citizenship: string;
-  residential_address: Address;
-  permanent_address: Address;
-  telephone_no: number;
-  mobile_no: number;
+  residential_address: string;
+  permanent_address: string;
+  telephone_no: string;
+  mobile_no: string;
   email: string;
 };
 
@@ -42,7 +42,7 @@ type FamilyBackground = {
   spouse_occupation: string;
   spouse_employer: string;
   spouse_business_address: string;
-  spouse_telephone_no: number;
+  spouse_telephone_no: string;
   father_surname: string;
   father_first_name: string;
   father_middle_name: string;
@@ -51,17 +51,18 @@ type FamilyBackground = {
   mother_surname: string;
   mother_first_name: string;
   mother_middle_name: string;
-  childrens: Array<{ name: string; birth_date: Date }>;
+  childrens: Array<{ name: string; string: string }>;
 };
 
 type School = {
   name: string;
   degree: string;
-  period_from: Date;
-  period_to: Date;
+  period_from: string;
+  period_to: string;
   units_earned: string;
-  year_graduated: number;
+  year_graduated: string;
   honors_received: string;
+  date: string;
 };
 
 type EducationBackground = {
@@ -78,12 +79,12 @@ type CivilServiceEligibility = Array<{
   examination_date: string;
   examination_place: string;
   license_number: string;
-  license_validity: Date;
+  license_validity: string;
 }>;
 
 type WorkExperience = Array<{
-  inclusive_from: Date;
-  inclusive_to: Date;
+  inclusive_from: string;
+  inclusive_to: string;
   position_title: string;
   department: string;
   salary: number;
@@ -93,17 +94,17 @@ type WorkExperience = Array<{
 
 type VoluntaryWork = Array<{
   organization: string;
-  inclusive_from: Date;
-  inclusive_to: Date;
+  inclusive_from: string;
+  inclusive_to: string;
   hours: number;
   position: string;
 }>;
 
 type LearningDevelopment = Array<{
   title: string;
-  inclusive_from: Date;
-  inclusive_to: Date;
-  hours: number;
+  inclusive_from: string;
+  inclusive_to: string;
+  hours: string;
   type: string;
   conducted: string;
 }>;
@@ -120,7 +121,7 @@ type OtherInformation = {
   found_guilty: string;
   guilty_details: string;
   criminally_charged: string;
-  criminally_filed: Date;
+  criminally_filed: string;
   criminally_status: string;
   convicted: string;
   convicted_details: string;
@@ -133,13 +134,16 @@ type OtherInformation = {
   immigrant: string;
   immigrant_details: string;
   indigenous: string;
+  indigenous_details: string;
   disabled_person: string;
   disabled_person_details: string;
   solo_parent: string;
+  solo_parent_details: string;
+
   references: Array<{
     name: string;
     address: string;
-    telephone_no: number;
+    telephone_no: string;
   }>;
   government_issued_id: string;
   id_no: string;

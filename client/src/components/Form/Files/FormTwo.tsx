@@ -2,8 +2,14 @@ import arrow from "../../../assets/images/right-arrow.png";
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
+import PDSForm from "../../../types/form";
 
-const FormTwo = () => {
+type FormTwoProps = {
+  register: UseFormRegister<PDSForm>;
+};
+
+const FormTwo = ({ register }: FormTwoProps) => {
   const [focusedInput, setFocusedInput] = useState<string | null>(null);
 
   const handleFocus = (index: string) => {
@@ -14,7 +20,7 @@ const FormTwo = () => {
     setFocusedInput(null);
   };
 
-  const { register, handleSubmit } = useForm();
+  const { handleSubmit } = useForm();
   const onSubmit = (data: any) => {
     console.log(data);
   };
@@ -78,7 +84,7 @@ const FormTwo = () => {
                   <td className="border px-2 py-1">
                     <input
                       type="text"
-                      {...register("input1-${index}")}
+                      {...register(`input1-${index}`)}
                       className={`w-full outline-none ${focusedInput === `input1-${index}` ? "bg-yellow-200" : ""}`}
                       onFocus={() => handleFocus(`input1-${index}`)}
                       onBlur={handleBlur}
@@ -88,7 +94,7 @@ const FormTwo = () => {
                   <td className="border px-2 py-1">
                     <input
                       type="text"
-                      {...register("input2-${index}")}
+                      {...register(`input2-${index}`)}
                       className={`w-full outline-none ${focusedInput === `input2-${index}` ? "bg-yellow-200" : ""}`}
                       onFocus={() => handleFocus(`input2-${index}`)}
                       onBlur={handleBlur}

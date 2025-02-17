@@ -1,9 +1,15 @@
 import arrow from "../../../assets/images/right-arrow.png";
 
 import { useForm } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
+import PDSForm from "../../../types/form";
 
-const FormFour = () => {
-  const { register, handleSubmit } = useForm();
+type FormFourProps = {
+  register: UseFormRegister<PDSForm>;
+};
+
+const FormFour = ({ register }: FormFourProps) => {
+  const { handleSubmit } = useForm();
   const onSubmit = (data: any) => {
     console.log(data);
   };
@@ -32,7 +38,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_third_degree_yes"
-                {...register("of_third_degree_yes")}
+                {...register("other_information.third_degree")}
               />
               <label htmlFor="of_third-degree_yes">YES</label>
             </div>
@@ -40,13 +46,13 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_third_degree_no"
-                {...register("of_third_degree_no")}
+                {...register("other_information.third_degree")}
               />
               <label htmlFor="of_third_degree_no">NO</label>
             </div>
           </div>
 
-          {/* THIRD DEGREE */}
+          {/* FOURTH DEGREE */}
           <span className="col-span-3 border-2 border-t-0 bg-gray-300 pl-2">
             b. within the fourth degree (for Local Government Unit - Career
             Employees)?
@@ -55,16 +61,16 @@ const FormFour = () => {
             <div className="mr-12 flex gap-1">
               <input
                 type="checkbox"
-                title="of_third_degree_yes"
-                {...register("of_third_degree_yes")}
+                title="of_fourth_degree_yes"
+                {...register("other_information.fourth_degree")}
               />
-              <label htmlFor="of_third-degree_yes">YES</label>
+              <label htmlFor="of_fourth-degree_yes">YES</label>
             </div>
             <div className="flex gap-1">
               <input
                 type="checkbox"
-                title="of_third_degree_no"
-                {...register("of_third_degree_no")}
+                title="of_fourth_degree_no"
+                {...register("other_information.fourth_degree")}
               />
               <label htmlFor="of_third_degree_no">NO</label>
             </div>
@@ -75,7 +81,7 @@ const FormFour = () => {
               type="text"
               id="of_if_yes"
               className="w-full border-b-2"
-              {...register("of_if_yes")}
+              {...register("other_information.degree_details")}
             />
           </div>
 
@@ -88,16 +94,16 @@ const FormFour = () => {
             <div className="mr-12 flex gap-1">
               <input
                 type="checkbox"
-                title="of_third_degree_yes"
-                {...register("of_third_degree_yes")}
+                title="of_found_guilty_yes"
+                {...register("other_information.found_guilty")}
               />
               <label htmlFor="of_third-degree_yes">YES</label>
             </div>
             <div className="flex gap-1">
               <input
                 type="checkbox"
-                title="of_third_degree_no"
-                {...register("of_third_degree_no")}
+                title="of_found_guilty_no"
+                {...register("other_information.found_guilty")}
               />
               <label htmlFor="of_third_degree_no">NO</label>
             </div>
@@ -108,7 +114,7 @@ const FormFour = () => {
               type="text"
               id="of_if_yes"
               className="w-full border-b-2"
-              {...register("of_if_yes")}
+              {...register("other_information.guilty_details")}
             />
           </div>
 
@@ -120,18 +126,18 @@ const FormFour = () => {
             <div className="mr-12 flex gap-1">
               <input
                 type="checkbox"
-                title="of_third_degree_yes"
-                {...register("of_third_degree_yes")}
+                title="of_criminally_charged_yes"
+                {...register("other_information.criminally_charged")}
               />
               <label htmlFor="of_third-degree_yes">YES</label>
             </div>
             <div className="flex gap-1">
               <input
                 type="checkbox"
-                title="of_third_degree_no"
-                {...register("of_third_degree_no")}
+                title="of_criminally_charged_no"
+                {...register("other_information.criminally_charged")}
               />
-              <label htmlFor="of_third_degree_no">NO</label>
+              <label htmlFor="of_criminally_charged_no">NO</label>
             </div>
             <span className="w-full">If YES, give details:</span>
             <div className="flex w-full gap-4">
@@ -140,7 +146,7 @@ const FormFour = () => {
                 type="text"
                 id="of_charged_before_date_filled"
                 className="flex-1 border-b-2"
-                {...register("of_charged_before_date_filled")}
+                {...register("other_information.criminally_filed")}
               />
             </div>
             <div className="flex w-full gap-4">
@@ -151,7 +157,7 @@ const FormFour = () => {
                 type="text"
                 id="of_charged_before_status"
                 className="flex-1 border-b-2"
-                {...register("of_charged_before_status")}
+                {...register("other_information.criminally_status")}
               />
             </div>
           </div>
@@ -166,7 +172,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_convicted_yes"
-                {...register("of_convicted_yes")}
+                {...register("other_information.convicted")}
               />
               <label htmlFor="of_convicted_yes">YES</label>
             </div>
@@ -174,7 +180,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_convicted_no"
-                {...register("of_convicted_no")}
+                {...register("other_information.convicted")}
               />
               <label htmlFor="of_convicted_no">NO</label>
             </div>
@@ -185,7 +191,7 @@ const FormFour = () => {
               type="text"
               id="of_if_convicted_yes"
               className="w-full border-b-2"
-              {...register("of_if_convicted_yes")}
+              {...register("other_information.convicted_details")}
             />
           </div>
 
@@ -201,7 +207,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_dismissal"
-                {...register("of_dismissal")}
+                {...register("other_information.service_separated")}
               />
               <label htmlFor="of_dismissal_yes">YES</label>
             </div>
@@ -209,7 +215,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_dismissal_no"
-                {...register("of_dismissal_no")}
+                {...register("other_information.service_separated")}
               />
               <label htmlFor="of_dismissal_no">NO</label>
             </div>
@@ -220,7 +226,7 @@ const FormFour = () => {
               type="text"
               id="of_if_dismissal_yes"
               className="w-full border-b-2"
-              {...register("of_if_dismissal_yes")}
+              {...register("other_information.service_separated_details")}
             />
           </div>
 
@@ -234,7 +240,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_local_candidate_yes"
-                {...register("of_local_candidate_yes")}
+                {...register("other_information.national_candidate")}
               />
               <label htmlFor="of_local_candidate_yes">YES</label>
             </div>
@@ -242,7 +248,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_local_candidate_no"
-                {...register("of_local_candidate_no")}
+                {...register("other_information.national_candidate")}
               />
               <label htmlFor="of_local_candidate_no">NO</label>
             </div>
@@ -254,7 +260,7 @@ const FormFour = () => {
                 type="text"
                 id="of_if_local_candidate_yes"
                 className="flex-1 border-b-2"
-                {...register("of_if_local_candidate_yes")}
+                {...register("other_information.national_candidate_details")}
               />
             </div>
           </div>
@@ -269,7 +275,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_government_resign_yes"
-                {...register("of_government_resign_yes")}
+                {...register("other_information.government_resign")}
               />
               <label htmlFor="of_government_resign_yes">YES</label>
             </div>
@@ -277,7 +283,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_government_resign_no"
-                {...register("of_government_resign_no")}
+                {...register("other_information.government_resign")}
               />
               <label htmlFor="of_government_resign_no">NO</label>
             </div>
@@ -289,7 +295,7 @@ const FormFour = () => {
                 type="text"
                 id="of_if_government_resign_yes"
                 className="flex-1 border-b-2"
-                {...register("of_if_government_resign_yes")}
+                {...register("other_information.government_resign_details")}
               />
             </div>
           </div>
@@ -304,7 +310,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_acquired_immigrant_yes"
-                {...register("of_acquired_immigrant_yes")}
+                {...register("other_information.immigrant")}
               />
               <label htmlFor="of_acquired_immigrant_yes">YES</label>
             </div>
@@ -312,7 +318,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_acquired_immigrant_no"
-                {...register("of_acquired_immigrant_no")}
+                {...register("other_information.immigrant")}
               />
               <label htmlFor="of_acquired_immigrant_no">NO</label>
             </div>
@@ -323,7 +329,7 @@ const FormFour = () => {
               type="text"
               id="of_if_acquired_immigrant_yes"
               className="w-full border-b-2"
-              {...register("of_if_acquired_immigrant_yes")}
+              {...register("other_information.immigrant_details")}
             />
           </div>
 
@@ -343,7 +349,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_indigenous_yes"
-                {...register("of_indigenous_yes")}
+                {...register("other_information.indigenous")}
               />
               <label htmlFor="of_indigenous_yes">YES</label>
             </div>
@@ -351,7 +357,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_indigenous_no"
-                {...register("of_indigenous_no")}
+                {...register("other_information.indigenous")}
               />
               <label htmlFor="of_indigenous_no">NO</label>
             </div>
@@ -363,7 +369,7 @@ const FormFour = () => {
                 type="text"
                 id="of_if_indigenous_yes"
                 className="flex-1 border-b-2"
-                {...register("of_if_indigenous_yes")}
+                {...register("other_information.indigenous_details")}
               />
             </div>
           </div>
@@ -376,7 +382,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_disability_yes"
-                {...register("of_disability_yes")}
+                {...register("other_information.disabled_person")}
               />
               <label htmlFor="of_disability_yes">YES</label>
             </div>
@@ -384,7 +390,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_disability_no"
-                {...register("of_disability_no")}
+                {...register("other_information.disabled_person")}
               />
               <label htmlFor="of_disability_no">NO</label>
             </div>
@@ -396,7 +402,7 @@ const FormFour = () => {
                 type="text"
                 id="of_if_disability_yes"
                 className="flex-1 border-b-2"
-                {...register("of_if_disability_yes")}
+                {...register("other_information.disabled_person_details")}
               />
             </div>
           </div>
@@ -409,7 +415,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_solo_parent_yes"
-                {...register("of_solo_parent_yes")}
+                {...register("other_information.solo_parent")}
               />
               <label htmlFor="of_solo_parent_yes">YES</label>
             </div>
@@ -417,7 +423,7 @@ const FormFour = () => {
               <input
                 type="checkbox"
                 title="of_solo_parent_no"
-                {...register("of_solo_parent_no")}
+                {...register("other_information.solo_parent")}
               />
               <label htmlFor="of_solo_parent_no">NO</label>
             </div>
@@ -429,7 +435,7 @@ const FormFour = () => {
                 type="text"
                 id="of_if_solo_parent_yes"
                 className="flex-1 border-b-2"
-                {...register("of_if_solo_parent_yes")}
+                {...register("other_information.solo_parent_details")}
               />
             </div>
           </div>
@@ -452,19 +458,16 @@ const FormFour = () => {
               type="text"
               title="reference_name_1"
               className="col-span-2 border-2"
-              {...register("reference_name_1")}
             />
             <input
               type="text"
               title="reference_address_1"
               className="col-span-1 border-2"
-              {...register("reference_address_1")}
             />
             <input
               type="text"
               title="reference_telephone_1"
               className="col-span-1 border-2"
-              {...register("reference_telephone_1")}
             />
 
             {/* SECOND REFERENCE */}
@@ -472,19 +475,16 @@ const FormFour = () => {
               type="text"
               title="reference_name_2"
               className="col-span-2 border-2"
-              {...register("reference_name_2")}
             />
             <input
               type="text"
               title="reference_address_2"
               className="col-span-1 border-2"
-              {...register("reference_address_2")}
             />
             <input
               type="text"
               title="reference_telephone_2"
               className="col-span-1 border-2"
-              {...register("reference_telephone_2")}
             />
 
             {/* THIRD REFERENCE */}
@@ -492,19 +492,16 @@ const FormFour = () => {
               type="text"
               title="reference_name_3"
               className="col-span-2 border-2"
-              {...register("reference_name_3")}
             />
             <input
               type="text"
               title="reference_address_3"
               className="col-span-1 border-2"
-              {...register("reference_address_3")}
             />
             <input
               type="text"
               title="reference_telephone_3"
               className="col-span-1 border-2"
-              {...register("reference_telephone_3")}
             />
           </div>
 
@@ -528,7 +525,6 @@ const FormFour = () => {
               accept="image/*"
               title="profile"
               className="hidden"
-              {...register("profile")}
             />
           </div>
 
@@ -561,7 +557,7 @@ const FormFour = () => {
                   type="text"
                   id="gov_issued_id"
                   className="flex-1 text-[.7rem]"
-                  {...register("gov_issued_id")}
+                  {...register("other_information.government_issued_id")}
                 />
               </div>
 
@@ -574,7 +570,7 @@ const FormFour = () => {
                   type="text"
                   id="id_no"
                   className="flex-1 text-[.7rem]"
-                  {...register("id_no")}
+                  {...register("other_information.id_no")}
                 />
               </div>
 
@@ -587,7 +583,7 @@ const FormFour = () => {
                   type="text"
                   id="date_issuance"
                   className="flex-1 text-[.7rem]"
-                  {...register("date_issuance")}
+                  {...register("other_information.issuance")}
                 />
               </div>
             </div>
@@ -614,12 +610,7 @@ const FormFour = () => {
           <div className="col-span-5 border-2 p-4">
             <div>
               <span>SUBSCRIBED AND SWORN to before me this </span>
-              <input
-                type="text"
-                title="sworn"
-                className="border-b-2"
-                {...register("sworn")}
-              />
+              <input type="text" title="sworn" className="border-b-2" />
               <span>
                 , affiant exhibiting his/her validly issued government ID as
                 indicated above.

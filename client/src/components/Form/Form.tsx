@@ -29,7 +29,7 @@ const Form = () => {
     1: <FormOne register={register} />,
     2: <FormTwo />,
     3: <FormThree />,
-    4: <FormFour />,
+    4: <FormFour register={register} />,
   };
 
   // Redirect if page is invalid
