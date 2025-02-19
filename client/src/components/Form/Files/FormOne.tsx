@@ -1,5 +1,6 @@
 import arrow from "../../../assets/images/right-arrow.png";
 
+import { useForm } from "react-hook-form";
 import { UseFormRegister } from "react-hook-form";
 import PDSForm from "../../../types/form";
 
@@ -157,6 +158,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   id="citizen_filipino"
                   className="mx-2"
                   {...register("personal_information.citizenship")}
+                  value={"Filipino"}
                 />
                 <label htmlFor="citizen_filipino">Filipino</label>
               </div>
@@ -166,6 +168,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   id="citizen_dual"
                   className="mx-2"
                   {...register("personal_information.citizenship")}
+                  value={"Dual_Citizen"}
                 />
                 <label htmlFor="citizen_dual">Dual Citizen</label>
               </div>
@@ -175,6 +178,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   id="citizen_by_birth"
                   className="mx-2"
                   {...register("personal_information.citizenship")}
+                  value={"By_Birth"}
                 />
                 <label htmlFor="citizen_by_birth">by birth</label>
               </div>
@@ -184,6 +188,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   id="citizen_by_naturalization"
                   className="mx-2 ml-5"
                   {...register("personal_information.citizenship")}
+                  value={"By_Naturalization"}
                 />
                 <label htmlFor="citizen_by_naturalization">
                   by naturalization
@@ -227,6 +232,7 @@ const FormOne = ({ register }: FormOneProps) => {
                 type="checkbox"
                 id="personal_male"
                 {...register("personal_information.sex")}
+                value={"Male"}
               />
               <label htmlFor="personal_male">Male</label>
             </div>
@@ -235,6 +241,7 @@ const FormOne = ({ register }: FormOneProps) => {
                 type="checkbox"
                 id="personal_female"
                 {...register("personal_information.sex")}
+                value={"Female"}
               />
               <label htmlFor="personal_female">Female</label>
             </div>
@@ -249,6 +256,7 @@ const FormOne = ({ register }: FormOneProps) => {
                 type="checkbox"
                 id="personal_civil_single"
                 {...register("personal_information.civil_status")}
+                value={"Single"}
               />
               <label htmlFor="personal_civil_single">Single</label>
             </div>
@@ -257,6 +265,7 @@ const FormOne = ({ register }: FormOneProps) => {
                 type="checkbox"
                 id="personal_civil_married"
                 {...register("personal_information.civil_status")}
+                value={"Married"}
               />
               <label htmlFor="personal_civil_married">Married</label>
             </div>
@@ -265,6 +274,7 @@ const FormOne = ({ register }: FormOneProps) => {
                 type="checkbox"
                 id="personal_civil_widowed"
                 {...register("personal_information.civil_status")}
+                value={"Widowed"}
               />
               <label htmlFor="personal_civil_widowed">Widowed</label>
             </div>
@@ -273,6 +283,7 @@ const FormOne = ({ register }: FormOneProps) => {
                 type="checkbox"
                 id="personal_civil_separated"
                 {...register("personal_information.civil_status")}
+                value={"Separated"}
               />
               <label htmlFor="personal_civil_separated">Separated</label>
             </div>
@@ -281,6 +292,7 @@ const FormOne = ({ register }: FormOneProps) => {
                 type="checkbox"
                 id="personal_civil_other"
                 {...register("personal_information.civil_status")}
+                value={"Other_civil"}
               />
               <label htmlFor="personal_civil_other">Other/s:</label>
             </div>
@@ -296,9 +308,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   type="text"
                   id="ra_house"
                   className="w-[50%] border-b-2"
-                  {...register(
-                    "personal_information.residential_address.house",
-                  )}
+                  {...register("personal_information.residential_address")}
                 />
                 <label
                   htmlFor="ra_house"
@@ -324,9 +334,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   type="text"
                   id="ra_subdivision"
                   className="w-[50%] border-b-2"
-                  {...register(
-                    "personal_information.residential_address.subdivision",
-                  )}
+                  {...register("personal_information.residential_address")}
                 />
                 <label
                   htmlFor="ra_subdivision"
@@ -338,9 +346,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   type="text"
                   id="ra_barangay"
                   className="w-[50%] border-b-2"
-                  {...register(
-                    "personal_information.residential_address.barangay",
-                  )}
+                  {...register("personal_information.residential_address")}
                 />
                 <label
                   htmlFor="ra_barangay"
@@ -354,7 +360,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   type="text"
                   id="ra_city"
                   className="w-[50%] border-b-2"
-                  {...register("personal_information.residential_address.city")}
+                  {...register("personal_information.residential_address")}
                 />
                 <label
                   htmlFor="ra_city"
@@ -366,9 +372,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   type="text"
                   id="ra_province"
                   className="w-[50%] border-b-2"
-                  {...register(
-                    "personal_information.residential_address.province",
-                  )}
+                  {...register("personal_information.residential_address")}
                 />
                 <label
                   htmlFor="ra_province"
@@ -388,7 +392,7 @@ const FormOne = ({ register }: FormOneProps) => {
               type="text"
               id="ra_zip"
               className="col-span-3 border"
-              {...register("personal_information.residential_address.zip")}
+              {...register("personal_information.residential_address")}
             />
           </div>
 
@@ -440,7 +444,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   type="text"
                   id="pa_house"
                   className="w-[50%] border-b-2"
-                  {...register("personal_information.permanent_address.house")}
+                  {...register("personal_information.permanent_address")}
                 />
                 <label
                   htmlFor="pa_house"
@@ -452,7 +456,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   type="text"
                   id="pa_street"
                   className="w-[50%] border-b-2"
-                  {...register("personal_information.permanent_address.street")}
+                  {...register("personal_information.permanent_address")}
                 />
                 <label
                   htmlFor="pa_street"
@@ -466,9 +470,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   type="text"
                   id="pa_subdivision"
                   className="w-[50%] border-b-2"
-                  {...register(
-                    "personal_information.permanent_address.subdivision",
-                  )}
+                  {...register("personal_information.permanent_address")}
                 />
                 <label
                   htmlFor="pa_subdivision"
@@ -480,9 +482,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   type="text"
                   id="pa_barangay"
                   className="w-[50%] border-b-2"
-                  {...register(
-                    "personal_information.permanent_address.barangay",
-                  )}
+                  {...register("personal_information.permanent_address")}
                 />
                 <label
                   htmlFor="pa_barangay"
@@ -496,7 +496,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   type="text"
                   id="pa_city"
                   className="w-[50%] border-b-2"
-                  {...register("personal_information.permanent_address.city")}
+                  {...register("personal_information.permanent_address")}
                 />
                 <label
                   htmlFor="pa_city"
@@ -508,9 +508,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   type="text"
                   id="pa_province"
                   className="w-[50%] border-b-2"
-                  {...register(
-                    "personal_information.permanent_address.province",
-                  )}
+                  {...register("personal_information.permanent_address")}
                 />
                 <label
                   htmlFor="pa_province"
@@ -530,7 +528,7 @@ const FormOne = ({ register }: FormOneProps) => {
               type="text"
               id="pa_zip"
               className="col-span-3 border"
-              {...register("personal_information.permanent_address.zip")}
+              {...register("personal_information.permanent_address")}
             />
           </div>
 
@@ -722,13 +720,13 @@ const FormOne = ({ register }: FormOneProps) => {
               type="text"
               className="col-span-2 border-2"
               title="first_child_name"
-              {...register("family_background.childrens.0.name")}
+              {...register("family_background.childrens")}
             />
             <input
               type="text"
               className="col-span-1 border-2"
               title="first_child_birth_date"
-              {...register("family_background.childrens.0.birth_date")}
+              {...register("family_background.childrens")}
             />
           </div>
 
@@ -752,13 +750,13 @@ const FormOne = ({ register }: FormOneProps) => {
               type="text"
               className="col-span-2 border-2"
               title="second_child_name"
-              {...register("family_background.childrens.1.name")}
+              {...register("family_background.childrens")}
             />
             <input
               type="text"
               className="col-span-1 border-2"
               title="second_child_birth_date"
-              {...register("family_background.childrens.1.birth_date")}
+              {...register("family_background.childrens")}
             />
           </div>
 
@@ -782,13 +780,13 @@ const FormOne = ({ register }: FormOneProps) => {
               type="text"
               className="col-span-2 border-2"
               title="third_child_name"
-              {...register("family_background.childrens.2.name")}
+              {...register("family_background.childrens")}
             />
             <input
               type="text"
               className="col-span-1 border-2"
               title="third_child_birth_date"
-              {...register("family_background.childrens.2.birth_date")}
+              {...register("family_background.childrens")}
             />
           </div>
 
@@ -812,13 +810,13 @@ const FormOne = ({ register }: FormOneProps) => {
               type="text"
               className="col-span-2 border-2"
               title="fourth_child_name"
-              {...register("family_background.childrens.3.name")}
+              {...register("family_background.childrens")}
             />
             <input
               type="text"
               className="col-span-1 border-2"
               title="fourth_child_birth_date"
-              {...register("family_background.childrens.3.birth_date")}
+              {...register("family_background.childrens")}
             />
           </div>
 
@@ -842,13 +840,13 @@ const FormOne = ({ register }: FormOneProps) => {
               type="text"
               className="col-span-2 border-2"
               title="fifth_child_name"
-              {...register("family_background.childrens.4.name")}
+              {...register("family_background.childrens")}
             />
             <input
               type="text"
               className="col-span-1 border-2"
               title="fifth_child_birth_date"
-              {...register("family_background.childrens.4.birth_date")}
+              {...register("family_background.childrens")}
             />
           </div>
 
@@ -872,13 +870,13 @@ const FormOne = ({ register }: FormOneProps) => {
               type="text"
               className="col-span-2 border-2"
               title="six_child_name"
-              {...register("family_background.childrens.5.name")}
+              {...register("family_background.childrens")}
             />
             <input
               type="text"
               className="col-span-1 border-2"
               title="six_child_birth_date"
-              {...register("family_background.childrens.5.birth_date")}
+              {...register("family_background.childrens")}
             />
           </div>
 
@@ -902,13 +900,13 @@ const FormOne = ({ register }: FormOneProps) => {
               type="text"
               className="col-span-2 border-2"
               title="seven_child_name"
-              {...register("family_background.childrens.6.name")}
+              {...register("family_background.childrens")}
             />
             <input
               type="text"
               className="col-span-1 border-2"
               title="seven_child_birth_date"
-              {...register("family_background.childrens.6.birth_date")}
+              {...register("family_background.childrens")}
             />
           </div>
 
@@ -948,13 +946,13 @@ const FormOne = ({ register }: FormOneProps) => {
               type="text"
               className="col-span-2 border-2"
               title="eight_child_name"
-              {...register("family_background.childrens.7.name")}
+              {...register("family_background.childrens")}
             />
             <input
               type="text"
               className="col-span-1 border-2"
               title="eight_child_birth_date"
-              {...register("family_background.childrens.7.birth_date")}
+              {...register("family_background.childrens")}
             />
           </div>
 
@@ -978,13 +976,13 @@ const FormOne = ({ register }: FormOneProps) => {
               type="text"
               className="col-span-2 border-2"
               title="nine_child_name"
-              {...register("family_background.childrens.8.name")}
+              {...register("family_background.childrens")}
             />
             <input
               type="text"
               className="col-span-1 border-2"
               title="nine_child_birth_date"
-              {...register("family_background.childrens.8.birth_date")}
+              {...register("family_background.childrens")}
             />
           </div>
 
@@ -1008,13 +1006,13 @@ const FormOne = ({ register }: FormOneProps) => {
               type="text"
               className="col-span-2 border-2"
               title="ten_child_name"
-              {...register("family_background.childrens.9.name")}
+              {...register("family_background.childrens")}
             />
             <input
               type="text"
               className="col-span-1 border-2"
               title="ten_child_birth_date"
-              {...register("family_background.childrens.10.birth_date")}
+              {...register("family_background.childrens")}
             />
           </div>
 
@@ -1038,13 +1036,13 @@ const FormOne = ({ register }: FormOneProps) => {
               type="text"
               className="col-span-2 border-2"
               title="eleven_child_name"
-              {...register("family_background.childrens.10.name")}
+              {...register("family_background.childrens")}
             />
             <input
               type="text"
               className="col-span-1 border-2"
               title="eleven_child_birth_date"
-              {...register("family_background.childrens.10.birth_date")}
+              {...register("family_background.childrens")}
             />
           </div>
 
@@ -1083,13 +1081,13 @@ const FormOne = ({ register }: FormOneProps) => {
               type="text"
               className="col-span-2 border-2"
               title="twelve_child_name"
-              {...register("family_background.childrens.11.name")}
+              {...register("family_background.childrens")}
             />
             <input
               type="text"
               className="col-span-1 border-2"
               title="twelve_child_birth_date"
-              {...register("family_background.childrens.11.birth_date")}
+              {...register("family_background.childrens")}
             />
           </div>
 
@@ -1457,7 +1455,6 @@ const FormOne = ({ register }: FormOneProps) => {
             type="text"
             id="eb_signature_date"
             className="col-span-1 border-2"
-            {...register("fill_date.form_one")}
           />
         </div>
       </form>

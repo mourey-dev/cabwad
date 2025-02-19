@@ -1,36 +1,16 @@
 import arrow from "../../../assets/images/right-arrow.png";
 
-import { useRef, useState } from "react";
-import {
-  UseFormHandleSubmit,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
 import PDSForm from "../../../types/form";
 
 type FormFourProps = {
   register: UseFormRegister<PDSForm>;
-  setValue: UseFormSetValue<PDSForm>;
-  handleSubmit: UseFormHandleSubmit<PDSForm>;
 };
 
-const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
-  const fileRef = useRef<HTMLInputElement>(null);
-  const [imageUrl, setImageUrl] = useState<string>("");
-
-  const handleFileClick = () => {
-    fileRef.current?.click(); // Triggers the hidden file input
-  };
-
-  const handleFileChange = () => {
-    if (fileRef.current?.files?.[0]) {
-      const file = fileRef.current.files[0];
-      setImageUrl(URL.createObjectURL(file));
-      setValue("other_information.profile", file);
-    }
-  };
-
-  const submit = (data: PDSForm) => {
+const FormFour = ({ register }: FormFourProps) => {
+  const { handleSubmit } = useForm();
+  const onSubmit = (data: any) => {
     console.log(data);
   };
 
@@ -38,7 +18,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
     <div>
       <form
         className="mx-auto my-12 grid h-full w-[1001px] border-4 bg-white"
-        onSubmit={handleSubmit(submit)}
+        onSubmit={handleSubmit(onSubmit)}
       >
         <div className="grid grid-cols-5">
           <span className="col-span-3 border-2 border-b-0 bg-gray-300 pl-2">
@@ -59,6 +39,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_third_degree_yes"
                 {...register("other_information.third_degree")}
+                value={"YES"}
               />
               <label htmlFor="of_third-degree_yes">YES</label>
             </div>
@@ -67,6 +48,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_third_degree_no"
                 {...register("other_information.third_degree")}
+                value={"NO"}
               />
               <label htmlFor="of_third_degree_no">NO</label>
             </div>
@@ -82,8 +64,8 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="checkbox"
                 title="of_fourth_degree_yes"
-                value="yes"
                 {...register("other_information.fourth_degree")}
+                value={"YES"}
               />
               <label htmlFor="of_fourth-degree_yes">YES</label>
             </div>
@@ -91,8 +73,8 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="checkbox"
                 title="of_fourth_degree_no"
-                value="no"
                 {...register("other_information.fourth_degree")}
+                value={"NO"}
               />
               <label htmlFor="of_third_degree_no">NO</label>
             </div>
@@ -118,6 +100,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_found_guilty_yes"
                 {...register("other_information.found_guilty")}
+                value={"YES"}
               />
               <label htmlFor="of_third-degree_yes">YES</label>
             </div>
@@ -126,6 +109,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_found_guilty_no"
                 {...register("other_information.found_guilty")}
+                value={"NO"}
               />
               <label htmlFor="of_third_degree_no">NO</label>
             </div>
@@ -150,6 +134,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_criminally_charged_yes"
                 {...register("other_information.criminally_charged")}
+                value={"YES"}
               />
               <label htmlFor="of_third-degree_yes">YES</label>
             </div>
@@ -158,6 +143,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_criminally_charged_no"
                 {...register("other_information.criminally_charged")}
+                value={"NO"}
               />
               <label htmlFor="of_criminally_charged_no">NO</label>
             </div>
@@ -195,6 +181,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_convicted_yes"
                 {...register("other_information.convicted")}
+                value={"YES"}
               />
               <label htmlFor="of_convicted_yes">YES</label>
             </div>
@@ -203,6 +190,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_convicted_no"
                 {...register("other_information.convicted")}
+                value={"NO"}
               />
               <label htmlFor="of_convicted_no">NO</label>
             </div>
@@ -230,6 +218,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_dismissal"
                 {...register("other_information.service_separated")}
+                value={"YES"}
               />
               <label htmlFor="of_dismissal_yes">YES</label>
             </div>
@@ -238,6 +227,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_dismissal_no"
                 {...register("other_information.service_separated")}
+                value={"NO"}
               />
               <label htmlFor="of_dismissal_no">NO</label>
             </div>
@@ -263,6 +253,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_local_candidate_yes"
                 {...register("other_information.national_candidate")}
+                value={"YES"}
               />
               <label htmlFor="of_local_candidate_yes">YES</label>
             </div>
@@ -271,6 +262,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_local_candidate_no"
                 {...register("other_information.national_candidate")}
+                value={"NO"}
               />
               <label htmlFor="of_local_candidate_no">NO</label>
             </div>
@@ -298,6 +290,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_government_resign_yes"
                 {...register("other_information.government_resign")}
+                value={"YES"}
               />
               <label htmlFor="of_government_resign_yes">YES</label>
             </div>
@@ -306,6 +299,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_government_resign_no"
                 {...register("other_information.government_resign")}
+                value={"NO"}
               />
               <label htmlFor="of_government_resign_no">NO</label>
             </div>
@@ -333,6 +327,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_acquired_immigrant_yes"
                 {...register("other_information.immigrant")}
+                value={"YES"}
               />
               <label htmlFor="of_acquired_immigrant_yes">YES</label>
             </div>
@@ -341,6 +336,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_acquired_immigrant_no"
                 {...register("other_information.immigrant")}
+                value={"NO"}
               />
               <label htmlFor="of_acquired_immigrant_no">NO</label>
             </div>
@@ -372,6 +368,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_indigenous_yes"
                 {...register("other_information.indigenous")}
+                value={"YES"}
               />
               <label htmlFor="of_indigenous_yes">YES</label>
             </div>
@@ -380,6 +377,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_indigenous_no"
                 {...register("other_information.indigenous")}
+                value={"NO"}
               />
               <label htmlFor="of_indigenous_no">NO</label>
             </div>
@@ -405,6 +403,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_disability_yes"
                 {...register("other_information.disabled_person")}
+                value={"YES"}
               />
               <label htmlFor="of_disability_yes">YES</label>
             </div>
@@ -413,6 +412,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_disability_no"
                 {...register("other_information.disabled_person")}
+                value={"NO"}
               />
               <label htmlFor="of_disability_no">NO</label>
             </div>
@@ -438,6 +438,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_solo_parent_yes"
                 {...register("other_information.solo_parent")}
+                value={"YES"}
               />
               <label htmlFor="of_solo_parent_yes">YES</label>
             </div>
@@ -446,6 +447,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_solo_parent_no"
                 {...register("other_information.solo_parent")}
+                value={"NO"}
               />
               <label htmlFor="of_solo_parent_no">NO</label>
             </div>
@@ -475,23 +477,20 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
             <span className="col-span-1 border-2 text-center">ADDRESS</span>
             <span className="col-span-1 border-2 text-center">TEL. NO.</span>
 
-            {/* FIRST REFERENCES */}
+            {/* FIRST REFERENCE */}
             <input
               type="text"
               title="reference_name_1"
-              {...register(`other_information.references.0.name`)}
               className="col-span-2 border-2"
             />
             <input
               type="text"
               title="reference_address_1"
-              {...register(`other_information.references.0.address`)}
               className="col-span-1 border-2"
             />
             <input
               type="text"
               title="reference_telephone_1"
-              {...register(`other_information.references.0.telephone_no`)}
               className="col-span-1 border-2"
             />
 
@@ -500,18 +499,15 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               type="text"
               title="reference_name_2"
               className="col-span-2 border-2"
-              {...register("other_information.references.1.name")}
             />
             <input
               type="text"
               title="reference_address_2"
-              {...register("other_information.references.1.address")}
               className="col-span-1 border-2"
             />
             <input
               type="text"
               title="reference_telephone_2"
-              {...register("other_information.references.1.telephone_no")}
               className="col-span-1 border-2"
             />
 
@@ -519,53 +515,39 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
             <input
               type="text"
               title="reference_name_3"
-              {...register("other_information.references.2.name")}
               className="col-span-2 border-2"
             />
             <input
               type="text"
               title="reference_address_3"
-              {...register("other_information.references.2.address")}
               className="col-span-1 border-2"
             />
             <input
               type="text"
               title="reference_telephone_3"
-              {...register("other_information.references.2.telephone_no")}
               className="col-span-1 border-2"
             />
           </div>
 
           <div className="col-span-1">
-            <div
-              className="mx-auto h-50 w-40 border-2"
-              onClick={handleFileClick}
-            >
-              {fileRef.current?.files?.[0] ? (
-                <img title="profile" src={imageUrl} className="h-full" />
-              ) : (
-                <div className="p-4">
-                  <span className="block text-center text-[.6rem] tracking-tighter">
-                    ID picture taken within the last 6 months 3.5 cm. X 4.5 cm
-                    (passport size)
-                  </span>
-                  <span className="my-4 block text-center text-[.6rem] tracking-tighter">
-                    With full and handwritten name tag and signature over
-                    printed name
-                  </span>
-                  <span className="block text-center text-[.6rem] tracking-tighter">
-                    Computer generated or photocopied picture is not acceptable
-                  </span>
-                </div>
-              )}
+            <div className="mx-auto h-50 w-40 border-2 p-4">
+              <span className="block text-center text-[.6rem] tracking-tighter">
+                ID picture taken within the last 6 months 3.5 cm. X 4.5 cm
+                (passport size)
+              </span>
+              <span className="my-4 block text-center text-[.6rem] tracking-tighter">
+                With full and handwritten name tag and signature over printed
+                name
+              </span>
+              <span className="block text-center text-[.6rem] tracking-tighter">
+                Computer generated or photocopied picture is not acceptable
+              </span>
             </div>
             <span className="block text-center text-slate-400">PHOTO</span>
             <input
               type="file"
               accept="image/*"
               title="profile"
-              ref={fileRef}
-              onChange={handleFileChange}
               className="hidden"
             />
           </div>
@@ -667,8 +649,6 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
             </div>
           </div>
         </div>
-
-        <input type="submit" />
       </form>
 
       <div className="relative flex h-full items-end justify-end p-4">
@@ -681,10 +661,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
             <img src={arrow} alt="arrow-right" className="h-5 w-5" />
           </button>
 
-          <button
-            type="submit"
-            className="rounded-full bg-yellow-500 px-7 py-4 text-white hover:bg-yellow-400"
-          >
+          <button className="rounded-full bg-yellow-500 px-7 py-4 text-white hover:bg-yellow-400">
             Save
           </button>
         </div>
