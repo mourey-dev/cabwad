@@ -1,19 +1,16 @@
 import arrow from "../../../assets/images/right-arrow.png";
 
-import { useForm } from "react-hook-form";
+import { UseFormRegister } from "react-hook-form";
+import PDSForm from "../../../types/form";
 
-const FormThree = () => {
-  const { register, handleSubmit } = useForm();
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
+type FormThreeProps = {
+  register: UseFormRegister<PDSForm>;
+};
 
+const FormThree = ({ register }: FormThreeProps) => {
   return (
     <div>
-      <form
-        className="mx-auto my-12 w-[1001px] border-4 bg-white"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form className="mx-auto my-12 w-[1001px] border-4 bg-white">
         {/* Voluntary Work Header */}
         <div className="border-2">
           <h2 className="bg-gray-600 p-1 text-sm font-bold text-white italic">
@@ -54,33 +51,33 @@ const FormThree = () => {
                   <input
                     type="text"
                     className="w-full outline-none"
-                    {...register("input1-${index}")}
+                    {...register(`voluntary_work.${index}.organization`)}
                   />
                 </td>
                 <td className="grid grid-cols-2 border px-2 py-1">
                   <input
                     type="text"
                     className="w-full border-r text-center outline-none"
-                    {...register("input2-${index}")}
+                    {...register(`voluntary_work.${index}.inclusive_from`)}
                   />
                   <input
                     type="text"
                     className="w-full text-center outline-none"
-                    {...register("input3-${index}")}
+                    {...register(`voluntary_work.${index}.inclusive_to`)}
                   />
                 </td>
                 <td className="border px-2 py-1">
                   <input
                     type="text"
                     className="w-full text-center outline-none"
-                    {...register("input4-${index}")}
+                    {...register(`voluntary_work.${index}.hours`)}
                   />
                 </td>
                 <td className="border px-2 py-1">
                   <input
                     type="text"
                     className="w-full outline-none"
-                    {...register("input5-${index}")}
+                    {...register(`voluntary_work.${index}.position`)}
                   />
                 </td>
               </tr>
@@ -143,40 +140,42 @@ const FormThree = () => {
                   <input
                     type="text"
                     className="w-full outline-none"
-                    {...register("input6-${index}")}
+                    {...register(`learning_development.${index}.title`)}
                   />
                 </td>
                 <td className="grid grid-cols-2 border px-2 py-1">
                   <input
                     type="text"
                     className="w-full border-r text-center outline-none"
-                    {...register("input7-${index}")}
+                    {...register(
+                      `learning_development.${index}.inclusive_from`,
+                    )}
                   />
                   <input
                     type="text"
                     className="w-full text-center outline-none"
-                    {...register("input8-${index}")}
+                    {...register(`learning_development.${index}.inclusive_to`)}
                   />
                 </td>
                 <td className="border px-2 py-1">
                   <input
                     type="text"
                     className="w-full text-center outline-none"
-                    {...register("input9-${index}")}
+                    {...register(`learning_development.${index}.hours`)}
                   />
                 </td>
                 <td className="border px-2 py-1">
                   <input
                     type="text"
                     className="w-full outline-none"
-                    {...register("input10-${index}")}
+                    {...register(`learning_development.${index}.type`)}
                   />
                 </td>
                 <td className="border px-2 py-1">
                   <input
                     type="text"
                     className="w-full outline-none"
-                    {...register("input11-${index}")}
+                    {...register(`learning_development.${index}.conducted`)}
                   />
                 </td>
               </tr>
@@ -220,21 +219,27 @@ const FormThree = () => {
                   <input
                     type="text"
                     className="w-full outline-none"
-                    {...register("input12-${index}")}
+                    {...register(
+                      `other_information.skills.${index}.special_skill`,
+                    )}
                   />
                 </td>
                 <td className="border px-2 py-1">
                   <input
                     type="text"
                     className="w-full outline-none"
-                    {...register("input13-${index}")}
+                    {...register(
+                      `other_information.skills.${index}.recognition`,
+                    )}
                   />
                 </td>
                 <td className="border px-2 py-1">
                   <input
                     type="text"
                     className="w-full outline-none"
-                    {...register("input14-${index}")}
+                    {...register(
+                      `other_information.skills.${index}.membership`,
+                    )}
                   />
                 </td>
               </tr>
@@ -263,7 +268,14 @@ const FormThree = () => {
                   DATE
                 </div>
               </td>
-              <td className="w-1/3 border"></td>
+              <td className="w-1/3 border">
+                <input
+                  type="text"
+                  title="form_three_date"
+                  {...register("fill_date.form_three")}
+                  className="w-full text-[1.1rem]"
+                />
+              </td>
             </tr>
           </tbody>
         </table>

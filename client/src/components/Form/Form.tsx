@@ -23,13 +23,19 @@ const Form = () => {
   const { page } = useParams<RouteParams>();
   const navigate = useNavigate();
   const currentPage: number = Number(page) || 1;
-  const { register } = useForm<PDSForm>();
+  const { register, handleSubmit, setValue } = useForm<PDSForm>();
 
   const forms: Record<number, JSX.Element> = {
     1: <FormOne register={register} />,
-    2: <FormTwo />,
-    3: <FormThree />,
-    4: <FormFour register={register} />,
+    2: <FormTwo register={register} />,
+    3: <FormThree register={register} />,
+    4: (
+      <FormFour
+        register={register}
+        setValue={setValue}
+        handleSubmit={handleSubmit}
+      />
+    ),
   };
 
   // Redirect if page is invalid

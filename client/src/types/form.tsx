@@ -27,8 +27,8 @@ type PersonalInformation = {
   tin_no: string;
   agency_no: string;
   citizenship: string;
-  residential_address: string;
-  permanent_address: string;
+  residential_address: Address;
+  permanent_address: Address;
   telephone_no: string;
   mobile_no: string;
   email: string;
@@ -51,7 +51,7 @@ type FamilyBackground = {
   mother_surname: string;
   mother_first_name: string;
   mother_middle_name: string;
-  childrens: Array<{ name: string; string: string }>;
+  childrens: Array<{ name: string; birth_date: string }>;
 };
 
 type School = {
@@ -87,9 +87,11 @@ type WorkExperience = Array<{
   inclusive_to: string;
   position_title: string;
   department: string;
-  salary: number;
+  monthly_salary: number;
+  salary_grade: number;
   status: string;
   gov_service: string;
+  date: string;
 }>;
 
 type VoluntaryWork = Array<{
@@ -148,6 +150,13 @@ type OtherInformation = {
   government_issued_id: string;
   id_no: string;
   issuance: string;
+  profile: File;
+};
+
+type FillDate = {
+  form_one: string;
+  form_two: string;
+  form_three: string;
 };
 
 export type PDSForm = {
@@ -159,6 +168,7 @@ export type PDSForm = {
   voluntary_work: VoluntaryWork;
   learning_development: LearningDevelopment;
   other_information: OtherInformation;
+  fill_date: FillDate;
 };
 
 export default PDSForm;

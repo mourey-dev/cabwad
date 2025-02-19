@@ -1,16 +1,36 @@
 import arrow from "../../../assets/images/right-arrow.png";
 
-import { useForm } from "react-hook-form";
-import { UseFormRegister } from "react-hook-form";
+import { useRef, useState } from "react";
+import {
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 import PDSForm from "../../../types/form";
 
 type FormFourProps = {
   register: UseFormRegister<PDSForm>;
+  setValue: UseFormSetValue<PDSForm>;
+  handleSubmit: UseFormHandleSubmit<PDSForm>;
 };
 
-const FormFour = ({ register }: FormFourProps) => {
-  const { handleSubmit } = useForm();
-  const onSubmit = (data: any) => {
+const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [imageUrl, setImageUrl] = useState<string>("");
+
+  const handleFileClick = () => {
+    fileRef.current?.click(); // Triggers the hidden file input
+  };
+
+  const handleFileChange = () => {
+    if (fileRef.current?.files?.[0]) {
+      const file = fileRef.current.files[0];
+      setImageUrl(URL.createObjectURL(file));
+      setValue("other_information.profile", file);
+    }
+  };
+
+  const submit = (data: PDSForm) => {
     console.log(data);
   };
 
@@ -18,7 +38,7 @@ const FormFour = ({ register }: FormFourProps) => {
     <div>
       <form
         className="mx-auto my-12 grid h-full w-[1001px] border-4 bg-white"
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(submit)}
       >
         <div className="grid grid-cols-5">
           <span className="col-span-3 border-2 border-b-0 bg-gray-300 pl-2">
@@ -62,6 +82,7 @@ const FormFour = ({ register }: FormFourProps) => {
               <input
                 type="checkbox"
                 title="of_fourth_degree_yes"
+                value="yes"
                 {...register("other_information.fourth_degree")}
               />
               <label htmlFor="of_fourth-degree_yes">YES</label>
@@ -70,6 +91,7 @@ const FormFour = ({ register }: FormFourProps) => {
               <input
                 type="checkbox"
                 title="of_fourth_degree_no"
+                value="no"
                 {...register("other_information.fourth_degree")}
               />
               <label htmlFor="of_third_degree_no">NO</label>
@@ -453,20 +475,23 @@ const FormFour = ({ register }: FormFourProps) => {
             <span className="col-span-1 border-2 text-center">ADDRESS</span>
             <span className="col-span-1 border-2 text-center">TEL. NO.</span>
 
-            {/* FIRST REFERENCE */}
+            {/* FIRST REFERENCES */}
             <input
               type="text"
               title="reference_name_1"
+              {...register(`other_information.references.0.name`)}
               className="col-span-2 border-2"
             />
             <input
               type="text"
               title="reference_address_1"
+              {...register(`other_information.references.0.address`)}
               className="col-span-1 border-2"
             />
             <input
               type="text"
               title="reference_telephone_1"
+              {...register(`other_information.references.0.telephone_no`)}
               className="col-span-1 border-2"
             />
 
@@ -475,15 +500,18 @@ const FormFour = ({ register }: FormFourProps) => {
               type="text"
               title="reference_name_2"
               className="col-span-2 border-2"
+              {...register("other_information.references.1.name")}
             />
             <input
               type="text"
               title="reference_address_2"
+              {...register("other_information.references.1.address")}
               className="col-span-1 border-2"
             />
             <input
               type="text"
               title="reference_telephone_2"
+              {...register("other_information.references.1.telephone_no")}
               className="col-span-1 border-2"
             />
 
@@ -491,39 +519,53 @@ const FormFour = ({ register }: FormFourProps) => {
             <input
               type="text"
               title="reference_name_3"
+              {...register("other_information.references.2.name")}
               className="col-span-2 border-2"
             />
             <input
               type="text"
               title="reference_address_3"
+              {...register("other_information.references.2.address")}
               className="col-span-1 border-2"
             />
             <input
               type="text"
               title="reference_telephone_3"
+              {...register("other_information.references.2.telephone_no")}
               className="col-span-1 border-2"
             />
           </div>
 
           <div className="col-span-1">
-            <div className="mx-auto h-50 w-40 border-2 p-4">
-              <span className="block text-center text-[.6rem] tracking-tighter">
-                ID picture taken within the last 6 months 3.5 cm. X 4.5 cm
-                (passport size)
-              </span>
-              <span className="my-4 block text-center text-[.6rem] tracking-tighter">
-                With full and handwritten name tag and signature over printed
-                name
-              </span>
-              <span className="block text-center text-[.6rem] tracking-tighter">
-                Computer generated or photocopied picture is not acceptable
-              </span>
+            <div
+              className="mx-auto h-50 w-40 border-2"
+              onClick={handleFileClick}
+            >
+              {fileRef.current?.files?.[0] ? (
+                <img title="profile" src={imageUrl} className="h-full" />
+              ) : (
+                <div className="p-4">
+                  <span className="block text-center text-[.6rem] tracking-tighter">
+                    ID picture taken within the last 6 months 3.5 cm. X 4.5 cm
+                    (passport size)
+                  </span>
+                  <span className="my-4 block text-center text-[.6rem] tracking-tighter">
+                    With full and handwritten name tag and signature over
+                    printed name
+                  </span>
+                  <span className="block text-center text-[.6rem] tracking-tighter">
+                    Computer generated or photocopied picture is not acceptable
+                  </span>
+                </div>
+              )}
             </div>
             <span className="block text-center text-slate-400">PHOTO</span>
             <input
               type="file"
               accept="image/*"
               title="profile"
+              ref={fileRef}
+              onChange={handleFileChange}
               className="hidden"
             />
           </div>
@@ -625,6 +667,8 @@ const FormFour = ({ register }: FormFourProps) => {
             </div>
           </div>
         </div>
+
+        <input type="submit" />
       </form>
 
       <div className="relative flex h-full items-end justify-end p-4">
@@ -637,7 +681,10 @@ const FormFour = ({ register }: FormFourProps) => {
             <img src={arrow} alt="arrow-right" className="h-5 w-5" />
           </button>
 
-          <button className="rounded-full bg-yellow-500 px-7 py-4 text-white hover:bg-yellow-400">
+          <button
+            type="submit"
+            className="rounded-full bg-yellow-500 px-7 py-4 text-white hover:bg-yellow-400"
+          >
             Save
           </button>
         </div>
