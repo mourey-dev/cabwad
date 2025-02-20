@@ -649,6 +649,7 @@ const FormFour = ({ register }: FormFourProps) => {
             </div>
           </div>
         </div>
+        <button type="submit">SUBMIT</button>
       </form>
 
       <div className="relative flex h-full items-end justify-end p-4">

@@ -1,11 +1,21 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import profile from "../../assets/images/account-black.png";
 import arrow from "../../assets/images/right-arrow.png";
+import LoadingModal from "../../components/Loading/Loading";
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false); // Hide loading modal after 3s
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleLogout = () => {
     console.log("User logged out");
@@ -14,6 +24,11 @@ const Dashboard = () => {
 
   return (
     <div className="flex min-h-screen flex-col text-white">
+      {/* Show Loading Modal if isLoading is true */}
+      {isLoading && (
+        <LoadingModal duration={3000} onClose={() => setIsLoading(false)} />
+      )}
+
       {/* Header */}
       <header className="flex items-center justify-between bg-white p-4 text-black shadow-md">
         <div className="flex items-center">
