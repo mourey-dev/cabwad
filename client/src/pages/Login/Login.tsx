@@ -50,7 +50,7 @@ const LoginPage = () => {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full rounded-md border border-gray-300 p-2 text-white focus:outline-none font-inter"
+              className="font-inter w-full rounded-md border border-gray-300 p-2 text-white focus:outline-none"
             />
           </div>
 
@@ -62,7 +62,7 @@ const LoginPage = () => {
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full rounded-md border border-gray-300 p-2 pr-10 text-white focus:outline-none font-inter"
+                className="font-inter w-full rounded-md border border-gray-300 p-2 pr-10 text-white focus:outline-none"
               />
               <button
                 type="button"
