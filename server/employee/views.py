@@ -2,16 +2,31 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from .classes.personal_data_sheet import PersonalDataSheet
+from .utilities.update_dict_key import update_dict_key
+from .utilities.create_pds import create_pds
 
 
 class EmployeeView(APIView):
     def post(self, request):
         data = request.data
-        print(data)
-        # personal_data_sheet = PersonalDataSheet()
+        update_dict_key(data["learning_development"])
+        update_dict_key(data["civil_service_eligibility"])
+        update_dict_key(data["work_experience"])
+        update_dict_key(data["voluntary_work"])
+        update_dict_key(data["other_information"]["skills"])
 
-        # for key, value in data.items():
-        #     personal_data_sheet.add_data(key, value)
+        combined_data = {}
+        combined_data.update(data["personal_information"])
+        combined_data.update(data["family_background"])
+        combined_data.update(data["educational_background"])
+        combined_data.update(
+            {"civil_service_eligibility": data["civil_service_eligibility"]}
+        )
+        combined_data.update({"work_experience": data["work_experience"]})
+        combined_data.update({"voluntary_work": data["voluntary_work"]})
+        combined_data.update({"learning_development": data["learning_development"]})
+        combined_data.update(data["other_information"])
 
-        # return Response(personal_data_sheet.data, status=status.HTTP_201_CREATED)
+        create_pds(combined_data)
+
+        return Response("Hello", status=status.HTTP_201_CREATED)

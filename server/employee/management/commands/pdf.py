@@ -5,7 +5,7 @@ path = "c:/Projects/cabwad/server/static/pdfs/PDS_CS_Form_No_212_Revised2017.pdf
 
 
 class Command(BaseCommand):
-    def handle(self, *args, **kwargs):
+    def handle(self, data, *args, **kwargs):
         reader = PdfReader(path)
         fields = reader.get_fields()
 

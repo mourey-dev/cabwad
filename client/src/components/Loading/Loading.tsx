@@ -1,22 +1,7 @@
-import React, { useState, useEffect } from "react";
 import LoadingVideo from "../../assets/images/cabwad-loading.mp4";
 
-const LoadingModal: React.FC<{ duration: number; onClose: () => void }> = ({
-  duration,
-  onClose,
-}) => {
-  const [isVisible, setIsVisible] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-      onClose(); // Call the function to close the modal
-    }, duration);
-
-    return () => clearTimeout(timer);
-  }, [duration, onClose]);
-
-  if (!isVisible) return null;
+const LoadingModal = ({ loading }: { loading: boolean }) => {
+  if (!loading) return null;
 
   return (
     <div className="bg-background-blue fixed inset-0 z-[9999] flex items-center justify-center">

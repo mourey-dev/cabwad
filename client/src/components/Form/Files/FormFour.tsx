@@ -7,6 +7,10 @@ import {
   UseFormSetValue,
 } from "react-hook-form";
 import PDSForm from "../../../types/form";
+import usePost from "../../../hooks/usePost";
+
+// Components.
+import LoadingModal from "../../Loading/Loading";
 
 type FormFourProps = {
   register: UseFormRegister<PDSForm>;
@@ -17,6 +21,9 @@ type FormFourProps = {
 const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
   const fileRef = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
+  const { loading, error, errorMessage, response, handlePost } = usePost(
+    "/employee/create-pds/",
+  );
 
   const handleFileClick = () => {
     fileRef.current?.click(); // Triggers the hidden file input
@@ -31,10 +38,11 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
   };
 
   const submit = (data: PDSForm) => {
-    console.log(data);
+    handlePost(data);
   };
   return (
     <div>
+      <LoadingModal loading={loading} />
       <form
         className="mx-auto my-12 grid h-full w-[1001px] border-4 bg-white"
         onSubmit={handleSubmit(submit)}
