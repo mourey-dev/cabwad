@@ -22,55 +22,57 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-(--color-light-blue)">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-(--color-light-blue)">
       {/* Logo */}
-      <img src={logo} alt="Cabuyao Water District Logo" className="w-24 mb-4" />
+      <img src={logo} alt="Cabuyao Water District Logo" className="mb-4 w-24" />
 
       {/* Title */}
-      <h1 className="text-white text-3xl font-krona-one mb-6">
+      <h1 className="font-krona-one mb-6 text-3xl text-white">
         CABUYAO WATER DISTRICT
       </h1>
 
       {/* Login Card */}
-      <div className="bg-blue-900 p-6 rounded-2xl shadow-lg w-72">
-        <h2 className="text-white text-lg font-krona-one text-center mb-4">ADMIN</h2>
+      <div className="w-72 rounded-2xl bg-blue-900 p-6 shadow-lg">
+        <h2 className="font-krona-one mb-4 text-center text-lg text-white">
+          ADMIN
+        </h2>
 
         {/* Error Message */}
         {error && (
-          <p className="text-red-500 text-sm text-center mb-2">{error}</p>
+          <p className="mb-2 text-center text-sm text-red-500">{error}</p>
         )}
 
         {/* Username Input */}
         <form>
           <div className="mb-4">
-            <label className="text-white text-sm font-inter">Username:</label>
+            <label className="font-inter text-sm text-white">Username:</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full p-2 rounded-md border border-gray-300 focus:outline-none text-white"
+              className="w-full rounded-md border border-gray-300 p-2 text-white focus:outline-none font-inter"
             />
           </div>
 
           {/* Password Input */}
           <div className="mb-4">
-            <label className="text-white text-sm font-inter">Password:</label>
+            <label className="font-inter text-sm text-white">Password:</label>
             <div className="relative w-full">
               <input
                 type={showPassword ? "text" : "password"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full p-2 pr-10 rounded-md border border-gray-300 focus:outline-none text-white"
+                className="w-full rounded-md border border-gray-300 p-2 pr-10 text-white focus:outline-none font-inter"
               />
               <button
                 type="button"
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                className="absolute top-1/2 right-3 -translate-y-1/2 transform cursor-pointer"
                 onClick={() => setShowPassword(!showPassword)}
               >
                 <img
                   src={showPassword ? hide : view}
                   alt="Toggle Password"
-                  className="w-5 h-5"
+                  className="h-5 w-5"
                 />
               </button>
             </div>
@@ -80,16 +82,18 @@ const LoginPage = () => {
         {/* Login Button */}
         <button
           onClick={handleLogin}
-          className="w-full bg-white text-blue-900 text-sm font-krona-one py-2 rounded-full hover:bg-gray-200 transition duration-300 cursor-pointer"
+          className="font-krona-one w-full cursor-pointer rounded-full bg-white py-2 text-sm text-blue-900 transition duration-300 hover:bg-gray-200"
         >
           LOGIN
         </button>
       </div>
 
       {/* Footer */}
-      <footer className="absolute bottom-0 w-full text-center bg-(--color-yellow) text-black text-sm p-4 mt-6 font-inter">
+      <footer className="font-inter absolute bottom-0 mt-6 w-full bg-(--color-yellow) p-4 text-center text-sm text-black">
         COPYRIGHT © 2025 |{" "}
-        <span className="text-blue-700 font-inter font-bold">CABUYAO WATER DISTRICT</span>{" "}
+        <span className="font-inter font-bold text-blue-700">
+          CABUYAO WATER DISTRICT
+        </span>{" "}
         ALL RIGHTS RESERVED
       </footer>
     </div>
