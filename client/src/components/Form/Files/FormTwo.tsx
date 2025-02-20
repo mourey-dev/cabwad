@@ -1,7 +1,5 @@
 import arrow from "../../../assets/images/right-arrow.png";
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { UseFormRegister } from "react-hook-form";
 import PDSForm from "../../../types/form";
 
@@ -10,28 +8,10 @@ type FormTwoProps = {
 };
 
 const FormTwo = ({ register }: FormTwoProps) => {
-  const [focusedInput, setFocusedInput] = useState<string | null>(null);
-
-  const handleFocus = (index: string) => {
-    setFocusedInput(index);
-  };
-
-  const handleBlur = () => {
-    setFocusedInput(null);
-  };
-
-  const { handleSubmit } = useForm();
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
-
   return (
     <div>
       {/*Forms CSC Page 2*/}
-      <form
-        className="mx-auto my-12 w-[1001px] border-4 bg-white"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      <form className="mx-auto my-12 w-[1001px] border-4 bg-white">
         {/* Civil Service Eligibility Header */}
         <div className="border-2">
           <h2 className="bg-gray-600 p-1 text-xs font-bold text-white italic">
@@ -84,40 +64,38 @@ const FormTwo = ({ register }: FormTwoProps) => {
                   <td className="border px-2 py-1">
                     <input
                       type="text"
-                      {...register(`input1-${index}`)}
-                      className={`w-full outline-none ${focusedInput === `input1-${index}` ? "bg-yellow-200" : ""}`}
-                      onFocus={() => handleFocus(`input1-${index}`)}
-                      onBlur={handleBlur}
+                      {...register(`civil_service_eligibility.${index}.cse`)}
+                      className={`w-full outline-none`}
                     />
                   </td>
 
                   <td className="border px-2 py-1">
                     <input
                       type="text"
-                      {...register(`input2-${index}`)}
-                      className={`w-full outline-none ${focusedInput === `input2-${index}` ? "bg-yellow-200" : ""}`}
-                      onFocus={() => handleFocus(`input2-${index}`)}
-                      onBlur={handleBlur}
+                      {...register(
+                        `civil_service_eligibility.${index}.cse_rating`,
+                      )}
+                      className={`w-full outline-none`}
                     />
                   </td>
 
                   <td className="border px-2 py-1">
                     <input
                       type="text"
-                      {...register(`input3-${index}`)}
-                      className={`w-full outline-none ${focusedInput === `input3-${index}` ? "bg-yellow-200" : ""}`}
-                      onFocus={() => handleFocus(`input3-${index}`)}
-                      onBlur={handleBlur}
+                      {...register(
+                        `civil_service_eligibility.${index}.cse_exam_date`,
+                      )}
+                      className={`w-full outline-none`}
                     />
                   </td>
 
                   <td className="border px-2 py-1">
                     <input
                       type="text"
-                      {...register(`input4-${index}`)}
-                      className={`w-full outline-none ${focusedInput === `input4-${index}` ? "bg-yellow-200" : ""}`}
-                      onFocus={() => handleFocus(`input4-${index}`)}
-                      onBlur={handleBlur}
+                      {...register(
+                        `civil_service_eligibility.${index}.cse_exam_place`,
+                      )}
+                      className={`w-full outline-none`}
                     />
                   </td>
 
@@ -125,17 +103,17 @@ const FormTwo = ({ register }: FormTwoProps) => {
                   <td className="grid grid-cols-2 border px-2 py-1">
                     <input
                       type="text"
-                      {...register(`input5-${index}`)}
-                      className={`border-r text-center outline-none ${focusedInput === `input5-${index}` ? "bg-yellow-200" : ""}`}
-                      onFocus={() => handleFocus(`input5-${index}`)}
-                      onBlur={handleBlur}
+                      {...register(
+                        `civil_service_eligibility.${index}.cse_license_number`,
+                      )}
+                      className={`border-r text-center outline-none`}
                     />
                     <input
                       type="text"
-                      {...register(`input6-${index}`)}
-                      className={`text-center outline-none ${focusedInput === `input6-${index}` ? "bg-yellow-200" : ""}`}
-                      onFocus={() => handleFocus(`input6-${index}`)}
-                      onBlur={handleBlur}
+                      {...register(
+                        `civil_service_eligibility.${index}.cse_validity_date`,
+                      )}
+                      className={`text-center outline-none`}
                     />
                   </td>
                 </tr>
@@ -214,17 +192,13 @@ const FormTwo = ({ register }: FormTwoProps) => {
                   <td className="grid grid-cols-2 border px-2 py-1">
                     <input
                       type="text"
-                      {...register(`input7-${index}`)}
-                      className={`border-r text-center outline-none ${focusedInput === `input7-${index}` ? "bg-yellow-200" : ""}`}
-                      onFocus={() => handleFocus(`input7-${index}`)}
-                      onBlur={handleBlur}
+                      {...register(`work_experience.${index}.w_from`)}
+                      className={`border-r text-center outline-none`}
                     />
                     <input
                       type="text"
-                      {...register(`input8-${index}`)}
-                      className={`text-center outline-none ${focusedInput === `input8-${index}` ? "bg-yellow-200" : ""}`}
-                      onFocus={() => handleFocus(`input8-${index}`)}
-                      onBlur={handleBlur}
+                      {...register(`work_experience.${index}.w_to`)}
+                      className={`text-center outline-none`}
                     />
                   </td>
 
@@ -232,10 +206,8 @@ const FormTwo = ({ register }: FormTwoProps) => {
                   <td className="border px-2 py-1">
                     <input
                       type="text"
-                      {...register(`input9-${index}`)}
-                      className={`w-full outline-none ${focusedInput === `input9-${index}` ? "bg-yellow-200" : ""}`}
-                      onFocus={() => handleFocus(`input9-${index}`)}
-                      onBlur={handleBlur}
+                      {...register(`work_experience.${index}.w_position`)}
+                      className={`w-full outline-none`}
                     />
                   </td>
 
@@ -243,10 +215,8 @@ const FormTwo = ({ register }: FormTwoProps) => {
                   <td className="border px-2 py-1">
                     <input
                       type="text"
-                      {...register(`input10-${index}`)}
-                      className={`w-full outline-none ${focusedInput === `input10-${index}` ? "bg-yellow-200" : ""}`}
-                      onFocus={() => handleFocus(`input10-${index}`)}
-                      onBlur={handleBlur}
+                      {...register(`work_experience.${index}.w_department`)}
+                      className={`w-full outline-none`}
                     />
                   </td>
 
@@ -254,10 +224,8 @@ const FormTwo = ({ register }: FormTwoProps) => {
                   <td className="border px-2 py-1">
                     <input
                       type="text"
-                      {...register(`input11-${index}`)}
-                      className={`w-full text-center outline-none ${focusedInput === `input11-${index}` ? "bg-yellow-200" : ""}`}
-                      onFocus={() => handleFocus(`input11-${index}`)}
-                      onBlur={handleBlur}
+                      {...register(`work_experience.${index}.w_salary`)}
+                      className={`w-full text-center outline-none`}
                     />
                   </td>
 
@@ -265,10 +233,8 @@ const FormTwo = ({ register }: FormTwoProps) => {
                   <td className="border px-2 py-1">
                     <input
                       type="text"
-                      {...register(`input12-${index}`)}
-                      className={`w-full text-center outline-none ${focusedInput === `input12-${index}` ? "bg-yellow-200" : ""}`}
-                      onFocus={() => handleFocus(`input12-${index}`)}
-                      onBlur={handleBlur}
+                      {...register(`work_experience.${index}.w_pay_grade`)}
+                      className={`w-full text-center outline-none`}
                     />
                   </td>
 
@@ -276,10 +242,8 @@ const FormTwo = ({ register }: FormTwoProps) => {
                   <td className="border px-2 py-1">
                     <input
                       type="text"
-                      {...register(`input13-${index}`)}
-                      className={`w-full text-center outline-none ${focusedInput === `input13-${index}` ? "bg-yellow-200" : ""}`}
-                      onFocus={() => handleFocus(`input13-${index}`)}
-                      onBlur={handleBlur}
+                      {...register(`work_experience.${index}.w_soa`)}
+                      className={`w-full text-center outline-none`}
                     />
                   </td>
 
@@ -287,10 +251,8 @@ const FormTwo = ({ register }: FormTwoProps) => {
                   <td className="border px-2 py-1 text-center">
                     <input
                       type="text"
-                      {...register(`input14-${index}`)}
-                      className={`w-full text-center outline-none ${focusedInput === `input14-${index}` ? "bg-yellow-200" : ""}`}
-                      onFocus={() => handleFocus(`input14-${index}`)}
-                      onBlur={handleBlur}
+                      {...register(`work_experience.${index}.w_gov_service`)}
+                      className={`w-full text-center outline-none`}
                     />
                   </td>
                 </tr>
@@ -319,7 +281,12 @@ const FormTwo = ({ register }: FormTwoProps) => {
                   DATE
                 </div>
               </td>
-              <td className="w-1/3 border"></td>
+              <input
+                type="text"
+                title="w_date"
+                {...register(`other_information.w_date`)}
+                className="w-full border text-[1.1rem]"
+              />
             </tr>
           </tbody>
         </table>
