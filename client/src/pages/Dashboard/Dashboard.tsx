@@ -26,7 +26,11 @@ const Dashboard: React.FC = () => {
     <div className="flex min-h-screen flex-col text-white">
       {/* Show Loading Modal if isLoading is true */}
       {isLoading && (
-        <LoadingModal duration={3000} onClose={() => setIsLoading(false)} />
+        <LoadingModal
+          loading={isLoading}
+          duration={3000}
+          onClose={() => setIsLoading(false)}
+        />
       )}
 
       {/* Header */}
