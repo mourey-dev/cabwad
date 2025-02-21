@@ -1,5 +1,5 @@
 type PersonalInformation = {
-  p_username: string;
+  p_surname: string;
   p_first_name: string;
   p_middle_name: string;
   p_name_extension: string;

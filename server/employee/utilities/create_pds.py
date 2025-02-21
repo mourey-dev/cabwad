@@ -8,7 +8,7 @@ output_path = (
 
 
 def create_pds(data):
-    data = data  # Convert items back to dictionary
+    data = dict(data)  # Ensure data is a dictionary
     reader = PdfReader(path)
     writer = PdfWriter()
 
@@ -24,16 +24,17 @@ def create_pds(data):
 
     fields = reader.get_fields()
 
-    for field_name, field in fields.items():
-        field_type = field.get("/FT")
-        if field_type == "/Btn":  # Checkbox field
-            value = data.get(field_name, "Off")
-            writer.update_page_form_field_values(writer.pages[0], {field_name: value})
-            print(f"Checkbox Field: {field_name}, Value: {value}")
-        else:
-            value = data.get(field_name)
-            writer.update_page_form_field_values(writer.pages[0], {field_name: value})
-            print(f"Field: {field_name}, Value: {value}")
+    for page_num, page in enumerate(writer.pages):
+        for field_name, field in fields.items():
+            field_type = field.get("/FT")
+            if field_type == "/Btn":  # Checkbox field
+                value = data.get(field_name, "")
+                writer.update_page_form_field_values(page, {field_name: f"/{value}"})
+                # print(f"Checkbox Field: {field_name}, Value: {value}")
+            else:
+                value = data.get(field_name, "")
+                writer.update_page_form_field_values(page, {field_name: value})
+                # print(f"Field: {field_name}, Value: {value}")
 
     # Save the modified PDF to a new file
     with open(output_path, "wb") as output_pdf:

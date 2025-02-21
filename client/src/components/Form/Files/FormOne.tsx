@@ -81,7 +81,7 @@ const FormOne = ({ register }: FormOneProps) => {
             type="text"
             id="personal_surname"
             className="col-span-4 border-2 p-2"
-            {...register("personal_information.p_username")}
+            {...register("personal_information.p_surname")}
           />
           <label
             htmlFor="personal_first_name"
