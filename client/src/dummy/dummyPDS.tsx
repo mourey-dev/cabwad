@@ -1,4 +1,4 @@
-import PDSForm from "./types/form";
+import PDSForm from "../types/form";
 
 const dummyPDS: PDSForm = {
   personal_information: {
