@@ -9,6 +9,7 @@ const LoadingModal = ({ loading }: { loading: boolean }) => {
         <video
           autoPlay
           muted
+          loop
           className="h-auto w-[100%] max-w-[800px] object-contain"
         >
           <source src={LoadingVideo} type="video/mp4" />

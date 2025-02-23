@@ -11,13 +11,14 @@ const usePost = (path: string) => {
     setLoading(true);
     setError(false);
     setErrorMessage("");
+
     try {
-      console.log(data);
       const result = await axiosInstance.post(path, data);
       setResponse(result.data);
     } catch (error: any) {
       setError(true);
-      setErrorMessage(error.message || "An error occurred");
+      console.log(error);
+      setErrorMessage(error.response.data.detail || "An error occurred");
     } finally {
       setLoading(false);
     }

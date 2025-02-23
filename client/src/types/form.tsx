@@ -231,6 +231,8 @@ export type PDSForm = {
   voluntary_work: VoluntaryWork;
   learning_development: LearningDevelopment;
   other_information: OtherInformation;
+  position: string;
+  department: string;
 };
 
 export default PDSForm;

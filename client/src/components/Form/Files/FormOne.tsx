@@ -2,12 +2,15 @@ import arrow from "../../../assets/images/right-arrow.png";
 
 import { UseFormRegister } from "react-hook-form";
 import PDSForm from "../../../types/form";
+import { useNavigate } from "react-router-dom";
 
 type FormOneProps = {
   register: UseFormRegister<PDSForm>;
 };
 
 const FormOne = ({ register }: FormOneProps) => {
+  const navigate = useNavigate();
+
   return (
     <div>
       <form className="mx-auto my-12 grid h-full w-[1001px] border-4 bg-white">
@@ -1450,18 +1453,21 @@ const FormOne = ({ register }: FormOneProps) => {
         </div>
       </form>
 
-      <div className="relative flex h-full items-end justify-end p-4">
-        <div className="flex items-center gap-4">
+      <div className="relative bottom-15 mx-auto flex h-full w-[1001px] items-end justify-end p-4">
+        <div className="relative flex flex-col items-end gap-4">
           <p className="text-sm text-white italic">
             CS FORM 212 (Revised 2017), Page 1 of 4
           </p>
-          <button
-            className="flex cursor-pointer items-center gap-2 rounded-full bg-green-500 p-4 hover:bg-green-300"
-            // onClick={() => navigate("/form/2")}
-          >
-            <span className="font-semibold text-white">Next</span>
-            <img src={arrow} alt="arrow-right" className="h-5 w-5" />
-          </button>
+          <div>
+            <button
+              type="button"
+              className="absolute top-10 right-[-20px] flex cursor-pointer items-center gap-2 rounded-full bg-green-500 p-4 hover:bg-green-300"
+              onClick={() => navigate("/form/2")}
+            >
+              <span className="font-semibold text-white">Next</span>
+              <img src={arrow} alt="arrow-right" className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       </div>
     </div>

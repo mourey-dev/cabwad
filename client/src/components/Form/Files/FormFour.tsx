@@ -1,5 +1,3 @@
-import arrow from "../../../assets/images/right-arrow.png";
-
 import { useRef, useState } from "react";
 import {
   UseFormHandleSubmit,
@@ -10,10 +8,11 @@ import PDSForm from "../../../types/form";
 import usePost from "../../../hooks/usePost";
 
 // Dummy Data.
-// import dummyPDS from "../../../dummy/dummyPDS";
+import dummyPDS from "../../../dummy/dummyPDS";
 
 // Components.
 import LoadingModal from "../../Loading/Loading";
+import { PDSPostModal } from "../../Modal";
 
 type FormFourProps = {
   register: UseFormRegister<PDSForm>;
@@ -23,6 +22,7 @@ type FormFourProps = {
 
 const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
   const fileRef = useRef<HTMLInputElement>(null);
+  const submitRef = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
   const { loading, error, errorMessage, response, handlePost } = usePost(
     "/employee/create-pds/",
@@ -41,10 +41,12 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
   };
 
   const submit = (data: PDSForm) => {
-    handlePost(data);
+    handlePost(dummyPDS);
   };
+
   return (
     <div>
+      {response && <PDSPostModal url={response.pds_link} />}
       <LoadingModal loading={loading} />
       <form
         className="mx-auto my-12 grid h-full w-[1001px] border-4 bg-white"
@@ -678,22 +680,19 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
           </div>
         </div>
 
-        <input type="submit" />
+        <input type="submit" ref={submitRef} hidden />
       </form>
 
-      <div className="relative flex h-full items-end justify-end p-4">
-        <div className="flex items-center gap-4">
+      <div className="relative bottom-15 mx-auto flex h-full w-[1001px] items-end justify-end p-4">
+        <div className="relative flex flex-col items-end gap-4">
           <p className="text-sm text-white italic">
             CS FORM 212 (Revised 2017), Page 4 of 4
           </p>
-          <button className="flex cursor-pointer items-center gap-2 rounded-full bg-gray-500 p-4">
-            <span className="font-semibold text-white">Next</span>
-            <img src={arrow} alt="arrow-right" className="h-5 w-5" />
-          </button>
 
           <button
-            type="submit"
-            className="rounded-full bg-yellow-500 px-7 py-4 text-white hover:bg-yellow-400"
+            type="button"
+            className="absolute top-10 right-[-20px] rounded-full bg-yellow-500 px-7 py-4 text-white hover:bg-yellow-400"
+            onClick={() => submitRef.current?.click()}
           >
             Save
           </button>

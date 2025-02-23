@@ -1,13 +1,20 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from .utilities.update_dict_key import update_dict_key
 from .utilities.create_pds import create_pds
 from .utilities.destructure_dict import destructure_dict
 
+from .serializers import EmployeeSerializer
+
 
 class EmployeeView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
     def post(self, request):
         data = request.data
         update_dict_key(data["learning_development"])
@@ -39,6 +46,25 @@ class EmployeeView(APIView):
         combined_data.update(data["learning_development"])
         combined_data.update(data["other_information"])
 
-        create_pds(combined_data)
+        pds = create_pds(combined_data)
+        file = pds.get("file")
 
-        return Response("Hello", status=status.HTTP_201_CREATED)
+        employee = {
+            "first_name": combined_data["p_first_name"],
+            "surname": combined_data["p_surname"],
+            "position": data["position"],
+            "department": data["department"],
+            "folder_id": pds["folder_id"],
+            "files": [{"name": file["name"], "file_id": file["id"]}],
+        }
+
+        serializer = EmployeeSerializer(data=employee)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "pds_link": f"https://drive.google.com/file/d/{file.get('id')}/view?usp=sharing"
+                },
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

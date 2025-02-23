@@ -257,6 +257,8 @@ const dummyPDS: PDSForm = {
     of_issuance: "2023-05-10",
     profile: new File([], "profile.jpg"),
   },
+  position: "PERMANENT",
+  department: "OFFICE OF THE GENERAL",
 };
 
 export default dummyPDS;

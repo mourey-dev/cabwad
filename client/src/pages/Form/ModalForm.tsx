@@ -1,52 +1,61 @@
-interface ModalFormProps {
-  showModal: boolean;
-  setShowModal: (show: boolean) => void;
-  employmentType: string;
-  setEmploymentType: (type: string) => void;
-  department: string;
-  setDepartment: (dept: string) => void;
-  employmentTypes: string[];
-}
+import PDSForm from "../../types/form";
+import { UseFormRegister } from "react-hook-form";
 
-const ModalForm: React.FC<ModalFormProps> = ({
-  showModal,
-  setShowModal,
-  employmentType,
-  setEmploymentType,
-  department,
-  setDepartment,
-  employmentTypes,
-}) => {
+import { useState } from "react";
+
+type ModalFormProps = {
+  register: UseFormRegister<PDSForm>;
+};
+
+const ModalForm = ({ register }: ModalFormProps) => {
+  const [showModal, setShowModal] = useState(true);
+
   return (
     showModal && (
-      <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center">
-        <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-          <h2 className="text-xl font-bold mb-4">
+      <div className="bg-opacity-50 fixed inset-0 flex items-center justify-center bg-gray-900">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            setShowModal(false);
+          }}
+          className="w-96 rounded-lg bg-white p-6 shadow-lg"
+        >
+          <h2 className="mb-4 text-xl font-bold">
             Employment Type and Department
           </h2>
           <div className="mb-4">
-            <label className="block font-semibold">Employment Type:</label>
+            <label htmlFor="employee_type" className="block font-semibold">
+              Employment Type:
+            </label>
             <select
-              className="w-full border p-2 mt-1"
-              value={employmentType}
-              onChange={(e) => setEmploymentType(e.target.value)}
+              id="employee_type"
+              defaultValue=""
+              {...register("position")}
+              required
+              className="mt-1 w-full border p-2"
             >
-              <option value="">Select an employment type</option>
-              {employmentTypes.map((type, index) => (
-                <option key={index} value={type}>
-                  {type}
-                </option>
-              ))}
+              <option value="" disabled>
+                Select an employment type
+              </option>
+              <option value="PERMANENT">Permanent</option>
+              <option value="CASUAL">Casual</option>
+              <option value="JOB ORDER">Job Order</option>
             </select>
           </div>
           <div className="mb-4">
-            <label className="block font-semibold">Department:</label>
+            <label htmlFor="department" className="block font-semibold">
+              Department:
+            </label>
             <select
-              className="w-full border p-2 mt-1"
-              value={department}
-              onChange={(e) => setDepartment(e.target.value)}
+              id="department"
+              defaultValue=""
+              {...register("department")}
+              required
+              className="mt-1 w-full border p-2"
             >
-              <option value="">Select a department</option>
+              <option value="" disabled>
+                Select a department
+              </option>
               <option>
                 Engineering, Construction, Maintenance and Production Division
               </option>
@@ -57,14 +66,13 @@ const ModalForm: React.FC<ModalFormProps> = ({
           </div>
           <div className="flex justify-center">
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg"
-              onClick={() => setShowModal(false)}
-              disabled={!employmentType || !department}
+              type="submit"
+              className="rounded-lg bg-blue-500 px-4 py-2 text-white"
             >
               Proceed
             </button>
           </div>
-        </div>
+        </form>
       </div>
     )
   );

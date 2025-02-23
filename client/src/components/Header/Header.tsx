@@ -1,19 +1,36 @@
 import profile from "../../assets/images/account-black.png";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
+import usePost from "../../hooks/usePost";
+
+// Component
+import Loading from "../Loading";
 
 const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
+  const { loading, response, handlePost } = usePost(
+    "/account/api/token/black/",
+  );
 
-  const handleLogout = () => {
-    console.log("User logged out");
-    navigate("/");
+  const handleLogout = async () => {
+    const data = { refresh: localStorage.getItem("refresh") };
+    handlePost(data);
   };
+
+  useEffect(() => {
+    if (response) {
+      localStorage.removeItem("refresh");
+      localStorage.removeItem("access");
+      navigate("/");
+    }
+  }, [response]);
 
   return (
     <header className="flex items-center justify-between bg-white p-4 text-black shadow-md">
+      <Loading loading={loading} />
       <div className="flex items-center">
         <img
           src="/logo.png"
@@ -28,8 +45,9 @@ const Header = () => {
         </a>
         <div className="relative">
           <button
-            className="cursor-pointer"
+            type="button"
             onClick={() => setShowDropdown(!showDropdown)}
+            className="cursor-pointer"
           >
             <img src={profile} alt="profile-logo" className="h-6 w-6" />
           </button>
@@ -38,6 +56,7 @@ const Header = () => {
           {showDropdown && (
             <div className="absolute right-0 mt-2 w-36 rounded-md border bg-white shadow-lg">
               <button
+                type="button"
                 onClick={handleLogout}
                 className="block w-full rounded-md px-4 py-1 text-left text-gray-700 hover:bg-gray-400"
               >

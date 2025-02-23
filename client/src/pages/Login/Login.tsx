@@ -1,28 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 import logo from "../../assets/images/logo-white.png";
 import hide from "../../assets/images/hide.png";
 import view from "../../assets/images/view.png";
+
+import usePost from "../../hooks/usePost";
+
+// Component
+import Loading from "../../components/Loading";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState("");
+  const { loading, error, errorMessage, response, handlePost } = usePost(
+    "/account/api/token/",
+  );
 
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    if (username === "admin123" && password === "admin") {
-      setError("");
-      navigate("/dashboard");
-    } else {
-      setError("Invalid username or password");
-    }
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handlePost({ username, password });
   };
+
+  useEffect(() => {
+    if (response) {
+      localStorage.setItem("access", response.access);
+      localStorage.setItem("refresh", response.refresh);
+      navigate("/dashboard");
+    }
+  }, [response, navigate]);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-(--color-light-blue)">
+      {loading && <Loading loading={loading} />}
       {/* Logo */}
       <img src={logo} alt="Cabuyao Water District Logo" className="mb-4 w-24" />
 
@@ -39,29 +52,39 @@ const LoginPage = () => {
 
         {/* Error Message */}
         {error && (
-          <p className="mb-2 text-center text-sm text-red-500">{error}</p>
+          <p className="mb-2 text-center text-sm text-red-500">
+            {errorMessage}
+          </p>
         )}
 
         {/* Username Input */}
-        <form>
+        <form onSubmit={handleLogin}>
           <div className="mb-4">
-            <label className="font-inter text-sm text-white">Username:</label>
+            <label htmlFor="username" className="font-inter text-sm text-white">
+              Username:
+            </label>
             <input
               type="text"
               value={username}
+              id="username"
               onChange={(e) => setUsername(e.target.value)}
+              required
               className="font-inter w-full rounded-md border border-gray-300 p-2 text-white focus:outline-none"
             />
           </div>
 
           {/* Password Input */}
           <div className="mb-4">
-            <label className="font-inter text-sm text-white">Password:</label>
+            <label htmlFor="password" className="font-inter text-sm text-white">
+              Password:
+            </label>
             <div className="relative w-full">
               <input
                 type={showPassword ? "text" : "password"}
                 value={password}
+                id="password"
                 onChange={(e) => setPassword(e.target.value)}
+                required
                 className="font-inter w-full rounded-md border border-gray-300 p-2 pr-10 text-white focus:outline-none"
               />
               <button
@@ -77,15 +100,14 @@ const LoginPage = () => {
               </button>
             </div>
           </div>
-        </form>
 
-        {/* Login Button */}
-        <button
-          onClick={handleLogin}
-          className="font-krona-one w-full cursor-pointer rounded-full bg-white py-2 text-sm text-blue-900 transition duration-300 hover:bg-gray-200"
-        >
-          LOGIN
-        </button>
+          <button
+            type="submit"
+            className="font-krona-one w-full cursor-pointer rounded-full bg-white py-2 text-sm text-blue-900 transition duration-300 hover:bg-gray-200"
+          >
+            LOGIN
+          </button>
+        </form>
       </div>
 
       {/* Footer */}
