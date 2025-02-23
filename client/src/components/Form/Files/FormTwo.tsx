@@ -68,7 +68,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                     <input
                       type="text"
                       {...register(`civil_service_eligibility.${index}.cse`)}
-                      className={`w-full outline-none`}
+                      className={`w-full text-center outline-none`}
                     />
                   </td>
 
@@ -78,7 +78,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                       {...register(
                         `civil_service_eligibility.${index}.cse_rating`,
                       )}
-                      className={`w-full outline-none`}
+                      className={`w-full text-center outline-none`}
                     />
                   </td>
 
@@ -88,7 +88,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                       {...register(
                         `civil_service_eligibility.${index}.cse_exam_date`,
                       )}
-                      className={`w-full outline-none`}
+                      className={`w-full text-center outline-none`}
                     />
                   </td>
 
@@ -98,7 +98,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                       {...register(
                         `civil_service_eligibility.${index}.cse_exam_place`,
                       )}
-                      className={`w-full outline-none`}
+                      className={`w-full text-center outline-none`}
                     />
                   </td>
 
@@ -210,7 +210,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                     <input
                       type="text"
                       {...register(`work_experience.${index}.w_position`)}
-                      className={`w-full outline-none`}
+                      className={`w-full text-center outline-none`}
                     />
                   </td>
 
@@ -219,7 +219,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                     <input
                       type="text"
                       {...register(`work_experience.${index}.w_department`)}
-                      className={`w-full outline-none`}
+                      className={`w-full text-center outline-none`}
                     />
                   </td>
 

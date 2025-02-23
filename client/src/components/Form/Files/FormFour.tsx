@@ -71,6 +71,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_third_degree_yes"
                 {...register("other_information.of_third_degree_yes")}
+                value={"of_third_degree_yes"}
               />
               <label htmlFor="of_third-degree_yes">YES</label>
             </div>
@@ -79,6 +80,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_third_degree_no"
                 {...register("other_information.of_third_degree_no")}
+                value={"of_third_degree_no"}
               />
               <label htmlFor="of_third_degree_no">NO</label>
             </div>
@@ -94,8 +96,8 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="checkbox"
                 title="of_fourth_degree_yes"
-                value="yes"
                 {...register("other_information.of_fourth_degree_yes")}
+                value={"of_fourth_degree_yes"}
               />
               <label htmlFor="of_fourth-degree_yes">YES</label>
             </div>
@@ -103,8 +105,8 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="checkbox"
                 title="of_fourth_degree_no"
-                value="no"
                 {...register("other_information.of_fourth_degree_no")}
+                value={"of_fourth_degree_no"}
               />
               <label htmlFor="of_third_degree_no">NO</label>
             </div>
@@ -114,7 +116,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
             <input
               type="text"
               id="of_if_yes"
-              className="w-full border-b-2"
+              className="w-full border-b-2 text-center"
               {...register("other_information.of_affinity_details")}
             />
           </div>
@@ -130,6 +132,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_found_guilty_yes"
                 {...register("other_information.of_guilty_yes")}
+                value={"of_guilty_yes"}
               />
               <label htmlFor="of_third-degree_yes">YES</label>
             </div>
@@ -138,6 +141,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_found_guilty_no"
                 {...register("other_information.of_guilty_no")}
+                value={"of_guilty_no"}
               />
               <label htmlFor="of_third_degree_no">NO</label>
             </div>
@@ -147,7 +151,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
             <input
               type="text"
               id="of_if_yes"
-              className="w-full border-b-2"
+              className="w-full border-b-2 text-center"
               {...register("other_information.of_guilty_details")}
             />
           </div>
@@ -162,6 +166,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_criminally_charged_yes"
                 {...register("other_information.of_criminal_yes")}
+                value={"of_criminal_yes"}
               />
               <label htmlFor="of_third-degree_yes">YES</label>
             </div>
@@ -170,6 +175,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_criminally_charged_no"
                 {...register("other_information.of_criminal_no")}
+                value={"of_criminal_no"}
               />
               <label htmlFor="of_criminally_charged_no">NO</label>
             </div>
@@ -179,7 +185,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="text"
                 id="of_charged_before_date_filled"
-                className="flex-1 border-b-2"
+                className="flex-1 border-b-2 text-center"
                 {...register("other_information.of_criminal_date_filled")}
               />
             </div>
@@ -190,7 +196,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="text"
                 id="of_charged_before_status"
-                className="flex-1 border-b-2"
+                className="flex-1 border-b-2 text-center"
                 {...register("other_information.of_criminal_status")}
               />
             </div>
@@ -207,6 +213,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_convicted_yes"
                 {...register("other_information.of_convicted_yes")}
+                value={"of_convicted_yes"}
               />
               <label htmlFor="of_convicted_yes">YES</label>
             </div>
@@ -215,6 +222,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_convicted_no"
                 {...register("other_information.of_convicted_no")}
+                value={"of_convicted_no"}
               />
               <label htmlFor="of_convicted_no">NO</label>
             </div>
@@ -224,7 +232,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
             <input
               type="text"
               id="of_if_convicted_yes"
-              className="w-full border-b-2"
+              className="w-full border-b-2 text-center"
               {...register("other_information.of_convicted_details")}
             />
           </div>
@@ -242,6 +250,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_dismissal"
                 {...register("other_information.of_resignation_yes")}
+                value={"of_resignation_yes"}
               />
               <label htmlFor="of_dismissal_yes">YES</label>
             </div>
@@ -250,6 +259,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_dismissal_no"
                 {...register("other_information.of_resignation_no")}
+                value={"of_resignation_no"}
               />
               <label htmlFor="of_dismissal_no">NO</label>
             </div>
@@ -259,7 +269,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
             <input
               type="text"
               id="of_if_dismissal_yes"
-              className="w-full border-b-2"
+              className="w-full border-b-2 text-center"
               {...register("other_information.of_resignation_details")}
             />
           </div>
@@ -275,6 +285,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_local_candidate_yes"
                 {...register("other_information.of_candidate_yes")}
+                value={"of_candidate_yes"}
               />
               <label htmlFor="of_local_candidate_yes">YES</label>
             </div>
@@ -283,6 +294,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_local_candidate_no"
                 {...register("other_information.of_candidate_no")}
+                value={"of_candidate_no"}
               />
               <label htmlFor="of_local_candidate_no">NO</label>
             </div>
@@ -292,7 +304,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               </label>
               <input
                 type="text"
-                id="of_if_local_candidate_yes"
+                id="of_if_local_candidate_yes text-center"
                 className="flex-1 border-b-2"
                 {...register("other_information.of_candidate_details")}
               />
@@ -310,6 +322,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_government_resign_yes"
                 {...register("other_information.of_government_yes")}
+                value={"of_government_yes"}
               />
               <label htmlFor="of_government_resign_yes">YES</label>
             </div>
@@ -318,6 +331,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_government_resign_no"
                 {...register("other_information.of_government_no")}
+                value={"of_government_no"}
               />
               <label htmlFor="of_government_resign_no">NO</label>
             </div>
@@ -328,7 +342,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="text"
                 id="of_if_government_resign_yes"
-                className="flex-1 border-b-2"
+                className="flex-1 border-b-2 text-center"
                 {...register("other_information.of_government_details")}
               />
             </div>
@@ -345,6 +359,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_acquired_immigrant_yes"
                 {...register("other_information.of_immigrant_yes")}
+                value={"of_immigrant_yes"}
               />
               <label htmlFor="of_acquired_immigrant_yes">YES</label>
             </div>
@@ -353,6 +368,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_acquired_immigrant_no"
                 {...register("other_information.of_immigrant_no")}
+                value={"of_immigrant_no"}
               />
               <label htmlFor="of_acquired_immigrant_no">NO</label>
             </div>
@@ -362,7 +378,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
             <input
               type="text"
               id="of_if_acquired_immigrant_yes"
-              className="w-full border-b-2"
+              className="w-full border-b-2 text-center"
               {...register("other_information.of_immigrant_details")}
             />
           </div>
@@ -384,6 +400,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_indigenous_yes"
                 {...register("other_information.of_indigenous_yes")}
+                value={"of_indigenous_yes"}
               />
               <label htmlFor="of_indigenous_yes">YES</label>
             </div>
@@ -392,6 +409,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_indigenous_no"
                 {...register("other_information.of_indigenous_no")}
+                value={"of_indigenous_no"}
               />
               <label htmlFor="of_indigenous_no">NO</label>
             </div>
@@ -402,7 +420,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="text"
                 id="of_if_indigenous_yes"
-                className="flex-1 border-b-2"
+                className="flex-1 border-b-2 text-center"
                 {...register("other_information.of_indigenous_details")}
               />
             </div>
@@ -417,6 +435,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_disability_yes"
                 {...register("other_information.of_disability_yes")}
+                value={"of_disability_yes"}
               />
               <label htmlFor="of_disability_yes">YES</label>
             </div>
@@ -425,6 +444,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_disability_no"
                 {...register("other_information.of_disability_no")}
+                value={"of_disability_no"}
               />
               <label htmlFor="of_disability_no">NO</label>
             </div>
@@ -435,7 +455,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="text"
                 id="of_if_disability_yes"
-                className="flex-1 border-b-2"
+                className="flex-1 border-b-2 text-center"
                 {...register("other_information.of_disability_details")}
               />
             </div>
@@ -450,6 +470,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_solo_parent_yes"
                 {...register("other_information.of_solo_parent_yes")}
+                value={"of_solo_parent_yes"}
               />
               <label htmlFor="of_solo_parent_yes">YES</label>
             </div>
@@ -458,6 +479,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 type="checkbox"
                 title="of_solo_parent_no"
                 {...register("other_information.of_solo_parent_no")}
+                value={"of_solo_parent_no"}
               />
               <label htmlFor="of_solo_parent_no">NO</label>
             </div>
@@ -468,7 +490,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="text"
                 id="of_if_solo_parent_yes"
-                className="flex-1 border-b-2"
+                className="flex-1 border-b-2 text-center"
                 {...register("other_information.of_solo_parent_details")}
               />
             </div>
@@ -492,39 +514,39 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               type="text"
               title="reference_name_1"
               {...register(`other_information.of_reference_name_1`)}
-              className="col-span-2 border-2"
+              className="col-span-2 border-2 text-center"
             />
             <input
               type="text"
               title="reference_address_1"
               {...register(`other_information.of_reference_address_1`)}
-              className="col-span-1 border-2"
+              className="col-span-1 border-2 text-center"
             />
             <input
               type="text"
               title="reference_telephone_1"
               {...register(`other_information.of_reference_telephone_1`)}
-              className="col-span-1 border-2"
+              className="col-span-1 border-2 text-center"
             />
 
             {/* SECOND REFERENCE */}
             <input
               type="text"
               title="reference_name_2"
-              className="col-span-2 border-2"
+              className="col-span-2 border-2 text-center"
               {...register("other_information.of_reference_name_2")}
             />
             <input
               type="text"
               title="reference_address_2"
               {...register("other_information.of_reference_address_2")}
-              className="col-span-1 border-2"
+              className="col-span-1 border-2 text-center"
             />
             <input
               type="text"
               title="reference_telephone_2"
               {...register("other_information.of_reference_telephone_2")}
-              className="col-span-1 border-2"
+              className="col-span-1 border-2 text-center"
             />
 
             {/* THIRD REFERENCE */}
@@ -532,19 +554,19 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               type="text"
               title="reference_name_3"
               {...register("other_information.of_reference_name_3")}
-              className="col-span-2 border-2"
+              className="col-span-2 border-2 text-center"
             />
             <input
               type="text"
               title="reference_address_3"
               {...register("other_information.of_reference_address_3")}
-              className="col-span-1 border-2"
+              className="col-span-1 border-2 text-center"
             />
             <input
               type="text"
               title="reference_telephone_3"
               {...register("other_information.of_reference_telephone_3")}
-              className="col-span-1 border-2"
+              className="col-span-1 border-2 text-center"
             />
           </div>
 
@@ -610,7 +632,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 <input
                   type="text"
                   id="gov_issued_id"
-                  className="flex-1 text-[.7rem]"
+                  className="flex-1 text-center text-[.7rem]"
                   {...register("other_information.of_government_id")}
                 />
               </div>
@@ -623,7 +645,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 <input
                   type="text"
                   id="id_no"
-                  className="flex-1 text-[.7rem]"
+                  className="flex-1 text-center text-[.7rem]"
                   {...register("other_information.of_id_no")}
                 />
               </div>
@@ -636,7 +658,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 <input
                   type="text"
                   id="date_issuance"
-                  className="flex-1 text-[.7rem]"
+                  className="flex-1 text-center text-[.7rem]"
                   {...register("other_information.of_issuance")}
                 />
               </div>
@@ -664,7 +686,11 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
           <div className="col-span-5 border-2 p-4">
             <div>
               <span>SUBSCRIBED AND SWORN to before me this </span>
-              <input type="text" title="sworn" className="border-b-2" />
+              <input
+                type="text"
+                title="sworn"
+                className="border-b-2 text-center"
+              />
               <span>
                 , affiant exhibiting his/her validly issued government ID as
                 indicated above.

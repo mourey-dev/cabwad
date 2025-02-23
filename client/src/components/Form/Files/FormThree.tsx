@@ -53,7 +53,7 @@ const FormThree = ({ register }: FormThreeProps) => {
                 <td className="border px-2 py-1">
                   <input
                     type="text"
-                    className="w-full outline-none"
+                    className="w-full text-center outline-none"
                     {...register(`voluntary_work.${index}.vw_organization`)}
                   />
                 </td>
@@ -79,7 +79,7 @@ const FormThree = ({ register }: FormThreeProps) => {
                 <td className="border px-2 py-1">
                   <input
                     type="text"
-                    className="w-full outline-none"
+                    className="w-full text-center outline-none"
                     {...register(`voluntary_work.${index}.vw_position`)}
                   />
                 </td>
@@ -142,7 +142,7 @@ const FormThree = ({ register }: FormThreeProps) => {
                 <td className="border px-2 py-1">
                   <input
                     type="text"
-                    className="w-full outline-none"
+                    className="w-full text-center outline-none"
                     {...register(`learning_development.${index}.ld_learning`)}
                   />
                 </td>
@@ -168,14 +168,14 @@ const FormThree = ({ register }: FormThreeProps) => {
                 <td className="border px-2 py-1">
                   <input
                     type="text"
-                    className="w-full outline-none"
+                    className="w-full text-center outline-none"
                     {...register(`learning_development.${index}.ld_type`)}
                   />
                 </td>
                 <td className="border px-2 py-1">
                   <input
                     type="text"
-                    className="w-full outline-none"
+                    className="w-full text-center outline-none"
                     {...register(`learning_development.${index}.ld_conducted`)}
                   />
                 </td>
@@ -219,14 +219,14 @@ const FormThree = ({ register }: FormThreeProps) => {
                 <td className="border px-2 py-1">
                   <input
                     type="text"
-                    className="w-full outline-none"
+                    className="w-full text-center outline-none"
                     {...register(`other_information.skills.${index}.of_skill`)}
                   />
                 </td>
                 <td className="border px-2 py-1">
                   <input
                     type="text"
-                    className="w-full outline-none"
+                    className="w-full text-center outline-none"
                     {...register(
                       `other_information.skills.${index}.of_recognition`,
                     )}
@@ -235,7 +235,7 @@ const FormThree = ({ register }: FormThreeProps) => {
                 <td className="border px-2 py-1">
                   <input
                     type="text"
-                    className="w-full outline-none"
+                    className="w-full text-center outline-none"
                     {...register(
                       `other_information.skills.${index}.of_membership`,
                     )}
@@ -272,7 +272,7 @@ const FormThree = ({ register }: FormThreeProps) => {
                   type="text"
                   title="form_three_date"
                   {...register("other_information.of_date")}
-                  className="w-full text-[1.1rem]"
+                  className="w-full text-center text-[1.1rem]"
                 />
               </td>
             </tr>
