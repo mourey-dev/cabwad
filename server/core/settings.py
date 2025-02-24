@@ -15,7 +15,7 @@ from pathlib import Path
 from datetime import timedelta
 
 # Configuration File Path
-SERVICE_ACCOUNT_FILE = "c:/Projects/cabwad/server/service_account.json"
+SERVICE_ACCOUNT_FILE = "D:/Ace Sumaoy/projects/Cabwad/cabwad/server/service_account.json"
 
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 GOOGLE_DRIVE_CREDENTIALS = service_account.Credentials.from_service_account_file(
@@ -91,7 +91,7 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
         "OPTIONS": {
-            "read_default_file": "configurations.cnf",
+            "read_default_file": "configuration.cnf",
         },
     }
 }

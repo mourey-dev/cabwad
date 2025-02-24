@@ -46,10 +46,10 @@ const Employees = () => {
             Casuals
           </button>
           <button
-            onClick={() => setCategory("JOB OFFER")}
+            onClick={() => setCategory("JOB ORDERS")}
             className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100"
           >
-            Job Offers
+            Job Orders
           </button>
           <button className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100">
             Resigned
@@ -59,20 +59,28 @@ const Employees = () => {
         {/* Employee Grid */}
         <div className="mb-23 grid grid-cols-5 gap-6 px-6 py-6">
           {data?.map((item) => (
-            <div
-              key={item.id}
-              className="relative flex flex-col items-center rounded-md bg-white p-4 shadow-md transition-all delay-150 duration-300 hover:bg-blue-600"
-            >
-              <button className="absolute top-2 right-2">
-                <img src={remove} alt="Remove User" className="w-6" />
-              </button>
+            <button className="cursor-pointer">
+              {" "}
+              {/* Employee Button */}
+              <div
+                key={item.id}
+                className="relative flex flex-col items-center rounded-md bg-white p-4 shadow-md transition-all delay-150 duration-300 hover:bg-blue-600"
+              >
+                <button className="absolute top-2 right-2">
+                  <img src={remove} alt="Remove User" className="w-6" />
+                </button>
 
-              {/* Employee Image and Info */}
-              <img src={displayPic} alt="Employee Icon" className="mt-4 w-16" />
-              <p className="mt-2 font-bold text-gray-800">{`${item.first_name} ${item.surname}`}</p>
-              <p className="text-sm text-gray-500">{`${item.position}`}</p>
-              <p className="text-center text-xs text-gray-400">{`${item.department}`}</p>
-            </div>
+                {/* Employee Image and Info */}
+                <img
+                  src={displayPic}
+                  alt="Employee Icon"
+                  className="mt-4 w-16"
+                />
+                <p className="mt-2 font-bold text-gray-800">{`${item.first_name} ${item.surname}`}</p>
+                <p className="text-sm text-gray-500">{`${item.position}`}</p>
+                <p className="text-center text-xs text-gray-400">{`${item.department}`}</p>
+              </div>
+            </button>
           ))}
         </div>
       </main>

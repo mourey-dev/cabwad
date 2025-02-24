@@ -35,7 +35,9 @@ const LoginPage = () => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-(--color-light-blue)">
-      {loading && <Loading loading={loading} />}
+      {loading && (
+        <Loading loading={loading} duration={3000} onClose={() => {}} />
+      )}
       {/* Logo */}
       <img src={logo} alt="Cabuyao Water District Logo" className="mb-4 w-24" />
 
