@@ -1,18 +1,6 @@
 import LoadingVideo from "../../assets/images/cabwad-loading.mp4";
 
-interface LoadingModalProps {
-  loading: boolean;
-
-  duration: number;
-
-  onClose: () => void;
-}
-
-const LoadingModal: React.FC<LoadingModalProps> = ({
-  loading,
-  duration,
-  onClose,
-}) => {
+const LoadingModal = ({ loading }: { loading: boolean }) => {
   if (!loading) return null;
 
   return (

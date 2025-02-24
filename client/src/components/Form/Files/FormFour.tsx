@@ -41,7 +41,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
   };
 
   const submit = (data: PDSForm) => {
-    handlePost(dummyPDS);
+    handlePost(data);
   };
 
   return (

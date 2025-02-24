@@ -2,15 +2,25 @@ import { useNavigate } from "react-router-dom";
 import arrow from "../../assets/images/right-arrow.png";
 
 // Component
-import { Header } from "../../components";
+import { Header, Footer } from "../../components";
+import Loading from "../../components/Loading";
+
+// Hooks
+import { useGet } from "../../hooks";
+
+// Types
+import { EmployeeCount } from "../../types/employee";
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
 
+  const { loading, data } = useGet<EmployeeCount>("/employee/count/");
+
   return (
     <div className="flex min-h-screen flex-col text-white">
-      {/* Header */}
+      {loading && <Loading loading={loading} />}
       <Header />
+
       {/* Main Content */}
       <main className="flex flex-1 flex-col items-center justify-center bg-[url(/src/assets/images/logo-bg.png)] bg-cover bg-center bg-no-repeat p-8 text-center">
         <h2 className="font-krona-one text-3xl">EMPLOYEE MANAGEMENT SYSTEM</h2>
@@ -20,15 +30,15 @@ const Dashboard: React.FC = () => {
         <div className="grid w-full max-w-3xl grid-cols-1 gap-4 md:grid-cols-3">
           <div className="rounded-lg bg-white p-6 text-black shadow-lg">
             <h3 className="font-inter font-semibold">Permanents:</h3>
-            <p className="text-2xl font-bold">##</p>
+            <p className="text-2xl font-bold">{data?.total_permanent}</p>
           </div>
           <div className="rounded-lg bg-white p-6 text-black shadow-lg">
             <h3 className="font-inter font-semibold">Casuals:</h3>
-            <p className="text-2xl font-bold">##</p>
+            <p className="text-2xl font-bold">{data?.total_casual}</p>
           </div>
           <div className="rounded-lg bg-white p-6 text-black shadow-lg">
             <h3 className="font-inter font-semibold">Job Orders:</h3>
-            <p className="text-2xl font-bold">##</p>
+            <p className="text-2xl font-bold">{data?.total_job_order}</p>
           </div>
         </div>
         <div className="mt-2">
@@ -52,16 +62,7 @@ const Dashboard: React.FC = () => {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="font-inter bg-yellow-500 p-4 text-center text-black">
-        <p>
-          COPYRIGHT © 2025 |{" "}
-          <span className="font-inter font-semibold text-blue-700">
-            CABUYAO WATER DISTRICT
-          </span>{" "}
-          ALL RIGHTS RESERVED
-        </p>
-      </footer>
+      <Footer />
     </div>
   );
 };

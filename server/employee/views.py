@@ -1,3 +1,5 @@
+from django.shortcuts import get_object_or_404
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -8,10 +10,11 @@ from .utilities.update_dict_key import update_dict_key
 from .utilities.create_pds import create_pds
 from .utilities.destructure_dict import destructure_dict
 
+from .models import Employee
 from .serializers import EmployeeSerializer
 
 
-class EmployeeView(APIView):
+class PDSView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminUser]
 
@@ -68,3 +71,39 @@ class EmployeeView(APIView):
                 status=status.HTTP_201_CREATED,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class EmployeeView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def get(self, request, pk=None, *args, **kwargs):
+        if pk:
+            employee = get_object_or_404(Employee, pk=pk)
+            serializer = EmployeeSerializer(employee)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            employees = Employee.objects.all()
+            serializer = EmployeeSerializer(employees, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class EmployeeCount(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def get(self, request):
+        employees = Employee.objects.all()
+
+        total_permanent = employees.filter(position="PERMANENT").count()
+        total_casuals = employees.filter(position="CASUAL").count()
+        total_job_orders = employees.filter(position="JOB ORDER").count()
+
+        return Response(
+            {
+                "total_permanent": total_permanent,
+                "total_casual": total_casuals,
+                "total_job_order": total_job_orders,
+            },
+            status=status.HTTP_200_OK,
+        )

@@ -2,8 +2,8 @@ import PDSForm from "../types/form";
 
 const dummyPDS: PDSForm = {
   personal_information: {
-    p_surname: "Doe",
-    p_first_name: "John",
+    p_surname: "DOE",
+    p_first_name: "JOHN",
     p_middle_name: "Michael",
     p_name_extension: "Jr.",
     p_birth_date: "1990-01-01",
