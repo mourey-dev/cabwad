@@ -10,9 +10,13 @@ import { EmployeesData } from "../../types/employee";
 // Components
 import { Header, Footer } from "../../components";
 import Loading from "../../components/Loading";
+import { useState } from "react";
 
 const Employees = () => {
-  const { loading, data } = useGet<EmployeesData>("/employee/list/");
+  const [category, setCategory] = useState("PERMANENT");
+  const { loading, data } = useGet<EmployeesData>(
+    `/employee/list/?category=${category}`,
+  );
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
@@ -29,13 +33,22 @@ const Employees = () => {
 
         {/* Navigation Tabs */}
         <div className="absolute top-20 right-2">
-          <button className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100">
+          <button
+            onClick={() => setCategory("PERMANENT")}
+            className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100"
+          >
             Permanents
           </button>
-          <button className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100">
+          <button
+            onClick={() => setCategory("CASUAL")}
+            className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100"
+          >
             Casuals
           </button>
-          <button className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100">
+          <button
+            onClick={() => setCategory("JOB OFFER")}
+            className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100"
+          >
             Job Offers
           </button>
           <button className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100">
@@ -48,7 +61,7 @@ const Employees = () => {
           {data?.map((item) => (
             <div
               key={item.id}
-              className="relative flex flex-col items-center rounded-md bg-white p-4 shadow-md"
+              className="relative flex flex-col items-center rounded-md bg-white p-4 shadow-md transition-all delay-150 duration-300 hover:bg-blue-600"
             >
               <button className="absolute top-2 right-2">
                 <img src={remove} alt="Remove User" className="w-6" />
@@ -58,7 +71,7 @@ const Employees = () => {
               <img src={displayPic} alt="Employee Icon" className="mt-4 w-16" />
               <p className="mt-2 font-bold text-gray-800">{`${item.first_name} ${item.surname}`}</p>
               <p className="text-sm text-gray-500">{`${item.position}`}</p>
-              <p className="text-xs text-gray-400">{`${item.department}`}</p>
+              <p className="text-center text-xs text-gray-400">{`${item.department}`}</p>
             </div>
           ))}
         </div>

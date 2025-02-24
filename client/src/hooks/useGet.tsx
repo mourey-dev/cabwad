@@ -26,7 +26,7 @@ const useGet = <T,>(path: string) => {
     };
 
     handleGet();
-  }, []);
+  }, [path]);
 
   return { loading, error, errorMessage, data };
 };

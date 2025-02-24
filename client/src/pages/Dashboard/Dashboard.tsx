@@ -13,7 +13,6 @@ import { EmployeeCount } from "../../types/employee";
 
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-
   const { loading, data } = useGet<EmployeeCount>("/employee/count/");
 
   return (

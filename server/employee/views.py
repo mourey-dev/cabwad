@@ -83,7 +83,8 @@ class EmployeeView(APIView):
             serializer = EmployeeSerializer(employee)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
-            employees = Employee.objects.all()
+            category = request.query_params.get("category")
+            employees = Employee.objects.filter(position=category)
             serializer = EmployeeSerializer(employees, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
