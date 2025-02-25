@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import remove from "../../assets/images/remove-user.png";
 import displayPic from "../../assets/images/displayPic.png";
 import { useGet } from "../../hooks";
@@ -56,6 +56,24 @@ const Employees = () => {
             className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100"
           >
             Job Orders
+          </button>
+          <button
+            onClick={() => setCategory("CO-TERMINUS")}
+            className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100"
+          >
+            Co-Terminus
+          </button>
+          <button
+            onClick={() => setCategory("CONTRACT OF SERVICE")}
+            className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100"
+          >
+            Contract of Services
+          </button>
+          <button
+            onClick={() => setCategory("TEMPORARY")}
+            className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100"
+          >
+            Temporary
           </button>
           <button className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100">
             Resigned

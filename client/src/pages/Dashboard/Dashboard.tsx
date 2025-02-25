@@ -39,6 +39,18 @@ const Dashboard: React.FC = () => {
             <h3 className="font-inter font-semibold">Job Orders:</h3>
             <p className="text-2xl font-bold">{data?.total_job_order}</p>
           </div>
+          <div className="rounded-lg bg-white p-6 text-black shadow-lg">
+            <h3 className="font-inter font-semibold">Co-Terminus:</h3>
+            <p className="text-2xl font-bold"> ## </p>
+          </div>
+          <div className="rounded-lg bg-white p-6 text-black shadow-lg">
+            <h3 className="font-inter font-semibold">Contract of Service:</h3>
+            <p className="text-2xl font-bold"> ## </p>
+          </div>
+          <div className="rounded-lg bg-white p-6 text-black shadow-lg">
+            <h3 className="font-inter font-semibold">Temporary:</h3>
+            <p className="text-2xl font-bold"> ## </p>
+          </div>
         </div>
         <div className="mt-2">
           <button
