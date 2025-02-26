@@ -14,7 +14,7 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="bg-opacity-30 fixed inset-0 flex items-center justify-center p-4">
+    <div className="fixed inset-0 flex items-center justify-center bg-gray-900/50 p-4">
       <div className="relative flex w-[800px] flex-col rounded-lg bg-white p-6 shadow-xl">
         <button
           onClick={onClose}
