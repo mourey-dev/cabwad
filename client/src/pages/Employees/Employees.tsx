@@ -39,42 +39,32 @@ const Employees = () => {
           </h2>
         </div>
         <div className="absolute top-20 right-2">
-          <button
-            onClick={() => setCategory("PERMANENT")}
-            className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100"
+          <select
+            name="Employment Status"
+            onChange={(e) => setCategory(e.target.value)}
           >
-            Permanents
-          </button>
-          <button
-            onClick={() => setCategory("CASUAL")}
-            className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100"
-          >
-            Casuals
-          </button>
-          <button
-            onClick={() => setCategory("JOB ORDERS")}
-            className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100"
-          >
-            Job Orders
-          </button>
-          <button
-            onClick={() => setCategory("CO-TERMINUS")}
-            className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100"
-          >
-            Co-Terminus
-          </button>
-          <button
-            onClick={() => setCategory("CONTRACT OF SERVICE")}
-            className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100"
-          >
-            Contract of Services
-          </button>
-          <button
-            onClick={() => setCategory("TEMPORARY")}
-            className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100"
-          >
-            Temporary
-          </button>
+            <option value="ALL" className="text-blue-600">
+              ALL
+            </option>
+            <option value="PERMANENT" className="text-blue-600">
+              PERMANENT
+            </option>
+            <option value="CASUAL" className="text-blue-600">
+              CASUAL
+            </option>
+            <option value="JOB ORDER" className="text-blue-600">
+              JOB ORDER
+            </option>
+            <option value="CO-TERMINUS" className="text-blue-600">
+              CO-TERMINUS
+            </option>
+            <option value="CONTRACT OF SERVICE" className="text-blue-600">
+              CONTRACT OF SERVICE
+            </option>
+            <option value="TEMPORARY" className="text-blue-600">
+              TEMPORARY
+            </option>
+          </select>
           <button className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100">
             Resigned
           </button>
