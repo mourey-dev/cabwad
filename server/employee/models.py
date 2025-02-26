@@ -40,7 +40,9 @@ class File(models.Model):
     name = models.CharField(max_length=255)
     file_id = models.CharField(max_length=255)
     uploaded = models.BooleanField(default=False)
-    file_type = models.CharField(max_length=255, choices=FileType.choices())
+    file_type = models.CharField(
+        max_length=255, choices=FileType.choices(), default=None
+    )
 
     class Meta:
         db_table = "file"
