@@ -108,12 +108,18 @@ class EmployeeCount(APIView):
         total_permanent = employees.filter(position="PERMANENT").count()
         total_casuals = employees.filter(position="CASUAL").count()
         total_job_orders = employees.filter(position="JOB ORDER").count()
+        total_co_terminus = employees.filter(position="CO-TERMINUS").count()
+        total_contract_of_service = employees.filter(position="CONTRACT OF SERVICE").count()
+        total_temporary = employees.filter(position="TEMPORARY").count()
 
         return Response(
             {
                 "total_permanent": total_permanent,
                 "total_casual": total_casuals,
                 "total_job_order": total_job_orders,
+                "total_co_terminus": total_co_terminus,
+                "total_contract_of_service": total_contract_of_service, 
+                "total_temporary": total_temporary,
             },
             status=status.HTTP_200_OK,
         )

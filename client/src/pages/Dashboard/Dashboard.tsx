@@ -28,28 +28,30 @@ const Dashboard: React.FC = () => {
         </p>
         <div className="grid w-full max-w-3xl grid-cols-1 gap-4 md:grid-cols-3">
           <div className="rounded-lg bg-white p-6 text-black shadow-lg">
-            <h3 className="font-inter font-semibold">Permanents:</h3>
-            <p className="font-jost text-2xl">{data?.total_permanent}</p>
+            <h3 className="font-jost font-semibold">Permanents:</h3>
+            <p className="font-jost text-lg">{data?.total_permanent}</p>
           </div>
           <div className="rounded-lg bg-white p-6 text-black shadow-lg">
-            <h3 className="font-inter font-semibold">Casuals:</h3>
-            <p className="font-jost text-2xl">{data?.total_casual}</p>
+            <h3 className="font-jost font-semibold">Casuals:</h3>
+            <p className="font-jost text-lg">{data?.total_casual}</p>
           </div>
           <div className="rounded-lg bg-white p-6 text-black shadow-lg">
-            <h3 className="font-inter font-semibold">Job Orders:</h3>
-            <p className="font-jost text-2xl">{data?.total_job_order}</p>
+            <h3 className="font-jost font-semibold">Job Orders:</h3>
+            <p className="font-jost text-lg">{data?.total_job_order}</p>
           </div>
           <div className="rounded-lg bg-white p-6 text-black shadow-lg">
-            <h3 className="font-inter font-semibold">Co-Terminus:</h3>
-            <p className="font-jost text-2xl"> ## </p>
+            <h3 className="font-jost font-semibold">Co-Terminus:</h3>
+            <p className="font-jost text-lg">{data?.total_co_terminus}</p>
           </div>
           <div className="rounded-lg bg-white p-6 text-black shadow-lg">
-            <h3 className="font-inter font-semibold">Contract of Service:</h3>
-            <p className="font-jost text-2xl"> ## </p>
+            <h3 className="font-jost font-semibold">Contract of Service:</h3>
+            <p className="font-jost text-lg">
+              {data?.total_contract_of_service}
+            </p>
           </div>
           <div className="rounded-lg bg-white p-6 text-black shadow-lg">
-            <h3 className="font-inter font-semibold">Temporary:</h3>
-            <p className="font-jost text-2xl"> ## </p>
+            <h3 className="font-jost font-semibold">Temporary:</h3>
+            <p className="font-jost text-lg">{data?.total_temporary}</p>
           </div>
         </div>
         <div className="mt-2">
