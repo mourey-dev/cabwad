@@ -42,28 +42,15 @@ const Employees = () => {
           <select
             name="Employment Status"
             onChange={(e) => setCategory(e.target.value)}
+            className="text-blue-600"
           >
-            <option value="ALL" className="text-blue-600">
-              ALL
-            </option>
-            <option value="PERMANENT" className="text-blue-600">
-              PERMANENT
-            </option>
-            <option value="CASUAL" className="text-blue-600">
-              CASUAL
-            </option>
-            <option value="JOB ORDER" className="text-blue-600">
-              JOB ORDER
-            </option>
-            <option value="CO-TERMINUS" className="text-blue-600">
-              CO-TERMINUS
-            </option>
-            <option value="CONTRACT OF SERVICE" className="text-blue-600">
-              CONTRACT OF SERVICE
-            </option>
-            <option value="TEMPORARY" className="text-blue-600">
-              TEMPORARY
-            </option>
+            <option value="ALL">ALL</option>
+            <option value="PERMANENT">PERMANENT</option>
+            <option value="CASUAL">CASUAL</option>
+            <option value="JOB ORDER">JOB ORDER</option>
+            <option value="CO-TERMINUS">CO-TERMINUS</option>
+            <option value="CONTRACT OF SERVICE">CONTRACT OF SERVICE</option>
+            <option value="TEMPORARY">TEMPORARY</option>
           </select>
           <button className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100">
             Resigned

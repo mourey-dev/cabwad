@@ -1,4 +1,5 @@
 import React from "react";
+import Default from "../../assets/images/default.png";
 
 interface EmployeeDetailProps {
   isOpen: boolean;
@@ -18,17 +19,23 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ isOpen, onClose }) => {
         >
           X
         </button>
-        <h2 className="text-center text-2xl font-bold">PERSONAL DETAIL</h2>
+        <h2 className="font-jost text-center text-2xl font-bold">
+          PERSONAL DETAIL
+        </h2>
         <div className="flex flex-col items-center">
-          <div className="mt-5 flex h-45 w-45 items-center justify-center overflow-hidden border bg-gray-200">
-            <img src="" alt="Profile" className="h-full w-full object-cover" />
+          <div className="mt-5 flex h-45 w-45 items-center justify-center overflow-hidden border bg-white">
+            <img
+              src={Default}
+              alt="Profile"
+              className="h-full w-full object-cover"
+            />
           </div>
         </div>
 
         <div className="mt-4 flex gap-6">
           {/* Left Section */}
           <div className="w-1/2">
-            <div className="mt-4 space-y-2 text-sm">
+            <div className="font-jost mt-4 space-y-2 text-sm">
               <p>Name:</p>
               <p>Position:</p>
               <p>Department:</p>
@@ -43,7 +50,7 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ isOpen, onClose }) => {
           </div>
 
           {/* Right Section */}
-          <div className="w-1/2">
+          <div className="font-jost w-1/2">
             <h3 className="font-bold">Documents</h3>
             <ul className="mt-2 space-y-1 text-sm">
               <li className="cursor-pointer text-red-500 hover:underline">
@@ -85,7 +92,7 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ isOpen, onClose }) => {
             </ul>
           </div>
 
-          <div className="w-1/3">
+          <div className="font-jost w-1/3">
             <ul className="mt-8 space-y-1 text-sm">
               <li className="cursor-pointer text-red-500 hover:underline">
                 Driver's License (Photocopy)
@@ -125,10 +132,10 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ isOpen, onClose }) => {
         </div>
 
         <div className="mt-6 flex justify-center gap-4">
-          <button className="flex items-center rounded-full bg-yellow-500 px-6 py-2 text-white shadow-md transition hover:bg-yellow-600">
+          <button className="font-jost flex items-center rounded-full bg-yellow-500 px-6 py-2 text-white shadow-md transition hover:bg-yellow-600">
             Update
           </button>
-          <button className="flex items-center rounded-full bg-blue-500 px-6 py-2 text-white shadow-md transition hover:bg-blue-600">
+          <button className="font-jost flex items-center rounded-full bg-blue-500 px-6 py-2 text-white shadow-md transition hover:bg-blue-600">
             View Documents
           </button>
         </div>
