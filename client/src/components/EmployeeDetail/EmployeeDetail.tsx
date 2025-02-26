@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import Default from "../../assets/images/default.png";
+import ViewDocument from "./ViewDocument";
 
 interface EmployeeDetailProps {
   isOpen: boolean;
@@ -8,6 +9,8 @@ interface EmployeeDetailProps {
 }
 
 const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ isOpen, onClose }) => {
+  const [isViewDocumentOpen, setIsViewDocumentOpen] = useState(false);
+
   if (!isOpen) return null;
 
   return (
@@ -135,11 +138,22 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ isOpen, onClose }) => {
           <button className="font-jost flex items-center rounded-full bg-yellow-500 px-6 py-2 text-white shadow-md transition hover:bg-yellow-600">
             Update
           </button>
-          <button className="font-jost flex items-center rounded-full bg-blue-500 px-6 py-2 text-white shadow-md transition hover:bg-blue-600">
+          <button
+            className="font-jost flex items-center rounded-full bg-blue-500 px-6 py-2 text-white shadow-md transition hover:bg-blue-600"
+            onClick={() => setIsViewDocumentOpen(true)}
+          >
             View Documents
           </button>
         </div>
       </div>
+
+      {isViewDocumentOpen && (
+        <ViewDocument
+          isOpen={isViewDocumentOpen}
+          onClose={() => setIsViewDocumentOpen(false)}
+          employee={null}
+        />
+      )}
     </div>
   );
 };
