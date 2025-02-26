@@ -29,27 +29,27 @@ const Dashboard: React.FC = () => {
         <div className="grid w-full max-w-3xl grid-cols-1 gap-4 md:grid-cols-3">
           <div className="rounded-lg bg-white p-6 text-black shadow-lg">
             <h3 className="font-inter font-semibold">Permanents:</h3>
-            <p className="text-2xl font-bold">{data?.total_permanent}</p>
+            <p className="font-jost text-2xl">{data?.total_permanent}</p>
           </div>
           <div className="rounded-lg bg-white p-6 text-black shadow-lg">
             <h3 className="font-inter font-semibold">Casuals:</h3>
-            <p className="text-2xl font-bold">{data?.total_casual}</p>
+            <p className="font-jost text-2xl">{data?.total_casual}</p>
           </div>
           <div className="rounded-lg bg-white p-6 text-black shadow-lg">
             <h3 className="font-inter font-semibold">Job Orders:</h3>
-            <p className="text-2xl font-bold">{data?.total_job_order}</p>
+            <p className="font-jost text-2xl">{data?.total_job_order}</p>
           </div>
           <div className="rounded-lg bg-white p-6 text-black shadow-lg">
             <h3 className="font-inter font-semibold">Co-Terminus:</h3>
-            <p className="text-2xl font-bold"> ## </p>
+            <p className="font-jost text-2xl"> ## </p>
           </div>
           <div className="rounded-lg bg-white p-6 text-black shadow-lg">
             <h3 className="font-inter font-semibold">Contract of Service:</h3>
-            <p className="text-2xl font-bold"> ## </p>
+            <p className="font-jost text-2xl"> ## </p>
           </div>
           <div className="rounded-lg bg-white p-6 text-black shadow-lg">
             <h3 className="font-inter font-semibold">Temporary:</h3>
-            <p className="text-2xl font-bold"> ## </p>
+            <p className="font-jost text-2xl"> ## </p>
           </div>
         </div>
         <div className="mt-2">
