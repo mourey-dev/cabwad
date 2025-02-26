@@ -15,16 +15,16 @@ from google.oauth2 import service_account
 from pathlib import Path
 from datetime import timedelta
 
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 # Configuration File Path
-SERVICE_ACCOUNT_FILE = "c:/Projects/cabwad/server/service_account.json"
+SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, "service_account.json")
 
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 GOOGLE_DRIVE_CREDENTIALS = service_account.Credentials.from_service_account_file(
     SERVICE_ACCOUNT_FILE, scopes=SCOPES
 )
-
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
