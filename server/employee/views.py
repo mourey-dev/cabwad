@@ -60,7 +60,14 @@ class PDSView(APIView):
             "position": data["position"],
             "department": data["department"],
             "folder_id": pds["folder_id"],
-            "files": [{"name": file["name"], "file_id": file["id"]}],
+            "files": [
+                {
+                    "name": file["name"],
+                    "file_id": file["id"],
+                    "uploaded": True,
+                    "file_type": "pds",
+                }
+            ],
         }
 
         serializer = EmployeeSerializer(data=employee)

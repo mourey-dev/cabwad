@@ -30,6 +30,7 @@ class FileType(Enum):
     pi = "Pag-Ibig"
     p = "Philhealth"
     tin = "TIN No."
+    na = "None"
 
     @classmethod
     def choices(cls):
@@ -41,7 +42,7 @@ class File(models.Model):
     file_id = models.CharField(max_length=255)
     uploaded = models.BooleanField(default=False)
     file_type = models.CharField(
-        max_length=255, choices=FileType.choices(), default=None
+        max_length=255, choices=FileType.choices(), default="None"
     )
 
     class Meta:
