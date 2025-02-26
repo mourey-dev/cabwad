@@ -5,8 +5,8 @@ class File(models.Model):
     name = models.CharField(max_length=255)
     file_id = models.CharField(max_length=255)
 
-    class meta:
-        db_name = "file"
+    class Meta:
+        db_table = "file"
 
 
 class Employee(models.Model):
@@ -20,5 +20,5 @@ class Employee(models.Model):
     created_at = models.DateTimeField(auto_now=True)
     updated_at = models.DateField(auto_now_add=True)
 
-    class meta:
-        db_name = "employee"
+    class Meta:
+        db_table = "employee"

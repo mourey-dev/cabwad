@@ -7,9 +7,6 @@ import {
 import PDSForm from "../../../types/form";
 import usePost from "../../../hooks/usePost";
 
-// Dummy Data.
-import dummyPDS from "../../../dummy/dummyPDS";
-
 // Components.
 import LoadingModal from "../../Loading/Loading";
 import { PDSPostModal } from "../../Modal";

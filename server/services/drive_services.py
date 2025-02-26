@@ -1,7 +1,6 @@
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 from django.conf import settings
-from googleapiclient.errors import HttpError
 
 
 def build_drive_service():
@@ -57,3 +56,12 @@ def set_file_permissions(file_id):
     service = build_drive_service()
     permission = {"type": "anyone", "role": "reader"}
     service.permissions().create(fileId=file_id, body=permission).execute()
+
+
+def get_file_to_folder(folder_id):
+    """Retrieve files from a specific folder in Google Drive."""
+    service = build_drive_service()
+    query = f"'{folder_id}' in parents and trashed=false"
+    results = service.files().list(q=query, fields="files(id, name)").execute()
+    files = results.get("files", [])
+    return files

@@ -13,6 +13,8 @@ from .utilities.destructure_dict import destructure_dict
 from .models import Employee
 from .serializers import EmployeeSerializer
 
+from services.drive_services import get_file_to_folder
+
 
 class PDSView(APIView):
     authentication_classes = [JWTAuthentication]
@@ -108,3 +110,14 @@ class EmployeeCount(APIView):
             },
             status=status.HTTP_200_OK,
         )
+
+
+class EmployeeFile(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def get(self):
+        folder = self.query_params.get("folder")
+        files = get_file_to_folder(folder)
+
+        return Response(files, status=status.HTTP_200_OK)

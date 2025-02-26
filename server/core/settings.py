@@ -10,12 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+import os
 from google.oauth2 import service_account
 from pathlib import Path
 from datetime import timedelta
 
 # Configuration File Path
-SERVICE_ACCOUNT_FILE = "D:/Ace Sumaoy/projects/Cabwad/cabwad/server/service_account.json"
+SERVICE_ACCOUNT_FILE = "c:/Projects/cabwad/server/service_account.json"
 
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 GOOGLE_DRIVE_CREDENTIALS = service_account.Credentials.from_service_account_file(
@@ -89,10 +90,8 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "OPTIONS": {
-            "read_default_file": "configuration.cnf",
-        },
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.path.join(BASE_DIR, "data", "db.sqlite3"),
     }
 }
 
