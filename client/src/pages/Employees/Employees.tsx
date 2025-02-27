@@ -8,7 +8,7 @@ import Loading from "../../components/Loading";
 import EmployeeDetail from "../../components/EmployeeDetail/EmployeeDetail";
 
 const Employees = () => {
-  const [category, setCategory] = useState("PERMANENT");
+  const [category, setCategory] = useState("ALL");
   const { loading, data } = useGet<EmployeesData>(
     `/employee/list/?category=${category}`,
   );
@@ -41,6 +41,8 @@ const Employees = () => {
         <div className="absolute top-20 right-2">
           <select
             name="Employment Status"
+            title="employment_status"
+            defaultValue="ALL"
             onChange={(e) => setCategory(e.target.value)}
             className="text-blue-600"
           >
@@ -58,7 +60,7 @@ const Employees = () => {
         </div>
         <div className="mb-23 grid grid-cols-5 gap-6 px-6 py-6">
           {data?.map((item) => (
-            <button
+            <div
               key={item.id}
               className="cursor-pointer"
               onClick={() => handleOpenModal(item)}
@@ -76,7 +78,7 @@ const Employees = () => {
                 <p className="text-sm text-gray-500">{`${item.position}`}</p>
                 <p className="text-center text-xs text-gray-400">{`${item.department}`}</p>
               </div>
-            </button>
+            </div>
           ))}
         </div>
       </main>

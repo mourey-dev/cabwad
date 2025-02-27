@@ -2,13 +2,19 @@ import React, { useState } from "react";
 import Default from "../../assets/images/default.png";
 import ViewDocument from "./ViewDocument";
 
+import { EmployeeData } from "../../types/employee";
+
 interface EmployeeDetailProps {
   isOpen: boolean;
   onClose: () => void;
-  employee: any;
+  employee: EmployeeData;
 }
 
-const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ isOpen, onClose }) => {
+const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
+  isOpen,
+  onClose,
+  employee,
+}) => {
   const [isViewDocumentOpen, setIsViewDocumentOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState<number | null>(null);
 
@@ -73,9 +79,9 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ isOpen, onClose }) => {
         <div className="mt-4 flex gap-6">
           <div className="w-1/2">
             <div className="font-jost mt-4 space-y-2 text-sm">
-              <p>Name:</p>
-              <p>Position:</p>
-              <p>Department:</p>
+              <p>Name: {`${employee.first_name} ${employee.surname}`}</p>
+              <p>Position: {employee.position}</p>
+              <p>Department: {employee.department}</p>
               <h3 className="mt-7 font-bold">Educational Background</h3>
               <p>Elementary:</p>
               <p>Secondary:</p>
