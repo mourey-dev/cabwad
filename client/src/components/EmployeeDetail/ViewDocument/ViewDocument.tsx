@@ -1,5 +1,4 @@
 import React from "react";
-import Default from "../../assets/images/default.png";
 
 interface ViewDocumentProps {
   isOpen: boolean;

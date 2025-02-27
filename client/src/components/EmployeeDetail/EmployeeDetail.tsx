@@ -10,12 +10,47 @@ interface EmployeeDetailProps {
 
 const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ isOpen, onClose }) => {
   const [isViewDocumentOpen, setIsViewDocumentOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState<number | null>(null);
 
   if (!isOpen) return null;
 
+  const toggleDropdown = (index: number) => {
+    setDropdownOpen(dropdownOpen === index ? null : index);
+  };
+
+  const documents = [
+    "Certificate of CSC Eligibility",
+    "Diplomas, Commendations and Awards",
+    "Marriage Contract",
+    "Medical Certificate",
+    "NBI Clearance",
+    "Personal Data Sheet",
+    "Birth Certificate",
+    "Resume, Biodata",
+    "Birth Certificate of Child/ren",
+    "Transcript of Records",
+    "Form 137",
+    "Form 138-A",
+    "Driver's License (Photocopy)",
+    "PRC License (Photocopy)",
+    "Training Certificate",
+    "Appointments",
+    "Assumption of Duty",
+    "Certificate of Leave Balances",
+    "Contract of Services",
+    "Copies of Disciplinary Actions",
+    "Notice of Salary Adjustment/Step Increment",
+    "Oath of Office",
+    "Position Description Forms",
+    "SSS",
+    "Pag-ibig",
+    "Philhealth",
+    "TIN No.",
+  ];
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900/50 p-4">
-      <div className="relative flex w-[800px] flex-col rounded-lg bg-white p-6 shadow-xl">
+      <div className="relative flex w-[1200px] flex-col rounded-lg bg-white p-6 shadow-xl">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 cursor-pointer rounded-full bg-red-500 px-3 py-1 text-white"
@@ -36,7 +71,6 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ isOpen, onClose }) => {
         </div>
 
         <div className="mt-4 flex gap-6">
-          {/* Left Section */}
           <div className="w-1/2">
             <div className="font-jost mt-4 space-y-2 text-sm">
               <p>Name:</p>
@@ -52,85 +86,31 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ isOpen, onClose }) => {
             </div>
           </div>
 
-          {/* Right Section */}
-          <div className="font-jost w-1/2">
+          <div className="w-1/2">
             <h3 className="font-bold">Documents</h3>
-            <ul className="mt-2 space-y-1 text-sm">
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Certificate of CSC Eligibility
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Diplomas, Commendations and Awards
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Marriage Contract
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Medical Certificate
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                NBI Clearance
-              </li>
-              <li className="cursor-pointer text-green-500 hover:underline">
-                Personal Data Sheet
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Birth Certificate
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Resume, Biodata
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Birth Certificate of Child/ren
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Transcript of Records
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Form 137
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Form 138-A
-              </li>
-            </ul>
-          </div>
-
-          <div className="font-jost w-1/3">
-            <ul className="mt-8 space-y-1 text-sm">
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Driver's License (Photocopy)
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                PRC License (Photocopy)
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Training Certificate
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Appointments
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Assumption of Duty
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Certificate of Leave Balances
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Contract of Services
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Copies of Disciplinary Actions
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Notice of Salary Adjustment/Step Increment
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Oath of Office
-              </li>
-              <li className="cursor-pointer text-red-500 hover:underline">
-                Position Description Forms
-              </li>
-            </ul>
+            <div className="grid grid-cols-2 gap-1 text-sm">
+              {documents.map((doc, index) => (
+                <div
+                  key={index}
+                  className="relative cursor-pointer hover:underline"
+                >
+                  <div onClick={() => toggleDropdown(index)}>{doc}</div>
+                  {dropdownOpen === index && (
+                    <div className="absolute left-0 z-100 mt-1 w-32 rounded-md shadow-lg">
+                      <button className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-300">
+                        View
+                      </button>
+                      <button className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-300">
+                        Edit
+                      </button>
+                      <button className="block w-full px-4 py-2 text-left text-sm hover:bg-red-200">
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
