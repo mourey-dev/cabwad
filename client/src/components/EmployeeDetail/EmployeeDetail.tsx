@@ -64,7 +64,7 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
           X
         </button>
         <h2 className="font-jost text-center text-2xl font-bold">
-          PERSONAL DETAIL
+          PERSONAL INFORMATION
         </h2>
         <div className="flex flex-col items-center">
           <div className="mt-5 flex h-45 w-45 items-center justify-center overflow-hidden border bg-white">
@@ -86,6 +86,18 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
               <p>Elementary:</p>
               <p>Secondary:</p>
               <p>College:</p>
+              <p>ID No.:</p>
+              <p>Last Name:</p>
+              <p>First Name:</p>
+              <p>Middle Name:</p>
+              <p>Sex:</p>
+              <p>Civil Status:</p>
+              <p>Appointment Status:</p>
+              <p>Civil Service Eligibility:</p>
+              <p>Position:</p>
+              <p>Date of Birth:</p>
+              <p>First Day of Service:</p>
+
               <h3 className="mt-7 font-bold">Contact</h3>
               <p>Phone no.:</p>
               <p>Email:</p>

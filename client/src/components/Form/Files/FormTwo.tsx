@@ -68,7 +68,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                     <input
                       type="text"
                       {...register(`civil_service_eligibility.${index}.cse`)}
-                      className={`w-full text-center outline-none`}
+                      className={`w-full text-center uppercase outline-none`}
                     />
                   </td>
 
@@ -78,7 +78,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                       {...register(
                         `civil_service_eligibility.${index}.cse_rating`,
                       )}
-                      className={`w-full text-center outline-none`}
+                      className={`w-full text-center uppercase outline-none`}
                     />
                   </td>
 
@@ -88,7 +88,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                       {...register(
                         `civil_service_eligibility.${index}.cse_exam_date`,
                       )}
-                      className={`w-full text-center outline-none`}
+                      className={`w-full text-center uppercase outline-none`}
                     />
                   </td>
 
@@ -98,7 +98,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                       {...register(
                         `civil_service_eligibility.${index}.cse_exam_place`,
                       )}
-                      className={`w-full text-center outline-none`}
+                      className={`w-full text-center uppercase outline-none`}
                     />
                   </td>
 
@@ -109,14 +109,14 @@ const FormTwo = ({ register }: FormTwoProps) => {
                       {...register(
                         `civil_service_eligibility.${index}.cse_license_number`,
                       )}
-                      className={`border-r text-center outline-none`}
+                      className={`border-r text-center uppercase outline-none`}
                     />
                     <input
                       type="text"
                       {...register(
                         `civil_service_eligibility.${index}.cse_validity_date`,
                       )}
-                      className={`text-center outline-none`}
+                      className={`text-center uppercase outline-none`}
                     />
                   </td>
                 </tr>
@@ -196,12 +196,12 @@ const FormTwo = ({ register }: FormTwoProps) => {
                     <input
                       type="text"
                       {...register(`work_experience.${index}.w_from`)}
-                      className={`border-r text-center outline-none`}
+                      className={`border-r text-center uppercase outline-none`}
                     />
                     <input
                       type="text"
                       {...register(`work_experience.${index}.w_to`)}
-                      className={`text-center outline-none`}
+                      className={`text-center uppercase outline-none`}
                     />
                   </td>
 
@@ -210,7 +210,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                     <input
                       type="text"
                       {...register(`work_experience.${index}.w_position`)}
-                      className={`w-full text-center outline-none`}
+                      className={`w-full text-center uppercase outline-none`}
                     />
                   </td>
 
@@ -219,7 +219,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                     <input
                       type="text"
                       {...register(`work_experience.${index}.w_department`)}
-                      className={`w-full text-center outline-none`}
+                      className={`w-full text-center uppercase outline-none`}
                     />
                   </td>
 
@@ -228,7 +228,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                     <input
                       type="text"
                       {...register(`work_experience.${index}.w_salary`)}
-                      className={`w-full text-center outline-none`}
+                      className={`w-full text-center uppercase outline-none`}
                     />
                   </td>
 
@@ -237,7 +237,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                     <input
                       type="text"
                       {...register(`work_experience.${index}.w_pay_grade`)}
-                      className={`w-full text-center outline-none`}
+                      className={`w-full text-center uppercase outline-none`}
                     />
                   </td>
 
@@ -246,7 +246,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                     <input
                       type="text"
                       {...register(`work_experience.${index}.w_soa`)}
-                      className={`w-full text-center outline-none`}
+                      className={`w-full text-center uppercase outline-none`}
                     />
                   </td>
 
@@ -255,7 +255,7 @@ const FormTwo = ({ register }: FormTwoProps) => {
                     <input
                       type="text"
                       {...register(`work_experience.${index}.w_gov_service`)}
-                      className={`w-full text-center outline-none`}
+                      className={`w-full text-center uppercase outline-none`}
                     />
                   </td>
                 </tr>

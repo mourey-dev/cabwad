@@ -113,7 +113,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
             <input
               type="text"
               id="of_if_yes"
-              className="w-full border-b-2 text-center"
+              className="w-full border-b-2 text-center uppercase"
               {...register("other_information.of_affinity_details")}
             />
           </div>
@@ -148,7 +148,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
             <input
               type="text"
               id="of_if_yes"
-              className="w-full border-b-2 text-center"
+              className="w-full border-b-2 text-center uppercase"
               {...register("other_information.of_guilty_details")}
             />
           </div>
@@ -182,7 +182,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="text"
                 id="of_charged_before_date_filled"
-                className="flex-1 border-b-2 text-center"
+                className="flex-1 border-b-2 text-center uppercase"
                 {...register("other_information.of_criminal_date_filled")}
               />
             </div>
@@ -193,7 +193,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="text"
                 id="of_charged_before_status"
-                className="flex-1 border-b-2 text-center"
+                className="flex-1 border-b-2 text-center uppercase"
                 {...register("other_information.of_criminal_status")}
               />
             </div>
@@ -229,7 +229,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
             <input
               type="text"
               id="of_if_convicted_yes"
-              className="w-full border-b-2 text-center"
+              className="w-full border-b-2 text-center uppercase"
               {...register("other_information.of_convicted_details")}
             />
           </div>
@@ -266,7 +266,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
             <input
               type="text"
               id="of_if_dismissal_yes"
-              className="w-full border-b-2 text-center"
+              className="w-full border-b-2 text-center uppercase"
               {...register("other_information.of_resignation_details")}
             />
           </div>
@@ -301,8 +301,8 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               </label>
               <input
                 type="text"
-                id="of_if_local_candidate_yes text-center"
-                className="flex-1 border-b-2"
+                id="of_if_local_candidate_yes"
+                className="flex-1 border-b-2 text-center uppercase"
                 {...register("other_information.of_candidate_details")}
               />
             </div>
@@ -339,7 +339,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="text"
                 id="of_if_government_resign_yes"
-                className="flex-1 border-b-2 text-center"
+                className="flex-1 border-b-2 text-center uppercase"
                 {...register("other_information.of_government_details")}
               />
             </div>
@@ -375,7 +375,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
             <input
               type="text"
               id="of_if_acquired_immigrant_yes"
-              className="w-full border-b-2 text-center"
+              className="w-full border-b-2 text-center uppercase"
               {...register("other_information.of_immigrant_details")}
             />
           </div>
@@ -417,7 +417,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="text"
                 id="of_if_indigenous_yes"
-                className="flex-1 border-b-2 text-center"
+                className="flex-1 border-b-2 text-center uppercase"
                 {...register("other_information.of_indigenous_details")}
               />
             </div>
@@ -452,7 +452,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="text"
                 id="of_if_disability_yes"
-                className="flex-1 border-b-2 text-center"
+                className="flex-1 border-b-2 text-center uppercase"
                 {...register("other_information.of_disability_details")}
               />
             </div>
@@ -487,7 +487,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="text"
                 id="of_if_solo_parent_yes"
-                className="flex-1 border-b-2 text-center"
+                className="flex-1 border-b-2 text-center uppercase"
                 {...register("other_information.of_solo_parent_details")}
               />
             </div>
@@ -511,39 +511,39 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               type="text"
               title="reference_name_1"
               {...register(`other_information.of_reference_name_1`)}
-              className="col-span-2 border-2 text-center"
+              className="col-span-2 border-2 text-center uppercase"
             />
             <input
               type="text"
               title="reference_address_1"
               {...register(`other_information.of_reference_address_1`)}
-              className="col-span-1 border-2 text-center"
+              className="col-span-1 border-2 text-center uppercase"
             />
             <input
               type="text"
               title="reference_telephone_1"
               {...register(`other_information.of_reference_telephone_1`)}
-              className="col-span-1 border-2 text-center"
+              className="col-span-1 border-2 text-center uppercase"
             />
 
             {/* SECOND REFERENCE */}
             <input
               type="text"
               title="reference_name_2"
-              className="col-span-2 border-2 text-center"
+              className="col-span-2 border-2 text-center uppercase"
               {...register("other_information.of_reference_name_2")}
             />
             <input
               type="text"
               title="reference_address_2"
               {...register("other_information.of_reference_address_2")}
-              className="col-span-1 border-2 text-center"
+              className="col-span-1 border-2 text-center uppercase"
             />
             <input
               type="text"
               title="reference_telephone_2"
               {...register("other_information.of_reference_telephone_2")}
-              className="col-span-1 border-2 text-center"
+              className="col-span-1 border-2 text-center uppercase"
             />
 
             {/* THIRD REFERENCE */}
@@ -551,19 +551,19 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               type="text"
               title="reference_name_3"
               {...register("other_information.of_reference_name_3")}
-              className="col-span-2 border-2 text-center"
+              className="col-span-2 border-2 text-center uppercase"
             />
             <input
               type="text"
               title="reference_address_3"
               {...register("other_information.of_reference_address_3")}
-              className="col-span-1 border-2 text-center"
+              className="col-span-1 border-2 text-center uppercase"
             />
             <input
               type="text"
               title="reference_telephone_3"
               {...register("other_information.of_reference_telephone_3")}
-              className="col-span-1 border-2 text-center"
+              className="col-span-1 border-2 text-center uppercase"
             />
           </div>
 
@@ -629,7 +629,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 <input
                   type="text"
                   id="gov_issued_id"
-                  className="flex-1 text-center text-[.7rem]"
+                  className="flex-1 text-center text-[.7rem] uppercase"
                   {...register("other_information.of_government_id")}
                 />
               </div>
@@ -642,7 +642,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 <input
                   type="text"
                   id="id_no"
-                  className="flex-1 text-center text-[.7rem]"
+                  className="flex-1 text-center text-[.7rem] uppercase"
                   {...register("other_information.of_id_no")}
                 />
               </div>
@@ -655,7 +655,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
                 <input
                   type="text"
                   id="date_issuance"
-                  className="flex-1 text-center text-[.7rem]"
+                  className="flex-1 text-center text-[.7rem] uppercase"
                   {...register("other_information.of_issuance")}
                 />
               </div>
@@ -686,7 +686,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
               <input
                 type="text"
                 title="sworn"
-                className="border-b-2 text-center"
+                className="border-b-2 text-center uppercase"
               />
               <span>
                 , affiant exhibiting his/her validly issued government ID as
