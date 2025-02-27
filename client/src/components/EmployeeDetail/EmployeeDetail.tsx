@@ -96,7 +96,7 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({ isOpen, onClose }) => {
                 >
                   <div onClick={() => toggleDropdown(index)}>{doc}</div>
                   {dropdownOpen === index && (
-                    <div className="absolute left-0 z-100 mt-1 w-32 rounded-md shadow-lg">
+                    <div className="absolute left-0 z-100 mt-1 w-32 rounded-md bg-white shadow-lg">
                       <button className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-300">
                         View
                       </button>
