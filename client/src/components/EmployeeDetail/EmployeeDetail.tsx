@@ -76,37 +76,35 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
           </div>
         </div>
 
-        <div className="mt-4 flex gap-6">
+        <div className="flex">
           <div className="w-1/2">
             <div className="font-jost mt-4 space-y-2 text-sm">
-              <p>Name: {`${employee.first_name} ${employee.surname}`}</p>
-              <p>Position: {employee.position}</p>
-              <p>Department: {employee.department}</p>
-              <h3 className="mt-7 font-bold">Educational Background</h3>
-              <p>Elementary:</p>
-              <p>Secondary:</p>
-              <p>College:</p>
+              <h3 className="font-bold">Employee Details</h3>
               <p>ID No.:</p>
-              <p>Last Name:</p>
-              <p>First Name:</p>
+              <p>Last Name: {`${employee.surname}`}</p>
+              <p>First Name:{`${employee.first_name}`}</p>
               <p>Middle Name:</p>
               <p>Sex:</p>
               <p>Civil Status:</p>
-              <p>Appointment Status:</p>
-              <p>Civil Service Eligibility:</p>
-              <p>Position:</p>
-              <p>Date of Birth:</p>
-              <p>First Day of Service:</p>
 
-              <h3 className="mt-7 font-bold">Contact</h3>
+              <h3 className="mt-4 font-bold">Contact</h3>
               <p>Phone no.:</p>
               <p>Email:</p>
             </div>
           </div>
 
+          <div className="font-jost mt-2 w-1/2 space-y-2 text-sm">
+            <h3 className="mt-2 font-bold">Employment Details</h3>
+            <p>Appointment Status: {employee.position}</p>
+            <p>Civil Service Eligibility:</p>
+            <p>Position:</p>
+            <p>Date of Birth:</p>
+            <p>First Day of Service:</p>
+          </div>
+
           <div className="w-1/2">
-            <h3 className="font-bold">Documents</h3>
-            <div className="grid grid-cols-2 gap-1 text-sm">
+            <h3 className="font-jost mt-2 font-bold">Documents</h3>
+            <div className="font-jost grid grid-cols-2 text-sm">
               {documents.map((doc, index) => (
                 <div
                   key={index}
