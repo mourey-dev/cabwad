@@ -66,7 +66,7 @@ const Employees = () => {
               className="cursor-pointer"
               onClick={() => handleOpenModal(item)}
             >
-              <div className="relative mr-2 flex h-50 w-70 flex-col items-center rounded-md bg-white p-4 shadow-md transition-all delay-150 duration-300 hover:bg-blue-600">
+              <div className="relative flex h-50 flex-col items-center rounded-md bg-white p-4 shadow-md transition-all delay-150 duration-300 hover:bg-blue-600">
                 <button className="absolute top-2 right-2">
                   <img src={remove} alt="Remove User" className="w-6" />
                 </button>
