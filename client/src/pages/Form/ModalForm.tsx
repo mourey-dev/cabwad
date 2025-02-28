@@ -91,7 +91,11 @@ const ModalForm = ({ register }: ModalFormProps) => {
             <label htmlFor="employee_type" className="block font-semibold">
               ID No.:
             </label>
-            <input type="number" className="mt-1 w-full rounded border p-2" />
+            <input
+              type="number"
+              className="mt-1 w-full rounded border p-2"
+              required
+            />
           </div>
 
           <div className="mb-4">
@@ -124,6 +128,7 @@ const ModalForm = ({ register }: ModalFormProps) => {
               onChange={handleChange}
               placeholder="Enter Employee Position"
               className="w-full rounded border p-2"
+              required
             />
             {showDropdown && filteredPositions.length > 0 && (
               <ul className="absolute mt-1 max-h-40 w-full overflow-y-auto rounded border bg-white shadow-lg">
@@ -167,7 +172,11 @@ const ModalForm = ({ register }: ModalFormProps) => {
             <label htmlFor="department" className="block font-semibold">
               First Day of Service:
             </label>
-            <input type="date" className="mt-1 w-full rounded border p-2" />
+            <input
+              type="date"
+              className="mt-1 w-full rounded border p-2"
+              required
+            />
           </div>
           <div className="flex justify-center">
             <button
