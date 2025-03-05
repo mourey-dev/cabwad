@@ -84,7 +84,7 @@ class PDSView(APIView):
         file = pds.get("file")
 
         employee = {
-            "employee_id": 1,
+            "employee_id": data["employee_id"],
             "first_name": combined_data["p_first_name"],
             "surname": combined_data["p_surname"],
             "middle_name": data.get("middle_name", ""),
@@ -134,7 +134,7 @@ class EmployeeView(APIView):
             if category == "ALL":
                 employees = Employee.objects.all()
             else:
-                employees = Employee.objects.filter(position=category)
+                employees = Employee.objects.filter(appointment_status=category)
             serializer = EmployeeSerializer(employees, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -146,14 +146,14 @@ class EmployeeCount(APIView):
     def get(self, request):
         employees = Employee.objects.all()
 
-        total_permanent = employees.filter(position="PERMANENT").count()
-        total_casuals = employees.filter(position="CASUAL").count()
-        total_job_orders = employees.filter(position="JOB ORDER").count()
-        total_co_terminus = employees.filter(position="CO-TERMINUS").count()
+        total_permanent = employees.filter(appointment_status="PERMANENT").count()
+        total_casuals = employees.filter(appointment_status="CASUAL").count()
+        total_job_orders = employees.filter(appointment_status="JOB ORDER").count()
+        total_co_terminus = employees.filter(appointment_status="CO-TERMINUS").count()
         total_contract_of_service = employees.filter(
-            position="CONTRACT OF SERVICE"
+            appointment_status="CONTRACT OF SERVICE"
         ).count()
-        total_temporary = employees.filter(position="TEMPORARY").count()
+        total_temporary = employees.filter(appointment_status="TEMPORARY").count()
 
         return Response(
             {

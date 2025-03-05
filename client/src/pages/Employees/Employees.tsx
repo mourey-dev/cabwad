@@ -62,7 +62,7 @@ const Employees = () => {
         <div className="mb-23 grid grid-cols-5 gap-6 px-6 py-6">
           {data?.map((item) => (
             <div
-              key={item.id}
+              key={item.employee_id}
               className="cursor-pointer"
               onClick={() => handleOpenModal(item)}
             >

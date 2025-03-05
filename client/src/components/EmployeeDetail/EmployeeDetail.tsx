@@ -3,7 +3,7 @@ import Default from "../../assets/images/default.png";
 import ViewDocument from "./ViewDocument";
 import Close from "../../assets/images/close.png";
 
-import { EmployeeData } from "../../types/employee";
+import { EmployeeData, FileType } from "../../types/employee";
 
 interface EmployeeDetailProps {
   isOpen: boolean;
@@ -25,40 +25,17 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
     setDropdownOpen(dropdownOpen === index ? null : index);
   };
 
-  const documents = [
-    "CERTIFICATE OF CSC ELIGIBILITY",
-    "DIPLOMAS, COMMENDATIONS AND AWARDS",
-    "MARRIAGE CONTRACT",
-    "MEDICAL CERTIFICATE",
-    "NBI CLEARANCE",
-    "PERSONAL DATA SHEET",
-    "BIRTH CERTIFICATE",
-    "RESUME, BIODATA",
-    "BIRTH CERTIFICATE OF CHILD/REN",
-    "TRANSCRIPT OF RECORDS",
-    "FORM 137",
-    "FORM 138-A",
-    "DRIVER'S LICENSE (PHOTOCOPY)",
-    "PRC LICENSE (PHOTOCOPY)",
-    "TRAINING CERTIFICATE",
-    "APPOINTMENTS",
-    "ASSUMPTION OF DUTY",
-    "CERTIFICATE OF LEAVE BALANCES",
-    "CONTRACT OF SERVICES",
-    "COPIES OF DISCIPLINARY ACTIONS",
-    "NOTICE OF SALARY ADJUSTMENT/STEP INCREMENT",
-    "OATH OF OFFICE",
-    "POSITION DESCRIPTION FORMS",
-    "SSS",
-    "PAG-IBIG",
-    "PHILHEALTH",
-    "TIN NO.",
-  ];
+  const documents = Object.entries(FileType).map(([key, value]) => ({
+    key,
+    label: value,
+  }));
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900/50 p-4">
       <div className="relative flex w-[1200px] flex-col rounded-lg bg-white p-6 shadow-xl">
         <button
+          type="button"
+          title="Close Modal"
           onClick={onClose}
           className="absolute top-4 right-4 cursor-pointer px-3 py-1 text-white"
         >
@@ -117,7 +94,12 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
                   key={index}
                   className="relative cursor-pointer hover:underline"
                 >
-                  <div onClick={() => toggleDropdown(index)}>{doc}</div>
+                  <div
+                    onClick={() => toggleDropdown(index)}
+                    className={`${employee.files.find((file) => file.file_type == doc.key) ? "text-green-500" : "text-red-500"}`}
+                  >
+                    {doc.label}
+                  </div>
                   {dropdownOpen === index && (
                     <div className="absolute left-0 z-100 mt-1 w-32 rounded-md bg-white shadow-lg">
                       <button className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-300">

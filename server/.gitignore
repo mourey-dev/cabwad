@@ -179,5 +179,11 @@ cython_debug/
 # Json File
 *.json
 
-# Migration Folder
+# Migration folder
 migrations/
+
+# Data folder
+data/
+
+# PDS form
+static/pdfs/
