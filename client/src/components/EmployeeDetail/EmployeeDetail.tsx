@@ -26,33 +26,33 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
   };
 
   const documents = [
-    "Certificate of CSC Eligibility",
-    "Diplomas, Commendations and Awards",
-    "Marriage Contract",
-    "Medical Certificate",
-    "NBI Clearance",
-    "Personal Data Sheet",
-    "Birth Certificate",
-    "Resume, Biodata",
-    "Birth Certificate of Child/ren",
-    "Transcript of Records",
-    "Form 137",
-    "Form 138-A",
-    "Driver's License (Photocopy)",
-    "PRC License (Photocopy)",
-    "Training Certificate",
-    "Appointments",
-    "Assumption of Duty",
-    "Certificate of Leave Balances",
-    "Contract of Services",
-    "Copies of Disciplinary Actions",
-    "Notice of Salary Adjustment/Step Increment",
-    "Oath of Office",
-    "Position Description Forms",
+    "CERTIFICATE OF CSC ELIGIBILITY",
+    "DIPLOMAS, COMMENDATIONS AND AWARDS",
+    "MARRIAGE CONTRACT",
+    "MEDICAL CERTIFICATE",
+    "NBI CLEARANCE",
+    "PERSONAL DATA SHEET",
+    "BIRTH CERTIFICATE",
+    "RESUME, BIODATA",
+    "BIRTH CERTIFICATE OF CHILD/REN",
+    "TRANSCRIPT OF RECORDS",
+    "FORM 137",
+    "FORM 138-A",
+    "DRIVER'S LICENSE (PHOTOCOPY)",
+    "PRC LICENSE (PHOTOCOPY)",
+    "TRAINING CERTIFICATE",
+    "APPOINTMENTS",
+    "ASSUMPTION OF DUTY",
+    "CERTIFICATE OF LEAVE BALANCES",
+    "CONTRACT OF SERVICES",
+    "COPIES OF DISCIPLINARY ACTIONS",
+    "NOTICE OF SALARY ADJUSTMENT/STEP INCREMENT",
+    "OATH OF OFFICE",
+    "POSITION DESCRIPTION FORMS",
     "SSS",
-    "Pag-ibig",
-    "Philhealth",
-    "TIN No.",
+    "PAG-IBIG",
+    "PHILHEALTH",
+    "TIN NO.",
   ];
 
   return (
@@ -81,26 +81,32 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
           <div className="w-1/2">
             <div className="font-jost mt-4 space-y-2 text-sm">
               <h3 className="font-bold">Employee Details</h3>
-              <p>ID No.:</p>
-              <p>Last Name: {`${employee.surname}`}</p>
-              <p>First Name:{`${employee.first_name}`}</p>
-              <p>Middle Name:</p>
-              <p>Sex:</p>
-              <p>Civil Status:</p>
+              <p className="text-gray-800">ID NO.:</p>
+              <p className="text-gray-800">
+                LAST NAME: {`${employee.surname}`}
+              </p>
+              <p className="text-gray-800">
+                FIRST NAME:{`${employee.first_name}`}
+              </p>
+              <p className="text-gray-800">MIDDLE NAME:</p>
+              <p className="text-gray-800">SEX:</p>
+              <p className="text-gray-800">CIVIL STATUS:</p>
 
               <h3 className="mt-4 font-bold">Contact</h3>
-              <p>Phone no.:</p>
-              <p>Email:</p>
+              <p className="text-gray-800">PHONE NO.:</p>
+              <p className="text-gray-800">EMAIL:</p>
             </div>
           </div>
 
           <div className="font-jost mt-2 w-1/2 space-y-2 text-sm">
             <h3 className="mt-2 font-bold">Employment Details</h3>
-            <p>Appointment Status: {employee.position}</p>
-            <p>Civil Service Eligibility:</p>
-            <p>Position:</p>
-            <p>Date of Birth:</p>
-            <p>First Day of Service:</p>
+            <p className="text-gray-800">
+              APPOINTMENT STATUS: {employee.position}
+            </p>
+            <p className="text-gray-800">CIVIL SERVICE ELIGIBILITY:</p>
+            <p className="text-gray-800">POSITION:</p>
+            <p className="text-gray-800">DATE OF BIRTH:</p>
+            <p className="text-gray-800">FIRST DAY OF SERVICE:</p>
           </div>
 
           <div className="w-1/2">
