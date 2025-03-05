@@ -109,7 +109,7 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
             <p className="text-gray-800">FIRST DAY OF SERVICE:</p>
           </div>
 
-          <div className="w-1/2">
+          <div className="mr-auto w-4/5">
             <h3 className="font-jost mt-2 font-bold">Documents</h3>
             <div className="font-jost grid grid-cols-2 text-sm">
               {documents.map((doc, index) => (
