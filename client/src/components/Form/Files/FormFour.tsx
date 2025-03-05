@@ -38,6 +38,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
   };
 
   const submit = (data: PDSForm) => {
+    console.log(data);
     handlePost(data);
   };
 

@@ -16,12 +16,41 @@ from .serializers import EmployeeSerializer
 from services.drive_services import get_file_to_folder
 
 
+def get_civil_status(data):
+    if data.get("p_civil_single"):
+        return "Single"
+    if data.get("p_civil_widowed"):
+        return "Widowed"
+    if data.get("p_civil_married"):
+        return "Married"
+    if data.get("p_civil_separated"):
+        return "Separated"
+    if data.get("p_civil_other"):
+        return "Other"
+    return ""
+
+
+def get_sex(data):
+    if data.get("p_sex_male"):
+        return "MALE"
+    if data.get("p_sex_female"):
+        return "FEMALE"
+    return ""
+
+
 class PDSView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminUser]
 
     def post(self, request):
         data = request.data
+
+        # Ensure employee_id is present
+        if "employee_id" not in data:
+            return Response(
+                {"error": "employee_id is required"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
         update_dict_key(data["learning_development"])
         update_dict_key(data["civil_service_eligibility"])
         update_dict_key(data["work_experience"])
@@ -55,16 +84,20 @@ class PDSView(APIView):
         file = pds.get("file")
 
         employee = {
+            "employee_id": 1,
             "first_name": combined_data["p_first_name"],
             "surname": combined_data["p_surname"],
+            "middle_name": data.get("middle_name", ""),
+            "appointment_status": data.get("employment_status", ""),
             "position": data["position"],
             "department": data["department"],
+            "civil_status": get_civil_status(combined_data),
             "folder_id": pds["folder_id"],
-            # "elementary": combined_data[""],
-            # "secondary": combined_data[""],
-            # "college": combined_data[""],
-            # "phone": combined_data[""],
-            # "email": combined_data[""],
+            "birth_date": combined_data.get("p_birth_date", ""),
+            "first_day_service": data["first_day_service"],
+            "sex": get_sex(combined_data),
+            "phone": combined_data["p_mobile"],
+            "email": combined_data["p_email"],
             "files": [
                 {
                     "name": file["name"],

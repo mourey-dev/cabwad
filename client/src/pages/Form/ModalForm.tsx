@@ -92,6 +92,8 @@ const ModalForm = ({ register }: ModalFormProps) => {
               ID No.:
             </label>
             <input
+              title="employee_id"
+              {...register("employee_id")}
               type="number"
               className="mt-1 w-full rounded border p-2"
               required
@@ -105,7 +107,7 @@ const ModalForm = ({ register }: ModalFormProps) => {
             <select
               id="employee_type"
               defaultValue=""
-              {...register("position")}
+              {...register("employment_status")}
               required
               className="mt-1 w-full rounded border p-2"
             >
@@ -125,7 +127,10 @@ const ModalForm = ({ register }: ModalFormProps) => {
             <input
               type="text"
               value={searchTerm}
-              onChange={handleChange}
+              {...register("position", {
+                onChange: handleChange,
+                value: searchTerm,
+              })}
               placeholder="Enter Employee Position"
               className="w-full rounded border p-2"
               required
@@ -173,6 +178,8 @@ const ModalForm = ({ register }: ModalFormProps) => {
               First Day of Service:
             </label>
             <input
+              title="first_day_service"
+              {...register("first_day_service")}
               type="date"
               className="mt-1 w-full rounded border p-2"
               required

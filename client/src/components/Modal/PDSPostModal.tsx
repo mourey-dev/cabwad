@@ -12,12 +12,23 @@ const PDSPostModal = ({ url }: { url: string }) => {
     window.open(url, "_blank");
   };
 
+  const handleHome = () => {
+    window.location.href = "/home";
+  };
+
   return (
     <div>
       {show && (
         <div className="bg-opacity-75 fixed inset-0 z-10 flex items-center justify-center bg-gray-800">
           <div className="rounded bg-white p-6 shadow-lg">
-            <p className="mb-4">PDS was successfully created.</p>
+            <p className="mb-4 text-center">PDS was successfully created.</p>
+            <button
+              type="button"
+              onClick={handleHome}
+              className="mr-2 rounded bg-blue-500 px-4 py-2 text-white"
+            >
+              Home
+            </button>
             <button
               type="button"
               className="mr-2 rounded bg-blue-500 px-4 py-2 text-white"
