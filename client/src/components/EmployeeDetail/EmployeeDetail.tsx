@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Default from "../../assets/images/default.png";
 import ViewDocument from "./ViewDocument";
+import Close from "../../assets/images/close.png";
 
 import { EmployeeData } from "../../types/employee";
 
@@ -59,9 +60,9 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
       <div className="relative flex w-[1200px] flex-col rounded-lg bg-white p-6 shadow-xl">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 cursor-pointer rounded-full bg-red-500 px-3 py-1 text-white"
+          className="absolute top-4 right-4 cursor-pointer px-3 py-1 text-white"
         >
-          X
+          <img src={Close} alt="" className="h-8 w-8" />
         </button>
         <h2 className="font-jost text-center text-2xl font-bold">
           PERSONAL INFORMATION
