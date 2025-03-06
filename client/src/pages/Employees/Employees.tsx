@@ -66,7 +66,7 @@ const Employees = () => {
               className="cursor-pointer"
               onClick={() => handleOpenModal(item)}
             >
-              <div className="relative flex w-full flex-col items-center rounded-md bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105 hover:bg-blue-600 sm:p-6">
+              <div className="relative flex h-60 w-full flex-col items-center rounded-md bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105 hover:bg-blue-600 sm:p-6">
                 <button className="absolute top-2 right-2">
                   <img src={remove} alt="Remove User" className="w-6" />
                 </button>
@@ -75,9 +75,11 @@ const Employees = () => {
                   alt="Employee Icon"
                   className="mt-4 w-16"
                 />
-                <p className="mt-2 text-center font-bold text-gray-800">{`${item.first_name} ${item.surname}`}</p>
-                <p className="text-center text-sm text-gray-500">{`${item.position}`}</p>
-                <p className="text-center text-xs text-gray-400">{`${item.department}`}</p>
+                <div className="flex flex-grow flex-col justify-between text-center">
+                  <p className="mt-2 font-bold text-gray-800">{`${item.first_name} ${item.surname}`}</p>
+                  <p className="text-sm text-gray-500">{`${item.position}`}</p>
+                  <p className="text-xs text-gray-400">{`${item.department}`}</p>
+                </div>
               </div>
             </div>
           ))}
