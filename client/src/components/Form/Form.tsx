@@ -41,7 +41,7 @@ const Form = () => {
     <div className="">
       {forms[currentPage]}
       <Pagination />
-      <ModalForm register={register} />
+      <ModalForm register={register} setValue={setValue} />
     </div>
   );
 };

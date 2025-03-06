@@ -3,7 +3,7 @@ import Default from "../../assets/images/default.png";
 import ViewDocument from "./ViewDocument";
 import Close from "../../assets/images/close.png";
 
-import { EmployeeData, FileType } from "../../types/employee";
+import { EmployeeData, FileType, EmployeeFile } from "../../types/employee";
 
 // Components
 import EmployeeUpdateModal from "../EmployeeDetail/UpdateDetail/UpdateDetail";
@@ -32,6 +32,14 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
   const handleViewDocument = () => {
     window.open(
       `https://drive.google.com/drive/folders/${employee.folder_id}`,
+      "blank",
+    );
+  };
+
+  const handleViewFile = (file: EmployeeFile | undefined) => {
+    if (!file) return;
+    window.open(
+      `https://drive.google.com/file/d/${file.file_id}/view`,
       "blank",
     );
   };
@@ -120,32 +128,46 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
           <div className="mr-auto w-4/5">
             <h3 className="font-jost mt-2 font-bold">Documents</h3>
             <div className="font-jost grid grid-cols-2 text-sm">
-              {documents.map((doc, index) => (
-                <div
-                  key={index}
-                  className="relative cursor-pointer hover:underline"
-                >
+              {documents.map((doc, index) => {
+                const fileExists: EmployeeFile | undefined =
+                  employee.files.find((file) => file.file_type == doc.key);
+                return (
                   <div
-                    onClick={() => toggleDropdown(index)}
-                    className={`${employee.files.find((file) => file.file_type == doc.key) ? "text-green-500" : "text-red-500"} uppercase`}
+                    key={index}
+                    className="relative cursor-pointer hover:underline"
                   >
-                    {doc.label}
-                  </div>
-                  {dropdownOpen === index && (
-                    <div className="absolute left-0 z-100 mt-1 w-32 rounded-md bg-white shadow-lg">
-                      <button className="block w-full px-4 py-2 text-left text-sm uppercase hover:bg-gray-300">
-                        View
-                      </button>
-                      <button className="block w-full px-4 py-2 text-left text-sm uppercase hover:bg-gray-300">
-                        Edit
-                      </button>
-                      <button className="block w-full px-4 py-2 text-left text-sm uppercase hover:bg-red-200">
-                        Delete
-                      </button>
+                    <div
+                      onClick={() => toggleDropdown(index)}
+                      className={`select-none ${fileExists ? "text-green-500" : "text-red-500"} uppercase`}
+                    >
+                      {doc.label}
                     </div>
-                  )}
-                </div>
-              ))}
+                    {dropdownOpen === index && (
+                      <div className="absolute left-0 z-100 mt-1 w-32 rounded-md bg-white shadow-lg">
+                        <button
+                          onClick={() => handleViewFile(fileExists)}
+                          className={`block w-full px-4 py-2 text-left text-sm uppercase hover:bg-gray-300 ${fileExists ? "" : "disabled:opacity-50"}`}
+                          disabled={!fileExists}
+                        >
+                          View
+                        </button>
+                        <button
+                          disabled={!fileExists}
+                          className={`block w-full px-4 py-2 text-left text-sm uppercase hover:bg-gray-300 ${fileExists ? "" : "disabled:opacity-50"}`}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          disabled={!fileExists}
+                          className={`block w-full px-4 py-2 text-left text-sm uppercase hover:bg-red-200 ${fileExists ? "" : "disabled:opacity-50"}`}
+                        >
+                          Delete
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

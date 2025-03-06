@@ -1,10 +1,11 @@
 import PDSForm from "../../types/form";
-import { UseFormRegister } from "react-hook-form";
+import { UseFormRegister, UseFormSetValue } from "react-hook-form";
 
 import { useState } from "react";
 
 type ModalFormProps = {
   register: UseFormRegister<PDSForm>;
+  setValue: UseFormSetValue<PDSForm>;
 };
 
 const positions = [
@@ -47,7 +48,7 @@ const positions = [
   "Water Utilities Development Officer A",
 ];
 
-const ModalForm = ({ register }: ModalFormProps) => {
+const ModalForm = ({ register, setValue }: ModalFormProps) => {
   const [showModal, setShowModal] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredPositions, setFilteredPositions] = useState<string[]>([]);
@@ -70,9 +71,8 @@ const ModalForm = ({ register }: ModalFormProps) => {
   };
 
   const handleSelect = (position: string) => {
-    handleChange({
-      target: { value: position },
-    } as React.ChangeEvent<HTMLInputElement>);
+    setSearchTerm(position);
+    setValue("position", position);
     setShowDropdown(false);
   };
 
@@ -131,7 +131,6 @@ const ModalForm = ({ register }: ModalFormProps) => {
               value={searchTerm}
               {...register("position", {
                 onChange: handleChange,
-                value: searchTerm,
               })}
               placeholder="Enter Employee Position"
               className="w-full rounded border p-2"

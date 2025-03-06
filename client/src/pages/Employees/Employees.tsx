@@ -77,7 +77,7 @@ const Employees = () => {
                 />
                 <div className="flex flex-grow flex-col justify-between text-center">
                   <p className="mt-2 font-bold text-gray-800">{`${item.first_name} ${item.surname}`}</p>
-                  <p className="text-sm text-gray-500">{`${item.position}`}</p>
+                  <p className="text-sm text-gray-500">{`${item.appointment_status}`}</p>
                   <p className="text-xs text-gray-400">{`${item.department}`}</p>
                 </div>
               </div>

@@ -1,3 +1,9 @@
+export type EmployeeFile = {
+  name: string;
+  file_id: string;
+  file_type: string;
+};
+
 export type EmployeeData = {
   employee_id: number;
   first_name: string;
@@ -5,11 +11,7 @@ export type EmployeeData = {
   middle_name: string;
   position: string;
   department: string;
-  files: Array<{
-    name: string;
-    file_id: string;
-    file_type: string;
-  }>;
+  files: Array<EmployeeFile>;
   birth_date: string;
   sex: string;
   civil_status: string;
