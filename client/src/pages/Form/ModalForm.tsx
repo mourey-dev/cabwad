@@ -85,6 +85,7 @@ const ModalForm = ({ register, setValue }: ModalFormProps) => {
             setShowModal(false);
           }}
           className="w-96 rounded-lg bg-white p-6 shadow-lg"
+          autoComplete="off"
         >
           <h2 className="mb-4 text-center text-xl font-bold">
             Employee Information

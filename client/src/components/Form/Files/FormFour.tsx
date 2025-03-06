@@ -48,6 +48,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
       <LoadingModal loading={loading} />
       <form
         className="mx-auto my-12 grid h-full w-[1001px] border-4 bg-white"
+        autoComplete="off"
         onSubmit={handleSubmit(submit)}
       >
         <div className="grid grid-cols-5">

@@ -13,7 +13,10 @@ const FormThree = ({ register }: FormThreeProps) => {
 
   return (
     <div>
-      <form className="mx-auto my-12 w-[1001px] border-4 bg-white">
+      <form
+        className="mx-auto my-12 w-[1001px] border-4 bg-white"
+        autoComplete="off"
+      >
         {/* Voluntary Work Header */}
         <div className="border-2">
           <h2 className="bg-gray-600 p-1 text-sm font-bold text-white italic">
