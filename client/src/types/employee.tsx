@@ -2,6 +2,7 @@ export type EmployeeData = {
   employee_id: number;
   first_name: string;
   surname: string;
+  middle_name: string;
   position: string;
   department: string;
   files: Array<{
@@ -9,6 +10,15 @@ export type EmployeeData = {
     file_id: string;
     file_type: string;
   }>;
+  birth_date: string;
+  sex: string;
+  civil_status: string;
+  civil_service: string;
+  appointment_status: string;
+  first_day_service: string;
+  phone: string;
+  email: string;
+  folder_id: string;
 };
 
 export type EmployeesData = EmployeeData[];

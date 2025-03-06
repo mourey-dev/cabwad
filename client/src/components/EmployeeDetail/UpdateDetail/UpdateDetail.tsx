@@ -58,42 +58,42 @@ export default function EmployeeUpdateModal({
               value={formData.employee_id}
               onChange={handleChange}
               placeholder="ID No."
-              className="input-field mb-2 rounded border"
+              className="input-field mb-2 rounded border px-2 py-1"
             />
             <input
               name="lastName"
               value={formData.surname}
               onChange={handleChange}
               placeholder="Last Name"
-              className="input-field mb-2 rounded border"
+              className="input-field mb-2 rounded border px-2 py-1"
             />
             <input
               name="firstName"
               value={formData.first_name}
               onChange={handleChange}
               placeholder="First Name"
-              className="input-field mb-2 rounded border"
+              className="input-field mb-2 rounded border px-2 py-1"
             />
             <input
               name="middleName"
               value={formData.middle_name}
               onChange={handleChange}
               placeholder="Middle Name"
-              className="input-field mb-2 rounded border"
+              className="input-field mb-2 rounded border px-2 py-1"
             />
             <input
               name="sex"
               value={formData.sex}
               onChange={handleChange}
               placeholder="Sex"
-              className="input-field mb-2 rounded border"
+              className="input-field mb-2 rounded border px-2 py-1"
             />
             <input
               name="civilStatus"
               value={formData.civil_status}
               onChange={handleChange}
               placeholder="Civil Status"
-              className="input-field mb-2 rounded border"
+              className="input-field mb-2 rounded border px-2 py-1"
             />
           </div>
 
@@ -105,21 +105,21 @@ export default function EmployeeUpdateModal({
               value={formData.employment_status}
               onChange={handleChange}
               placeholder="Appointment Status"
-              className="input-field mb-2 rounded border"
+              className="input-field mb-2 rounded border px-2 py-1"
             />
             <input
               name="eligibility"
               value={formData.eligibility}
               onChange={handleChange}
               placeholder="Civil Service Eligibility"
-              className="input-field mb-2 rounded border"
+              className="input-field mb-2 rounded border px-2 py-1"
             />
             <input
               name="position"
               value={formData.position}
               onChange={handleChange}
               placeholder="Position"
-              className="input-field mb-2 rounded border"
+              className="input-field mb-2 rounded border px-2 py-1"
             />
             <br />
             <label htmlFor="birthDate" className="input-label text-gray-500">
@@ -131,7 +131,7 @@ export default function EmployeeUpdateModal({
               name="birthDate"
               value={formData.birth_date}
               onChange={handleChange}
-              className="input-field mb-2 rounded border"
+              className="input-field mb-2 rounded border px-2 py-1"
             />
             <br />
             <label
@@ -146,7 +146,7 @@ export default function EmployeeUpdateModal({
               name="firstDayService"
               value={formData.first_day_service}
               onChange={handleChange}
-              className="input-field mb-2 rounded border"
+              className="input-field mb-2 rounded border px-2 py-1"
             />
           </div>
 
@@ -158,14 +158,14 @@ export default function EmployeeUpdateModal({
               value={formData.phone}
               onChange={handleChange}
               placeholder="Phone No."
-              className="input-field mr-2 rounded border"
+              className="input-field mr-2 rounded border px-2 py-1"
             />
             <input
               name="email"
               value={formData.email}
               onChange={handleChange}
               placeholder="Email"
-              className="input-field mb-2 rounded border"
+              className="input-field mb-2 rounded border px-2 py-1"
             />
           </div>
 

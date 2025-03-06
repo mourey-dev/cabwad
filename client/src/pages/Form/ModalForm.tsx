@@ -70,7 +70,9 @@ const ModalForm = ({ register }: ModalFormProps) => {
   };
 
   const handleSelect = (position: string) => {
-    setSearchTerm(position);
+    handleChange({
+      target: { value: position },
+    } as React.ChangeEvent<HTMLInputElement>);
     setShowDropdown(false);
   };
 

@@ -29,6 +29,13 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
     setDropdownOpen(dropdownOpen === index ? null : index);
   };
 
+  const handleViewDocument = () => {
+    window.open(
+      `https://drive.google.com/drive/folders/${employee.folder_id}`,
+      "blank",
+    );
+  };
+
   const documents = Object.entries(FileType).map(([key, value]) => ({
     key,
     label: value,
@@ -61,33 +68,53 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
         <div className="flex">
           <div className="w-1/2">
             <div className="font-jost mt-4 space-y-2 text-sm">
-              <h3 className="font-bold">Employee Details</h3>
-              <p className="text-gray-800">ID NO.:</p>
-              <p className="text-gray-800">
-                LAST NAME: {`${employee.surname}`}
+              <h3 className="font-bold uppercase">Employee Details</h3>
+              <p className="text-gray-800 uppercase">
+                ID NO.: {employee.employee_id || "NONE"}
               </p>
-              <p className="text-gray-800">
-                FIRST NAME:{`${employee.first_name}`}
+              <p className="text-gray-800 uppercase">
+                LAST NAME: {`${employee.surname || "NONE"}`}
               </p>
-              <p className="text-gray-800">MIDDLE NAME:</p>
-              <p className="text-gray-800">SEX:</p>
-              <p className="text-gray-800">CIVIL STATUS:</p>
+              <p className="text-gray-800 uppercase">
+                FIRST NAME:{`${employee.first_name || "NONE"}`}
+              </p>
+              <p className="text-gray-800 uppercase">
+                MIDDLE NAME: {employee.middle_name || "NONE"}
+              </p>
+              <p className="text-gray-800 uppercase">
+                SEX: {employee.sex || "NONE"}
+              </p>
+              <p className="text-gray-800 uppercase">
+                CIVIL STATUS: {employee.civil_status || "NONE"}
+              </p>
 
-              <h3 className="mt-4 font-bold">Contact</h3>
-              <p className="text-gray-800">PHONE NO.:</p>
-              <p className="text-gray-800">EMAIL:</p>
+              <h3 className="mt-4 font-bold uppercase">Contact</h3>
+              <p className="text-gray-800 uppercase">
+                PHONE NO.: {employee.phone || "NONE"}
+              </p>
+              <p className="text-gray-800 uppercase">
+                EMAIL: {employee.email || "NONE"}
+              </p>
             </div>
           </div>
 
-          <div className="font-jost mt-2 w-1/2 space-y-2 text-sm">
-            <h3 className="mt-2 font-bold">Employment Details</h3>
+          <div className="font-jost mt-2 w-1/2 space-y-2 text-sm uppercase">
+            <h3 className="mt-2 font-bold uppercase">Employment Details</h3>
             <p className="text-gray-800">
-              APPOINTMENT STATUS: {employee.position}
+              APPOINTMENT STATUS: {employee.appointment_status || "NONE"}
             </p>
-            <p className="text-gray-800">CIVIL SERVICE ELIGIBILITY:</p>
-            <p className="text-gray-800">POSITION:</p>
-            <p className="text-gray-800">DATE OF BIRTH:</p>
-            <p className="text-gray-800">FIRST DAY OF SERVICE:</p>
+            <p className="text-gray-800 uppercase">
+              CIVIL SERVICE ELIGIBILITY: {employee.civil_service || "NONE"}
+            </p>
+            <p className="text-gray-800 uppercase">
+              POSITION: {employee.position || "NONE"}
+            </p>
+            <p className="text-gray-800 uppercase">
+              DATE OF BIRTH: {employee.birth_date || "NONE"}
+            </p>
+            <p className="text-gray-800 uppercase">
+              FIRST DAY OF SERVICE: {employee.first_day_service || "NONE"}
+            </p>
           </div>
 
           <div className="mr-auto w-4/5">
@@ -100,19 +127,19 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
                 >
                   <div
                     onClick={() => toggleDropdown(index)}
-                    className={`${employee.files.find((file) => file.file_type == doc.key) ? "text-green-500" : "text-red-500"}`}
+                    className={`${employee.files.find((file) => file.file_type == doc.key) ? "text-green-500" : "text-red-500"} uppercase`}
                   >
                     {doc.label}
                   </div>
                   {dropdownOpen === index && (
                     <div className="absolute left-0 z-100 mt-1 w-32 rounded-md bg-white shadow-lg">
-                      <button className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-300">
+                      <button className="block w-full px-4 py-2 text-left text-sm uppercase hover:bg-gray-300">
                         View
                       </button>
-                      <button className="block w-full px-4 py-2 text-left text-sm hover:bg-gray-300">
+                      <button className="block w-full px-4 py-2 text-left text-sm uppercase hover:bg-gray-300">
                         Edit
                       </button>
-                      <button className="block w-full px-4 py-2 text-left text-sm hover:bg-red-200">
+                      <button className="block w-full px-4 py-2 text-left text-sm uppercase hover:bg-red-200">
                         Delete
                       </button>
                     </div>
@@ -125,14 +152,14 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
 
         <div className="mt-6 flex justify-center gap-4">
           <button
-            className="font-jost flex items-center rounded-full bg-yellow-500 px-6 py-2 text-white shadow-md transition hover:bg-yellow-600"
+            className="font-jost flex items-center rounded-full bg-yellow-500 px-6 py-2 text-white uppercase shadow-md transition hover:bg-yellow-600"
             onClick={() => setIsUpdateModalOpen(true)} // Open update modal
           >
             Update
           </button>
           <button
-            className="font-jost flex items-center rounded-full bg-blue-500 px-6 py-2 text-white shadow-md transition hover:bg-blue-600"
-            onClick={() => setIsViewDocumentOpen(true)}
+            className="font-jost flex items-center rounded-full bg-blue-500 px-6 py-2 text-white uppercase shadow-md transition hover:bg-blue-600"
+            onClick={handleViewDocument}
           >
             View Documents
           </button>

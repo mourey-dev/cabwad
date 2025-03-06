@@ -25,6 +25,7 @@ def create_folder(folder_name, parent_folder_id):
     }
 
     folder = service.files().create(body=FOLDER_METADATA, fields="id").execute()
+    set_file_permissions(folder.get("id"))
     return folder.get("id")
 
 
