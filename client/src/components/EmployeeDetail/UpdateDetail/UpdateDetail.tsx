@@ -25,7 +25,7 @@ export default function EmployeeUpdateModal({
     eligibility: "",
     position: "",
     birth_date: "",
-    first_day_of_service: "",
+    first_day_service: "",
   });
 
   // Handle Input Change
@@ -58,42 +58,42 @@ export default function EmployeeUpdateModal({
               value={formData.employee_id}
               onChange={handleChange}
               placeholder="ID No."
-              className="input-field"
+              className="input-field mb-2 rounded border"
             />
             <input
               name="lastName"
               value={formData.surname}
               onChange={handleChange}
               placeholder="Last Name"
-              className="input-field"
+              className="input-field mb-2 rounded border"
             />
             <input
               name="firstName"
               value={formData.first_name}
               onChange={handleChange}
               placeholder="First Name"
-              className="input-field"
+              className="input-field mb-2 rounded border"
             />
             <input
               name="middleName"
               value={formData.middle_name}
               onChange={handleChange}
               placeholder="Middle Name"
-              className="input-field"
+              className="input-field mb-2 rounded border"
             />
             <input
               name="sex"
               value={formData.sex}
               onChange={handleChange}
               placeholder="Sex"
-              className="input-field"
+              className="input-field mb-2 rounded border"
             />
             <input
               name="civilStatus"
               value={formData.civil_status}
               onChange={handleChange}
               placeholder="Civil Status"
-              className="input-field"
+              className="input-field mb-2 rounded border"
             />
           </div>
 
@@ -105,21 +105,21 @@ export default function EmployeeUpdateModal({
               value={formData.employment_status}
               onChange={handleChange}
               placeholder="Appointment Status"
-              className="input-field"
+              className="input-field mb-2 rounded border"
             />
             <input
               name="eligibility"
               value={formData.eligibility}
               onChange={handleChange}
               placeholder="Civil Service Eligibility"
-              className="input-field"
+              className="input-field mb-2 rounded border"
             />
             <input
               name="position"
               value={formData.position}
               onChange={handleChange}
               placeholder="Position"
-              className="input-field"
+              className="input-field mb-2 rounded border"
             />
             <br />
             <label htmlFor="birthDate" className="input-label text-gray-500">
@@ -131,12 +131,12 @@ export default function EmployeeUpdateModal({
               name="birthDate"
               value={formData.birth_date}
               onChange={handleChange}
-              className="input-field"
+              className="input-field mb-2 rounded border"
             />
             <br />
             <label
               htmlFor="firstDayService"
-              className="input-label text-gray-500"
+              className="input-label mb-2 text-gray-500"
             >
               First Day of Service:
             </label>
@@ -144,9 +144,9 @@ export default function EmployeeUpdateModal({
             <input
               type="date"
               name="firstDayService"
-              value={formData.first_day_of_service}
+              value={formData.first_day_service}
               onChange={handleChange}
-              className="input-field"
+              className="input-field mb-2 rounded border"
             />
           </div>
 
@@ -158,14 +158,14 @@ export default function EmployeeUpdateModal({
               value={formData.phone}
               onChange={handleChange}
               placeholder="Phone No."
-              className="input-field"
+              className="input-field mr-2 rounded border"
             />
             <input
               name="email"
               value={formData.email}
               onChange={handleChange}
               placeholder="Email"
-              className="input-field"
+              className="input-field mb-2 rounded border"
             />
           </div>
 
