@@ -75,9 +75,9 @@ const Employees = () => {
                   alt="Employee Icon"
                   className="mt-4 w-16"
                 />
-                <p className="mt-2 font-bold text-gray-800">{`${item.first_name} ${item.surname}`}</p>
-                <p className="text-sm text-gray-500">{`${item.position}`}</p>
-                <p className="text-center text-xs text-gray-400">{`${item.department}`}</p>
+                <p className="mt-2 font-bold text-gray-800 uppercase">{`${item.first_name} ${item.surname}`}</p>
+                <p className="text-sm text-gray-500 uppercase">{`${item.position}`}</p>
+                <p className="text-center text-xs text-gray-400 uppercase">{`${item.department}`}</p>
               </div>
             </div>
           ))}

@@ -38,18 +38,23 @@ def get_sex(data):
     return ""
 
 
+def to_uppercase(data):
+    if isinstance(data, dict):
+        return {key: to_uppercase(value) for key, value in data.items()}
+    elif isinstance(data, list):
+        return [to_uppercase(item) for item in data]
+    elif isinstance(data, str):
+        return data.upper()
+    else:
+        return data
+
+
 class PDSView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminUser]
 
     def post(self, request):
-        data = request.data
-
-        # Ensure employee_id is present
-        if "employee_id" not in data:
-            return Response(
-                {"error": "employee_id is required"}, status=status.HTTP_400_BAD_REQUEST
-            )
+        data = to_uppercase(request.data)
 
         update_dict_key(data["learning_development"])
         update_dict_key(data["civil_service_eligibility"])
