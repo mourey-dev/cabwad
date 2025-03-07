@@ -184,6 +184,3 @@ migrations/
 
 # Data folder
 data/
-
-# PDS form
-static/pdfs/
