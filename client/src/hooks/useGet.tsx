@@ -7,28 +7,28 @@ const useGet = <T,>(path: string) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [data, setData] = useState<T | null>(null);
 
+  const handleGet = async () => {
+    setLoading(true);
+    setError(false);
+    setErrorMessage("");
+
+    try {
+      const result = await axiosInstance.get<T>(path);
+      setData(result.data);
+    } catch (error: any) {
+      setError(true);
+      console.log(error);
+      setErrorMessage(error.response.data.detail || "An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const handleGet = async () => {
-      setLoading(true);
-      setError(false);
-      setErrorMessage("");
-
-      try {
-        const result = await axiosInstance.get<T>(path);
-        setData(result.data);
-      } catch (error: any) {
-        setError(true);
-        console.log(error);
-        setErrorMessage(error.response.data.detail || "An error occurred");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     handleGet();
   }, [path]);
 
-  return { loading, error, errorMessage, data };
+  return { loading, error, errorMessage, data, setData };
 };
 
 export default useGet;

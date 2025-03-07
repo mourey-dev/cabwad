@@ -1,5 +1,5 @@
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload
+from googleapiclient.http import MediaIoBaseUpload
 from django.conf import settings
 
 
@@ -29,7 +29,7 @@ def create_folder(folder_name, parent_folder_id):
     return folder.get("id")
 
 
-def upload_to_drive(file_path, file_name, folder_id):
+def upload_to_drive(file_io, file_name, folder_id):
     """Uploads a file to Google Drive."""
     service = build_drive_service()
     # Set file metadata
@@ -38,9 +38,10 @@ def upload_to_drive(file_path, file_name, folder_id):
         "parents": [folder_id],
     }
 
-    # Upload the file
-    media = MediaFileUpload(file_path, resumable=True)
-    service
+    # Upload the file using MediaIoBaseUpload
+    media = MediaIoBaseUpload(
+        file_io, mimetype="application/octet-stream", resumable=True
+    )
     file = (
         service.files()
         .create(body=file_metadata, media_body=media, fields="id")
@@ -50,6 +51,48 @@ def upload_to_drive(file_path, file_name, folder_id):
     set_file_permissions(file.get("id"))
 
     return {"name": file_name, "id": file.get("id")}
+
+
+def update_file(file_id, file_io=None, new_name=None):
+    """Update a file in Google Drive by deleting and recreating it."""
+    service = build_drive_service()
+
+    # Get the original file's parent folder
+    file_data = service.files().get(fileId=file_id, fields="parents").execute()
+    parent_folder_id = (
+        file_data.get("parents", [])[0] if file_data.get("parents") else None
+    )
+
+    # Delete the existing file
+    delete_file(file_id)
+
+    # If no new content or name provided, return None
+    if not file_io and not new_name:
+        return None
+
+    # Set up file metadata for new file
+    file_metadata = {
+        "name": new_name,
+        "parents": [parent_folder_id] if parent_folder_id else None,
+    }
+
+    # Upload the new file
+    media = None
+    if file_io:
+        media = MediaIoBaseUpload(
+            file_io, mimetype="application/octet-stream", resumable=True
+        )
+
+    file = (
+        service.files()
+        .create(body=file_metadata, media_body=media, fields="id, name")
+        .execute()
+    )
+
+    # Set permissions for the new file
+    set_file_permissions(file.get("id"))
+
+    return {"name": file.get("name"), "id": file.get("id")}
 
 
 def set_file_permissions(file_id):
@@ -66,3 +109,9 @@ def get_file_to_folder(folder_id):
     results = service.files().list(q=query, fields="files(id, name)").execute()
     files = results.get("files", [])
     return files
+
+
+def delete_file(file_id):
+    """Delete a file from Google Drive."""
+    service = build_drive_service()
+    service.files().delete(fileId=file_id).execute()

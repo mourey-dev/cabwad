@@ -1,3 +1,4 @@
 import PDSPostModal from "./PDSPostModal";
+import ConfirmationModal from "./ConfirmModal";
 
-export { PDSPostModal };
+export { PDSPostModal, ConfirmationModal };

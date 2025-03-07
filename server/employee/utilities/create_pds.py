@@ -1,16 +1,13 @@
 import os
+from io import BytesIO
 from pypdf import PdfReader, PdfWriter
 from pypdf.generic import NameObject
-
-from services.drive_services import create_folder, upload_to_drive, set_file_permissions
+from services.drive_services import create_folder, upload_to_drive
 
 print(__file__)
 base_path = os.path.dirname(os.path.abspath(__file__))
 input_path = os.path.join(
     base_path, "../../static/pdfs/PDS_CS_Form_No_212_Revised2017.pdf"
-)
-output_path = os.path.join(
-    base_path, "../../static/pdfs/PDS_CS_Form_No_212_Revised2017_filled.pdf"
 )
 
 
@@ -36,16 +33,20 @@ def create_pds(data):
             field_type = field.get("/FT")
             if field_type == "/Btn":  # Checkbox field
                 value = data.get(field_name, "")
-                writer.update_page_form_field_values(page, {field_name: f"/{value}"})
-                # print(f"Checkbox Field: {field_name}, Value: {value}")
+                writer.update_page_form_field_values(
+                    page,
+                    {
+                        field_name: f"/{value.lower() if not isinstance(value, bool) else ''}"
+                    },
+                )
             else:
                 value = data.get(field_name, "")
                 writer.update_page_form_field_values(page, {field_name: value})
-                # print(f"Field: {field_name}, Value: {value}")
 
-    # Save the modified PDF to a new file
-    with open(output_path, "wb") as output_pdf:
-        writer.write(output_pdf)
+    # Save the modified PDF to a BytesIO object
+    output_pdf = BytesIO()
+    writer.write(output_pdf)
+    output_pdf.seek(0)  # Move the cursor to the beginning of the BytesIO object
 
     parent_folder = "1bXWiVgFCnq7J93SjKjkeeGBX1uOFN30G"
     folder_name = f"{data.get('p_surname')}, {data.get('p_first_name')}"
@@ -53,7 +54,7 @@ def create_pds(data):
     folder_id = create_folder(folder_name, parent_folder)
 
     file = upload_to_drive(
-        output_path,
+        output_pdf,
         file_name,
         folder_id,
     )

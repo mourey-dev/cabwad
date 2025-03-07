@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import remove from "../../assets/images/remove-user.png";
 import displayPic from "../../assets/images/displayPic.png";
 import { useGet } from "../../hooks";
@@ -9,14 +9,24 @@ import EmployeeDetail from "../../components/EmployeeDetail/EmployeeDetail";
 
 const Employees = () => {
   const [category, setCategory] = useState("ALL");
-  const { loading, data } = useGet<EmployeesData>(
+  const { loading, data, setData } = useGet<EmployeesData>(
     `/employee/list/?category=${category}`,
   );
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<EmployeeData | null>(
     null,
   );
+
+  useEffect(() => {
+    if (isModalOpen) {
+      const updatedData = data?.find(
+        (item) => item.employee_id === selectedEmployee?.employee_id,
+      );
+      if (updatedData) {
+        setSelectedEmployee(updatedData);
+      }
+    }
+  }, [data]);
 
   const handleOpenModal = (employee: EmployeeData) => {
     setSelectedEmployee(employee);
@@ -91,6 +101,7 @@ const Employees = () => {
           isOpen={isModalOpen}
           onClose={handleCloseModal}
           employee={selectedEmployee}
+          setData={setData}
         />
       )}
     </div>

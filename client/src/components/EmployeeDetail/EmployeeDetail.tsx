@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Default from "../../assets/images/default.png";
 import ViewDocument from "./ViewDocument";
 import Close from "../../assets/images/close.png";
@@ -7,10 +7,48 @@ import { EmployeeData, FileType, EmployeeFile } from "../../types/employee";
 
 // Components
 import EmployeeUpdateModal from "../EmployeeDetail/UpdateDetail/UpdateDetail";
+import LoadingModal from "../Loading/Loading";
+import { AlertSuccess } from "../Alert";
+import { ConfirmationModal } from "../Modal";
+
+// Hooks
+import { useRequest } from "../../hooks";
 
 interface EmployeeDetailProps {
   isOpen: boolean;
   onClose: () => void;
+  employee: EmployeeData;
+  setData: React.Dispatch<React.SetStateAction<EmployeeData[] | null>>;
+}
+
+interface EmployeeFileResponse {
+  detail: string;
+  employee_file: EmployeeFile;
+}
+
+interface EmployeeCreateFileData {
+  file_type: string;
+  payload: {
+    fileName: string;
+    fileType: string;
+    fileContent: string;
+  };
+  employee: EmployeeData;
+}
+
+interface EmployeeUpdateFileData {
+  file_id: string;
+  file_type: string;
+  payload: {
+    fileName: string;
+    fileType: string;
+    fileContent: string;
+  };
+  employee: EmployeeData;
+}
+
+interface EmployeeDeleteFileData {
+  file_id: string;
   employee: EmployeeData;
 }
 
@@ -18,15 +56,129 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
   isOpen,
   onClose,
   employee,
+  setData,
 }) => {
   const [isViewDocumentOpen, setIsViewDocumentOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState<number | null>(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [fileType, setFileType] = useState("");
+  const [fileId, setFileId] = useState("");
+  const [showPostAlert, setShowPostAlert] = useState(false);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const [isConfirmationModalOpen, setIsConfirmationModalOpen] = useState(false);
+  const [showUpdateAlert, setShowUpdateAlert] = useState(false);
+  const [isUpdateFileModalOpen, setIsUpdateFileModalOpen] = useState(false);
+  const [isAddFileModalOpen, setIsAddFileModalOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  // Employee File POST Request
+  const {
+    loading: employeeFilePostLoading,
+    response: employeFilePostResponse,
+    handleRequest: handleEmployeeFilePost,
+  } = useRequest<EmployeeFileResponse, EmployeeCreateFileData>(
+    "/employee/files/",
+    {
+      method: "POST",
+    },
+  );
+
+  // Employee File DELETE Request
+  const {
+    loading: employeeFileDeleteLoading,
+    response: employeFileDeleteResponse,
+    handleRequest: handleEmployeeFileDelete,
+  } = useRequest<EmployeeFileResponse, EmployeeDeleteFileData>(
+    "/employee/files/",
+    {
+      method: "DELETE",
+    },
+  );
+
+  // Employee File UPDATE Request
+  const {
+    loading: employeeFileUpdateLoading,
+    response: employeFileUpdateResponse,
+    handleRequest: handleEmployeeFileUpdate,
+  } = useRequest<EmployeeFileResponse, EmployeeUpdateFileData>(
+    "/employee/files/",
+    {
+      method: "PUT",
+    },
+  );
+
+  useEffect(() => {
+    if (employeFilePostResponse) {
+      setShowPostAlert(true);
+      setData((prev) => {
+        if (!prev) return prev;
+        return prev.map((emp) =>
+          emp.employee_id === employee.employee_id
+            ? {
+                ...emp,
+                files: [...emp.files, employeFilePostResponse.employee_file],
+              }
+            : emp,
+        );
+      });
+      setFileId(employeFilePostResponse.employee_file.file_id);
+    }
+  }, [employeFilePostResponse]);
+
+  useEffect(() => {
+    if (employeFileDeleteResponse) {
+      setShowDeleteAlert(true);
+      setData((prev) => {
+        if (!prev) return prev;
+        return prev.map((emp) =>
+          emp.employee_id === employee.employee_id
+            ? {
+                ...emp,
+                files: emp.files.filter(
+                  (file) =>
+                    file.file_id !==
+                    employeFileDeleteResponse.employee_file.file_id,
+                ),
+              }
+            : emp,
+        );
+      });
+    }
+  }, [employeFileDeleteResponse]);
+
+  useEffect(() => {
+    if (employeFileUpdateResponse) {
+      setShowUpdateAlert(true);
+      setFileId(employeFileUpdateResponse.employee_file.file_id);
+      setSelectedFile(null);
+      setData((prev) => {
+        if (!prev) return prev;
+        return prev.map((emp) =>
+          emp.employee_id === employee.employee_id
+            ? {
+                ...emp,
+                files: emp.files.map((file) =>
+                  file.name === employeFileUpdateResponse.employee_file.name
+                    ? employeFileUpdateResponse.employee_file
+                    : file,
+                ),
+              }
+            : emp,
+        );
+      });
+    }
+  }, [employeFileUpdateResponse, employee.employee_id]);
 
   if (!isOpen) return null;
 
-  const toggleDropdown = (index: number) => {
+  const toggleDropdown = (
+    index: number,
+    type: string,
+    file_id: string | undefined,
+  ) => {
     setDropdownOpen(dropdownOpen === index ? null : index);
+    setFileType(type);
+    setFileId(file_id || "");
   };
 
   const handleViewDocument = () => {
@@ -44,6 +196,64 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
     );
   };
 
+  const handleAddFile = () => {
+    setIsAddFileModalOpen(true);
+  };
+
+  const handleDeleteFile = () => {
+    setIsConfirmationModalOpen(true);
+  };
+
+  const confirmDelete = () => {
+    handleEmployeeFileDelete({ file_id: fileId, employee });
+    setIsConfirmationModalOpen(false);
+  };
+
+  const handleUpdateFile = async (file: File) => {
+    const base64 = await convertToBase64(file);
+    const payload = {
+      fileName: file.name,
+      fileType: file.type,
+      fileContent: base64,
+    };
+
+    await handleEmployeeFileUpdate({
+      file_id: fileId,
+      file_type: fileType,
+      payload,
+      employee,
+    });
+    setIsUpdateFileModalOpen(false);
+  };
+
+  const handleUploadFile = async () => {
+    if (selectedFile) {
+      const base64 = await convertToBase64(selectedFile);
+      const payload = {
+        fileName: selectedFile.name,
+        fileType: selectedFile.type,
+        fileContent: base64,
+      };
+
+      await handleEmployeeFilePost({
+        file_type: fileType,
+        payload,
+        employee,
+      });
+      setIsAddFileModalOpen(false);
+      setSelectedFile(null);
+    }
+  };
+
+  const convertToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
   const documents = Object.entries(FileType).map(([key, value]) => ({
     key,
     label: value,
@@ -51,6 +261,33 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900/50 p-4">
+      {showDeleteAlert && employeFileDeleteResponse && (
+        <AlertSuccess
+          message={employeFileDeleteResponse.detail}
+          onClose={() => setShowDeleteAlert(false)}
+        />
+      )}
+      {showPostAlert && employeFilePostResponse && (
+        <AlertSuccess
+          message={employeFilePostResponse.detail}
+          onClose={() => setShowPostAlert(false)}
+        />
+      )}
+      {showUpdateAlert && employeFileUpdateResponse && (
+        <AlertSuccess
+          message={employeFileUpdateResponse.detail}
+          onClose={() => setShowUpdateAlert(false)}
+        />
+      )}
+      {employeeFileDeleteLoading && (
+        <LoadingModal loading={employeeFileDeleteLoading} />
+      )}
+      {employeeFilePostLoading && (
+        <LoadingModal loading={employeeFilePostLoading} />
+      )}
+      {employeeFileUpdateLoading && (
+        <LoadingModal loading={employeeFileUpdateLoading} />
+      )}
       <div className="relative flex w-[1200px] flex-col rounded-lg bg-white p-6 shadow-xl">
         <button
           type="button"
@@ -137,13 +374,22 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
                     className="relative cursor-pointer hover:underline"
                   >
                     <div
-                      onClick={() => toggleDropdown(index)}
+                      onClick={() =>
+                        toggleDropdown(index, doc.key, fileExists?.file_id)
+                      }
                       className={`select-none ${fileExists ? "text-green-500" : "text-red-500"} uppercase`}
                     >
                       {doc.label}
                     </div>
                     {dropdownOpen === index && (
                       <div className="absolute left-0 z-100 mt-1 w-32 rounded-md bg-white shadow-lg">
+                        <button
+                          onClick={handleAddFile}
+                          className={`block w-full px-4 py-2 text-left text-sm uppercase hover:bg-gray-300 ${!fileExists ? "" : "disabled:opacity-50"}`}
+                          disabled={!!fileExists}
+                        >
+                          Insert
+                        </button>
                         <button
                           onClick={() => handleViewFile(fileExists)}
                           className={`block w-full px-4 py-2 text-left text-sm uppercase hover:bg-gray-300 ${fileExists ? "" : "disabled:opacity-50"}`}
@@ -152,12 +398,14 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
                           View
                         </button>
                         <button
+                          onClick={() => setIsUpdateFileModalOpen(true)}
                           disabled={!fileExists}
                           className={`block w-full px-4 py-2 text-left text-sm uppercase hover:bg-gray-300 ${fileExists ? "" : "disabled:opacity-50"}`}
                         >
-                          Edit
+                          Update
                         </button>
                         <button
+                          onClick={handleDeleteFile}
                           disabled={!fileExists}
                           className={`block w-full px-4 py-2 text-left text-sm uppercase hover:bg-red-200 ${fileExists ? "" : "disabled:opacity-50"}`}
                         >
@@ -202,6 +450,117 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
           onClose={() => setIsUpdateModalOpen(false)}
           employee={employee}
         />
+      )}
+
+      <ConfirmationModal
+        isOpen={isConfirmationModalOpen}
+        onClose={() => setIsConfirmationModalOpen(false)}
+        onConfirm={confirmDelete}
+        message="Are you sure you want to delete this file? This action cannot be undone."
+      />
+
+      {isUpdateFileModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-gray-900/50">
+          <div className="w-96 rounded-lg bg-white p-6 shadow-xl">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Update File</h2>
+              <button
+                onClick={() => setIsUpdateFileModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  setSelectedFile(file); // Add this state
+                }
+              }}
+              className="mt-4 w-full rounded border p-2"
+            />
+            <div className="mt-4 flex justify-end space-x-4">
+              <button
+                onClick={() => setIsUpdateFileModalOpen(false)}
+                className="rounded-md bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => selectedFile && handleUpdateFile(selectedFile)}
+                disabled={!selectedFile}
+                className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 disabled:opacity-50"
+              >
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isAddFileModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-gray-900/50">
+          <div className="w-96 rounded-lg bg-white p-6 shadow-xl">
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Add New File</h2>
+              <button
+                onClick={() => setIsAddFileModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <svg
+                  className="h-5 w-5"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 1 1.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  setSelectedFile(file);
+                }
+              }}
+              className="mt-4 w-full rounded border p-2"
+            />
+            <div className="mt-4 flex justify-end space-x-4">
+              <button
+                onClick={() => setIsAddFileModalOpen(false)}
+                className="rounded-md bg-gray-200 px-4 py-2 text-gray-700 hover:bg-gray-300"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUploadFile}
+                disabled={!selectedFile}
+                className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 disabled:opacity-50"
+              >
+                Upload
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

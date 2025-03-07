@@ -5,15 +5,24 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.parsers import JSONParser
 
 from .utilities.update_dict_key import update_dict_key
 from .utilities.create_pds import create_pds
 from .utilities.destructure_dict import destructure_dict
 
-from .models import Employee
+from .models import Employee, File, FileType
 from .serializers import EmployeeSerializer
 
-from services.drive_services import get_file_to_folder
+from services.drive_services import (
+    get_file_to_folder,
+    upload_to_drive,
+    delete_file,
+    update_file,
+)
+
+import base64
+from io import BytesIO
 
 
 def get_civil_status(data):
@@ -179,9 +188,152 @@ class EmployeeCount(APIView):
 class EmployeeFile(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated, IsAdminUser]
+    parser_classes = [JSONParser]
 
-    def get(self):
-        folder = self.query_params.get("folder")
+    def get(self, request):
+        folder = request.query_params.get("folder")
         files = get_file_to_folder(folder)
-
         return Response(files, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        data = request.data
+        payload = data.get("payload")
+        file_content = payload.get("fileContent")
+        file_type = payload.get("fileType")
+        employee = data.get("employee")
+
+        if not file_content or not file_type or not employee:
+            return Response(
+                {"detail": "Invalid data"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Get the file name from the FileType enum
+        file_name = (
+            f"{FileType[data.get('file_type')].value}_{employee.get('surname')}".upper()
+        )
+
+        # Decode the base64 file content
+        file_data = base64.b64decode(file_content.split(",")[1])
+        file_io = BytesIO(file_data)
+
+        # Save the file to Google Drive or any other storage
+        folder_id = employee.get("folder_id")
+        file_info = upload_to_drive(file_io, file_name, folder_id)
+
+        # Create a new File instance
+        new_file = File.objects.create(
+            name=file_info["name"],
+            file_id=file_info["id"],
+            uploaded=True,
+            file_type=data.get("file_type"),
+        )
+
+        # Update the employee's file information
+        employee_instance = get_object_or_404(
+            Employee, employee_id=employee["employee_id"]
+        )
+        employee_instance.files.add(new_file)
+        employee_instance.save()
+
+        # Serialize the file object for the response
+        file_data = {
+            "name": new_file.name,
+            "file_id": new_file.file_id,
+            "uploaded": new_file.uploaded,
+            "file_type": new_file.file_type,
+        }
+
+        return Response(
+            {
+                "detail": "File uploaded successfully",
+                "employee_file": file_data,
+            },
+            status=status.HTTP_201_CREATED,
+        )
+
+    def put(self, request):
+        data = request.data
+        payload = data.get("payload")
+        file_content = payload.get("fileContent")
+        file_type = data.get("file_type")  # This should be the FileType enum value
+        employee = data.get("employee")
+        file_id = data.get("file_id")
+
+        if not file_content or not employee or not file_id:
+            return Response(
+                {"detail": "Invalid data"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Get the file name from the FileType enum
+        try:
+            file_name = f"{FileType[file_type].value}_{employee.get('surname')}".upper()
+        except KeyError:
+            return Response(
+                {"detail": "Invalid file type"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Decode the base64 file content
+        file_data = base64.b64decode(file_content.split(",")[1])
+        file_io = BytesIO(file_data)
+
+        # Update the file on Google Drive
+        file_info = update_file(file_id, file_io, file_name)
+
+        # Update the File instance in the database
+        file_instance = get_object_or_404(File, file_id=file_id)
+        file_instance.name = file_info["name"]
+        file_instance.file_id = file_info["id"]
+        file_instance.file_type = file_type
+        file_instance.save()
+
+        # Prepare the response data
+        updated_file_data = {
+            "name": file_instance.name,
+            "file_id": file_instance.file_id,
+            "uploaded": file_instance.uploaded,
+            "file_type": file_instance.file_type,
+        }
+
+        return Response(
+            {"detail": "File updated successfully", "employee_file": updated_file_data},
+            status=status.HTTP_200_OK,
+        )
+
+    def delete(self, request):
+        data = request.data
+        employee = data.get("employee")
+        employee_id = employee.get("employee_id")
+        file_id = data.get("file_id")
+
+        if not employee_id or not file_id:
+            return Response(
+                {"detail": "Invalid data"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # Get the employee instance
+        employee_instance = get_object_or_404(Employee, employee_id=employee_id)
+
+        # Get the file instance
+        file_instance = get_object_or_404(File, file_id=file_id)
+
+        # Store file data before deletion for response
+        file_data = {
+            "name": file_instance.name,
+            "file_id": file_instance.file_id,
+            "uploaded": file_instance.uploaded,
+            "file_type": file_instance.file_type,
+        }
+
+        # Remove the file from the employee's files
+        employee_instance.files.remove(file_instance)
+
+        # Delete the file from Google Drive
+        delete_file(file_id)
+
+        # Delete the file instance from the database
+        file_instance.delete()
+
+        return Response(
+            {"detail": "File deleted successfully", "employee_file": file_data},
+            status=status.HTTP_200_OK,
+        )

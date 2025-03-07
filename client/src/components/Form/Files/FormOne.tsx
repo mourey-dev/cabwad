@@ -159,8 +159,8 @@ const FormOne = ({ register }: FormOneProps) => {
                   type="checkbox"
                   id="citizen_filipino"
                   className="mx-2"
-                  {...register("personal_information.p_citizen_flipino")}
-                  value={"p_citizen_flipino"}
+                  {...register("personal_information.p_citizen_filipino")}
+                  value={"p_citizen_filipino"}
                 />
                 <label htmlFor="citizen_filipino">Filipino</label>
               </div>
@@ -170,7 +170,7 @@ const FormOne = ({ register }: FormOneProps) => {
                   id="citizen_dual"
                   className="mx-2"
                   {...register("personal_information.p_citizen_dual")}
-                  value={".p_citizen_dual"}
+                  value={"p_citizen_dual"}
                 />
                 <label htmlFor="citizen_dual">Dual Citizen</label>
               </div>

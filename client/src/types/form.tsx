@@ -21,7 +21,7 @@ type PersonalInformation = {
   p_sss_no: string;
   p_tin_no: string;
   p_agency_no: string;
-  p_citizen_flipino: string;
+  p_citizen_filipino: string;
   p_citizen_dual: string;
   p_citizen_by_birth: string;
   p_citizen_by_naturalization: string;
