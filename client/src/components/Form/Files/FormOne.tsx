@@ -13,7 +13,10 @@ const FormOne = ({ register }: FormOneProps) => {
 
   return (
     <div>
-      <form className="mx-auto my-12 grid h-full w-[1001px] border-4 bg-white">
+      <form
+        className="mx-auto my-12 grid h-full w-[1001px] border-4 bg-white"
+        autoComplete="off"
+      >
         {/* First Grid Row */}
         <div className="1fr relative">
           <div className="absolute flex flex-col">

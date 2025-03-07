@@ -6,6 +6,7 @@ import { EmployeesData, EmployeeData } from "../../types/employee";
 import { Header, Footer } from "../../components";
 import Loading from "../../components/Loading";
 import EmployeeDetail from "../../components/EmployeeDetail/EmployeeDetail";
+import ConfirmModal from "../../components/ConfirmDelete/ConfirmModal";
 
 const Employees = () => {
   const [category, setCategory] = useState("ALL");
@@ -36,6 +37,21 @@ const Employees = () => {
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setSelectedEmployee(null);
+  };
+
+  const handleOpenConfirmModal = (employee: EmployeeData) => {
+    setEmployeeToRemove(employee);
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleCloseConfirmModal = () => {
+    setIsConfirmModalOpen(false);
+    setEmployeeToRemove(null);
+  };
+
+  const handleConfirmRemove = () => {
+    setIsConfirmModalOpen(false);
+    setEmployeeToRemove(null);
   };
 
   return (
@@ -77,7 +93,13 @@ const Employees = () => {
               onClick={() => handleOpenModal(item)}
             >
               <div className="relative flex h-60 w-full flex-col items-center rounded-md bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105 hover:bg-blue-600 sm:p-6">
-                <button className="absolute top-2 right-2">
+                <button
+                  className="absolute top-2 right-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleOpenConfirmModal(item);
+                  }}
+                >
                   <img src={remove} alt="Remove User" className="w-6" />
                 </button>
                 <img
