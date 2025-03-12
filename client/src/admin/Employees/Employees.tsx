@@ -123,7 +123,7 @@ const Employees = () => {
                     e.currentTarget.onerror = null; // Prevent infinite loop
                     e.currentTarget.src = displayPic;
                   }}
-                  className="mt-4 w-16 rounded-full"
+                  className="mt-4 h-[70px] w-[70px] rounded-[50%] border-2 border-slate-300"
                 />
                 <div className="flex flex-grow flex-col justify-between text-center">
                   <p className="mt-2 font-bold text-gray-800">{`${item.first_name} ${item.surname}`}</p>
