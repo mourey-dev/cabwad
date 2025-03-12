@@ -168,9 +168,11 @@ class EmployeeView(APIView):
         else:
             category = request.query_params.get("category")
             if category == "ALL":
-                employees = Employee.objects.all()
+                employees = Employee.objects.filter(is_active=True)
             else:
-                employees = Employee.objects.filter(appointment_status=category)
+                employees = Employee.objects.filter(
+                    appointment_status=category, is_active=True
+                )
             serializer = EmployeeSerializer(employees, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -194,6 +196,28 @@ class EmployeeView(APIView):
                 status=status.HTTP_200_OK,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk=None, *args, **kwargs):
+        if not pk:
+            return Response(
+                {"detail": "Employee ID is required"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        employee = get_object_or_404(Employee, pk=pk)
+        employee.is_active = not employee.is_active  # Toggle the is_active field
+        employee.save()
+
+        serializer = EmployeeSerializer(employee)
+        action = "activated" if employee.is_active else "deactivated"
+
+        return Response(
+            {
+                "detail": f"Employee {action} successfully",
+                "employee": serializer.data,
+            },
+            status=status.HTTP_200_OK,
+        )
 
 
 class EmployeeCount(APIView):

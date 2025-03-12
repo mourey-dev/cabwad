@@ -8,6 +8,9 @@ import Loading from "../../components/Loading";
 import EmployeeDetail from "../../components/EmployeeDetail/EmployeeDetail";
 import ConfirmModal from "../../components/ConfirmDelete/ConfirmModal";
 
+// Utils
+import { getProfile } from "../../utils/fileHandler";
+
 const Employees = () => {
   const [category, setCategory] = useState("ALL");
   const { loading, data, setData } = useGet<EmployeesData>(
@@ -114,9 +117,13 @@ const Employees = () => {
                 </button>
 
                 <img
-                  src={displayPic}
+                  src={getProfile(item.files) ?? displayPic}
                   alt="Employee Icon"
-                  className="mt-4 w-16"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null; // Prevent infinite loop
+                    e.currentTarget.src = displayPic;
+                  }}
+                  className="mt-4 w-16 rounded-full"
                 />
                 <div className="flex flex-grow flex-col justify-between text-center">
                   <p className="mt-2 font-bold text-gray-800">{`${item.first_name} ${item.surname}`}</p>

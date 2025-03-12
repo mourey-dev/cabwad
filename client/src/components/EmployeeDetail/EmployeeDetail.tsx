@@ -15,7 +15,7 @@ import { ConfirmationModal } from "../Modal";
 import { useRequest } from "../../hooks";
 
 // Utils
-import { convertToBase64 } from "../../utils/fileHandler";
+import { convertToBase64, getProfile } from "../../utils/fileHandler";
 
 interface EmployeeDetailProps {
   isOpen: boolean;
@@ -252,16 +252,6 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
     key,
     label: value,
   }));
-
-  const getProfile = (files: EmployeeFile[]) => {
-    const profile = files.find((file) => file.file_type === "profile");
-
-    if (profile) {
-      return `https://drive.google.com/thumbnail?id=${profile.file_id}`;
-    }
-
-    return null;
-  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900/50 p-4">
