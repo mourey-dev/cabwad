@@ -17,7 +17,7 @@ const ConfirmModal = ({
   if (!isOpen) return null;
 
   return (
-    <div className="bg-opacity-50 fixed inset-0 flex items-center justify-center bg-gray-900">
+    <div className="bg-opacity-50 fixed inset-0 flex items-center justify-center bg-gray-900/50">
       <div className="rounded-lg bg-white p-6 shadow-lg">
         <p className="text-lg font-bold">Confirm Removal</p>
         <p className="text-gray-700">

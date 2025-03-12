@@ -9,7 +9,7 @@ const Pagination = ({ totalPages = 4 }) => {
 
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
-      navigate(`/form/${page}`);
+      navigate(`/admin/form/${page}`);
     }
   };
 

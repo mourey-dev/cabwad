@@ -1,8 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Employees from "./pages/Employees/Employees";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import LoginPage from "./pages/Login/Login";
-import Form from "./pages/Form/Form";
+import Employees from "./admin/Employees/Employees";
+import Dashboard from "./admin/Dashboard/Dashboard";
+import Users from "./admin/Users/Users";
+import LoginPage from "./admin/Login/Login";
+import Form from "./admin/Form/Form";
 
 // Routes
 import { ProtectedRoute, LoginRoute } from "./routes";
@@ -17,9 +18,10 @@ function App() {
         </Route>
 
         <Route element={<ProtectedRoute />}>
-          <Route path="/employees" element={<Employees />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/form/:page" element={<Form />} />
+          <Route path="/admin/users" element={<Users />} />
+          <Route path="/admin/employees" element={<Employees />} />
+          <Route path="/admin/dashboard" element={<Dashboard />} />
+          <Route path="/admin/form/:page" element={<Form />} />
         </Route>
 
         {/* NOT INCLUDED ON PATH */}

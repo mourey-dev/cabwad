@@ -40,8 +40,14 @@ const Header = () => {
         <h1 className="font-jost">Cabuyao Water District</h1>
       </div>
       <nav className="flex items-center space-x-4">
-        <a href="/dashboard" className="mr-10 font-semibold text-blue-700">
+        <a
+          href="/admin/dashboard"
+          className="mr-10 font-semibold text-blue-700"
+        >
           HOME
+        </a>
+        <a href="/admin/users" className="mr-10 font-semibold text-blue-700">
+          MANAGE USER
         </a>
         <div className="relative">
           <button

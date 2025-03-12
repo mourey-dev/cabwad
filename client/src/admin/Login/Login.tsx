@@ -72,6 +72,7 @@ const LoginPage = () => {
               onChange={(e) => setUsername(e.target.value)}
               required
               className="font-inter w-full rounded-md border border-gray-300 p-2 text-white focus:outline-none"
+              autoFocus
             />
           </div>
 

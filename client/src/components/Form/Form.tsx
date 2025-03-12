@@ -3,7 +3,7 @@ import FormTwo from "./Files/FormTwo";
 import FormThree from "./Files/FormThree";
 import FormFour from "./Files/FormFour";
 import Pagination from "./Pagination";
-import ModalForm from "../../pages/Form/ModalForm";
+import ModalForm from "../../admin/Form/ModalForm";
 
 import PDSForm from "../../types/form";
 
@@ -33,7 +33,7 @@ const Form = () => {
 
   // Redirect if page is invalid
   if (!forms[currentPage]) {
-    navigate("/form/1", { replace: true });
+    navigate("/admin/form/1", { replace: true });
     return null;
   }
 

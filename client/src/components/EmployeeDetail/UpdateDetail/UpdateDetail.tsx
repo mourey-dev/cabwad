@@ -46,7 +46,9 @@ export default function EmployeeUpdateModal({
   return (
     <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50">
       <div className="w-full max-w-2xl rounded-lg bg-white p-6 shadow-lg">
-        <h2 className="mb-4 text-xl font-bold">Update Employee Information</h2>
+        <h2 className="mb-4 text-center text-xl font-bold text-blue-900">
+          Update Employee Information
+        </h2>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">

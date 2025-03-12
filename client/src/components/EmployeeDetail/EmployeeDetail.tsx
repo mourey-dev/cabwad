@@ -304,8 +304,8 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
         <h2 className="font-jost text-center text-2xl font-bold">
           PERSONAL INFORMATION
         </h2>
-        <div className="flex flex-col items-center">
-          <div className="mt-5 flex h-45 w-45 items-center justify-center overflow-hidden border bg-white">
+        <div className="flex flex-col items-center bg-blue-500">
+          <div className="mt-5 mb-5 flex h-45 w-45 items-center justify-center overflow-hidden border bg-white">
             <img
               src={getProfile(employee.files) ?? Default}
               alt="Profile"

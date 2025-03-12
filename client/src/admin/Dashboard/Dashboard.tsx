@@ -56,16 +56,16 @@ const Dashboard: React.FC = () => {
         </div>
         <div className="mt-2">
           <button
-            onClick={() => navigate("/employees")}
+            onClick={() => navigate("/admin/employees")}
             className="font-inter cursor-pointer text-sm underline hover:text-blue-500"
           >
-            See List &gt; &gt;
+            Employee List &gt; &gt;
           </button>
         </div>
         <div className="mt-6">
           <button
             className="flex cursor-pointer items-center rounded-full bg-green-500 px-6 py-3 text-lg font-bold text-white hover:bg-green-300"
-            onClick={() => navigate("/form/1")}
+            onClick={() => navigate("/admin/form/1")}
           >
             PDS Form
             <span className="ml-2 text-xl">

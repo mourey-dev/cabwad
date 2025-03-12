@@ -6,6 +6,9 @@ import { EmployeesData, EmployeeData } from "../../types/employee";
 import { Header, Footer } from "../../components";
 import Loading from "../../components/Loading";
 import EmployeeDetail from "../../components/EmployeeDetail/EmployeeDetail";
+import ConfirmModal from "../../components/ConfirmDelete/ConfirmModal";
+import add from "../../assets/images/add.png";
+import AddUserModal from "../../admin/Users/AddUserModal/AddUserModal";
 
 const Employees = () => {
   const [category, setCategory] = useState("ALL");
@@ -16,6 +19,11 @@ const Employees = () => {
   const [selectedEmployee, setSelectedEmployee] = useState<EmployeeData | null>(
     null,
   );
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [employeeToRemove, setEmployeeToRemove] = useState<EmployeeData | null>(
+    null,
+  );
+  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
 
   useEffect(() => {
     if (isModalOpen) {
@@ -26,7 +34,7 @@ const Employees = () => {
         setSelectedEmployee(updatedData);
       }
     }
-  }, [data]);
+  }, [data, selectedEmployee, isModalOpen]);
 
   const handleOpenModal = (employee: EmployeeData) => {
     setSelectedEmployee(employee);
@@ -38,6 +46,35 @@ const Employees = () => {
     setSelectedEmployee(null);
   };
 
+  const handleOpenConfirmModal = (employee: EmployeeData) => {
+    setEmployeeToRemove(employee);
+    setIsConfirmModalOpen(true);
+  };
+
+  const handleCloseConfirmModal = () => {
+    setIsConfirmModalOpen(false);
+    setEmployeeToRemove(null);
+  };
+
+  const handleRemoveEmployee = () => {
+    if (employeeToRemove) {
+      setData((prevData) =>
+        (prevData ?? []).filter(
+          (item) => item.employee_id !== employeeToRemove.employee_id,
+        ),
+      );
+      handleCloseConfirmModal();
+    }
+  };
+
+  const handleAddUser = (user: { name: string; username: string }) => {
+    const newUser: EmployeeData = {
+      name: user.name,
+      username: user.username,
+    };
+    setData((prevData) => [...(prevData ?? []), newUser]);
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
       {loading && <Loading loading={loading} />}
@@ -45,30 +82,10 @@ const Employees = () => {
       <main className="flex-1">
         <div className="px-6 py-4">
           <h2 className="text-xl font-bold text-blue-600">
-            CABWAD List of Employees: <span className="text-gray-600">##</span>
+            CABWAD List of Admins:
           </h2>
         </div>
-        <div className="absolute top-20 right-2">
-          <button className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100">
-            Resigned
-          </button>
 
-          <select
-            name="Employment Status"
-            title="employment_status"
-            defaultValue="ALL"
-            onChange={(e) => setCategory(e.target.value)}
-            className="rounded border-2 text-blue-600"
-          >
-            <option value="ALL">ALL</option>
-            <option value="PERMANENT">PERMANENT</option>
-            <option value="CASUAL">CASUAL</option>
-            <option value="JOB ORDER">JOB ORDER</option>
-            <option value="CO-TERMINUS">CO-TERMINUS</option>
-            <option value="CONTRACT OF SERVICE">CONTRACT OF SERVICE</option>
-            <option value="TEMPORARY">TEMPORARY</option>
-          </select>
-        </div>
         <div className="mb-6 grid grid-cols-1 gap-6 px-4 py-6 sm:grid-cols-2 sm:px-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {data?.map((item) => (
             <div
@@ -76,8 +93,14 @@ const Employees = () => {
               className="cursor-pointer"
               onClick={() => handleOpenModal(item)}
             >
-              <div className="relative flex h-60 w-full flex-col items-center rounded-md bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105 hover:bg-blue-600 sm:p-6">
-                <button className="absolute top-2 right-2">
+              <div className="relative flex h-50 w-full flex-col items-center rounded-md bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105 hover:bg-blue-600 sm:p-6">
+                <button
+                  className="absolute top-2 right-2 cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleOpenConfirmModal(item);
+                  }}
+                >
                   <img src={remove} alt="Remove User" className="w-6" />
                 </button>
                 <img
@@ -86,14 +109,19 @@ const Employees = () => {
                   className="mt-4 w-16"
                 />
                 <div className="flex flex-grow flex-col justify-between text-center">
-                  <p className="mt-2 font-bold text-gray-800">{`${item.first_name} ${item.surname}`}</p>
-                  <p className="text-sm text-gray-500">{`${item.appointment_status}`}</p>
-                  <p className="text-xs text-gray-400">{`${item.department}`}</p>
+                  <p className="mt-2 font-bold text-gray-800">User Name</p>
+                  <p className="text-sm text-gray-500">Admin</p>
                 </div>
               </div>
             </div>
           ))}
         </div>
+        <button
+          className="text-md font-jost fixed right-10 bottom-20 flex cursor-pointer items-center rounded-full bg-green-500 px-6 py-3 text-white shadow-lg hover:bg-green-700"
+          onClick={() => setIsAddUserModalOpen(true)}
+        >
+          <img src={add} alt="" className="h-7 w-7" /> ADD USER
+        </button>
       </main>
       <Footer />
       {selectedEmployee && (
@@ -104,6 +132,19 @@ const Employees = () => {
           setData={setData}
         />
       )}
+      {employeeToRemove && (
+        <ConfirmModal
+          isOpen={isConfirmModalOpen}
+          onClose={handleCloseConfirmModal}
+          onConfirm={handleRemoveEmployee}
+          employee={employeeToRemove}
+        />
+      )}
+      <AddUserModal
+        isOpen={isAddUserModalOpen}
+        onClose={() => setIsAddUserModalOpen(false)}
+        onAddUser={handleAddUser}
+      />
     </div>
   );
 };

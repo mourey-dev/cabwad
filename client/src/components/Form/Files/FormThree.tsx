@@ -291,7 +291,7 @@ const FormThree = ({ register }: FormThreeProps) => {
           <button
             type="button"
             className="absolute top-10 right-[-20px] flex cursor-pointer items-center gap-2 rounded-full bg-green-500 p-4 hover:bg-green-300"
-            onClick={() => navigate("/form/4")}
+            onClick={() => navigate("/admin/form/4")}
           >
             <span className="font-semibold text-white">Next</span>
             <img src={arrow} alt="arrow-right" className="h-5 w-5" />
