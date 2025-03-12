@@ -107,7 +107,7 @@ const Employees = () => {
             >
               <div className="relative flex h-60 w-full flex-col items-center rounded-md bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105 hover:bg-blue-600 sm:p-6">
                 <button
-                  className="absolute top-2 right-2 transform cursor-pointer transition-transform duration-300 hover:scale-50000"
+                  className="absolute top-2 right-2 transform cursor-pointer transition-transform duration-300 hover:scale-120"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleOpenConfirmModal(item);
