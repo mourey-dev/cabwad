@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
 
-// Types
-import { EmployeeData } from "../../types/employee";
-
 interface AlertSuccessProps {
   message: string;
   onClose: () => void;

@@ -30,6 +30,7 @@ class FileType(Enum):
     pi = "Pag-Ibig"
     p = "Philhealth"
     tin = "TIN No."
+    profile = "Profile"
     na = "None"
 
     @classmethod

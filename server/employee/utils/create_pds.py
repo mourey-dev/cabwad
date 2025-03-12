@@ -41,7 +41,9 @@ def create_pds(data):
                 )
             else:
                 value = data.get(field_name, "")
-                writer.update_page_form_field_values(page, {field_name: value})
+                writer.update_page_form_field_values(
+                    page, {field_name: value if value and len(value) > 0 else "N/A"}
+                )
 
     # Save the modified PDF to a BytesIO object
     output_pdf = BytesIO()

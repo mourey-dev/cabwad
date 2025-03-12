@@ -14,6 +14,9 @@ import { ConfirmationModal } from "../Modal";
 // Hooks
 import { useRequest } from "../../hooks";
 
+// Utils
+import { convertToBase64 } from "../../utils/fileHandler";
+
 interface EmployeeDetailProps {
   isOpen: boolean;
   onClose: () => void;
@@ -245,19 +248,20 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
     }
   };
 
-  const convertToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result as string);
-      reader.onerror = (error) => reject(error);
-    });
-  };
-
   const documents = Object.entries(FileType).map(([key, value]) => ({
     key,
     label: value,
   }));
+
+  const getProfile = (files: EmployeeFile[]) => {
+    const profile = files.find((file) => file.file_type === "profile");
+
+    if (profile) {
+      return `https://drive.google.com/thumbnail?id=${profile.file_id}`;
+    }
+
+    return null;
+  };
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900/50 p-4">
@@ -303,9 +307,13 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
         <div className="flex flex-col items-center">
           <div className="mt-5 flex h-45 w-45 items-center justify-center overflow-hidden border bg-white">
             <img
-              src={Default}
+              src={getProfile(employee.files) ?? Default}
               alt="Profile"
               className="h-full w-full object-cover"
+              onError={(e) => {
+                e.currentTarget.onerror = null; // Prevent infinite loop
+                e.currentTarget.src = Default;
+              }}
             />
           </div>
         </div>
@@ -465,6 +473,8 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold">Update File</h2>
               <button
+                title="Close Modal"
+                type="button"
                 onClick={() => setIsUpdateFileModalOpen(false)}
                 className="text-gray-400 hover:text-gray-600"
               >
@@ -475,13 +485,14 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
                 >
                   <path
                     fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 1 1.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
                     clipRule="evenodd"
                   />
                 </svg>
               </button>
             </div>
             <input
+              title="Select File"
               type="file"
               accept="image/*"
               onChange={(e) => {
@@ -517,6 +528,8 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold">Add New File</h2>
               <button
+                title="Close Modal"
+                type="button"
                 onClick={() => setIsAddFileModalOpen(false)}
                 className="text-gray-400 hover:text-gray-600"
               >
@@ -534,6 +547,7 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
               </button>
             </div>
             <input
+              title="Select File"
               type="file"
               accept="image/*"
               onChange={(e) => {

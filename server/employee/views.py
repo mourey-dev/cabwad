@@ -7,12 +7,14 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.parsers import JSONParser
 
-from .utilities.update_dict_key import update_dict_key
-from .utilities.create_pds import create_pds
-from .utilities.destructure_dict import destructure_dict
+from .utils.update_dict_key import update_dict_key
+from .utils.create_pds import create_pds
+from .utils.destructure_dict import destructure_dict
 
 from .models import Employee, File, FileType
 from .serializers import EmployeeSerializer
+
+from .utils.file_handler import file64_to_file
 
 from services.drive_services import (
     get_file_to_folder,
@@ -64,6 +66,7 @@ class PDSView(APIView):
 
     def post(self, request):
         data = to_uppercase(request.data)
+        profile = request.data.get("other_information").pop("of_profile")
 
         update_dict_key(data["learning_development"])
         update_dict_key(data["civil_service_eligibility"])
@@ -97,6 +100,22 @@ class PDSView(APIView):
         pds = create_pds(combined_data)
         file = pds.get("file")
 
+        if profile:
+            file_io = file64_to_file(profile)  # Changed from file to profile
+            file_name = f"{'Profile'}_{combined_data.get('p_surname')}".upper()
+            folder_id = pds["folder_id"]
+            file_info = upload_to_drive(
+                file_io, file_name, folder_id
+            )  # Removed empty string parameter
+            profile_data = {
+                "name": file_info["name"],
+                "file_id": file_info["id"],
+                "uploaded": True,
+                "file_type": "profile",
+            }
+        else:
+            profile_data = None  # Handle case when there's no profile
+
         employee = {
             "employee_id": data["employee_id"],
             "first_name": combined_data["p_first_name"],
@@ -118,8 +137,11 @@ class PDSView(APIView):
                     "file_id": file["id"],
                     "uploaded": True,
                     "file_type": "pds",
-                }
-            ],
+                },
+            ]
+            + (
+                [profile_data] if profile_data else []
+            ),  # Only add profile_data if it exists
         }
 
         serializer = EmployeeSerializer(data=employee)
@@ -152,8 +174,26 @@ class EmployeeView(APIView):
             serializer = EmployeeSerializer(employees, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def put():
-        pass
+    def put(self, request, pk=None, *args, **kwargs):
+        if not pk:
+            return Response(
+                {"detail": "Employee ID is required"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        employee = get_object_or_404(Employee, pk=pk)
+        serializer = EmployeeSerializer(employee, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "detail": "Employee updated successfully",
+                    "employee": serializer.data,
+                },
+                status=status.HTTP_200_OK,
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class EmployeeCount(APIView):
@@ -198,23 +238,14 @@ class EmployeeFile(APIView):
     def post(self, request):
         data = request.data
         payload = data.get("payload")
-        file_content = payload.get("fileContent")
-        file_type = payload.get("fileType")
         employee = data.get("employee")
-
-        if not file_content or not file_type or not employee:
-            return Response(
-                {"detail": "Invalid data"}, status=status.HTTP_400_BAD_REQUEST
-            )
 
         # Get the file name from the FileType enum
         file_name = (
             f"{FileType[data.get('file_type')].value}_{employee.get('surname')}".upper()
         )
 
-        # Decode the base64 file content
-        file_data = base64.b64decode(file_content.split(",")[1])
-        file_io = BytesIO(file_data)
+        file_io = file64_to_file(payload)
 
         # Save the file to Google Drive or any other storage
         folder_id = employee.get("folder_id")

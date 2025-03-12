@@ -219,7 +219,11 @@ type OtherInformation = {
   of_government_id: string;
   of_id_no: string;
   of_issuance: string;
-  profile: File;
+  of_profile: {
+    fileName: string;
+    fileType: string;
+    fileContent: string;
+  };
 };
 
 export type PDSForm = {

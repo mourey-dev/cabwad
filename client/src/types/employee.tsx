@@ -62,5 +62,4 @@ export enum FileType {
   pi = "Pag-Ibig",
   p = "Philhealth",
   tin = "TIN No.",
-  na = "None",
 }

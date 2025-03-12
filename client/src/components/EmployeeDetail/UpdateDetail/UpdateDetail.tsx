@@ -13,19 +13,19 @@ export default function EmployeeUpdateModal({
   employee,
 }: EmployeeUpdateModalProps) {
   const [formData, setFormData] = useState({
-    employee_id: "",
-    surname: "",
-    first_name: "",
-    middle_name: "",
-    sex: "",
-    civil_status: "",
-    phone: "",
-    email: "",
-    employment_status: "",
-    eligibility: "",
-    position: "",
-    birth_date: "",
-    first_day_service: "",
+    employee_id: employee.employee_id,
+    surname: employee.surname,
+    first_name: employee.first_name,
+    middle_name: employee.middle_name,
+    sex: employee.sex,
+    civil_status: employee.civil_status,
+    phone: employee.phone,
+    email: employee.email,
+    employment_status: employee.appointment_status,
+    eligibility: employee.civil_service,
+    position: employee.position,
+    birth_date: employee.birth_date,
+    first_day_service: employee.first_day_service,
   });
 
   // Handle Input Change

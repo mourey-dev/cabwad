@@ -1,15 +1,21 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   UseFormHandleSubmit,
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
 import PDSForm from "../../../types/form";
-import usePost from "../../../hooks/usePost";
 
-// Components.
+// Components
 import LoadingModal from "../../Loading/Loading";
 import { PDSPostModal } from "../../Modal";
+import { AlertError } from "../../Alert";
+
+// Hooks
+import { useRequest } from "../../../hooks";
+
+// Utils
+import { convertToBase64 } from "../../../utils/fileHandler";
 
 type FormFourProps = {
   register: UseFormRegister<PDSForm>;
@@ -17,34 +23,64 @@ type FormFourProps = {
   handleSubmit: UseFormHandleSubmit<PDSForm>;
 };
 
+type PDSResponse = {
+  pds_link: string;
+};
+
 const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const submitRef = useRef<HTMLInputElement>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
-  const { loading, error, errorMessage, response, handlePost } = usePost(
-    "/employee/create-pds/",
-  );
+  const { loading, error, errorMessage, response, handleRequest } = useRequest<
+    PDSResponse,
+    PDSForm
+  >("/employee/create-pds/", {
+    method: "POST",
+  });
+
+  useEffect(() => {
+    if (error) setShowErrorAlert(true);
+  }, [error]);
 
   const handleFileClick = () => {
     fileRef.current?.click(); // Triggers the hidden file input
   };
 
-  const handleFileChange = () => {
-    if (fileRef.current?.files?.[0]) {
-      const file = fileRef.current.files[0];
-      setImageUrl(URL.createObjectURL(file));
-      setValue("other_information.profile", file);
+  const handleFileChange = async () => {
+    try {
+      if (fileRef.current?.files?.[0]) {
+        const file = fileRef.current.files[0];
+        const base64 = await convertToBase64(file);
+
+        const payload = {
+          fileName: file.name,
+          fileType: file.type,
+          fileContent: base64,
+        };
+
+        setImageUrl(URL.createObjectURL(file));
+        setValue("other_information.of_profile", payload);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
   const submit = (data: PDSForm) => {
     console.log(data);
-    handlePost(data);
+    handleRequest(data);
   };
 
   return (
     <div>
       {response && <PDSPostModal url={response.pds_link} />}
+      {error && showErrorAlert && (
+        <AlertError
+          message={errorMessage}
+          onClose={() => setShowErrorAlert(false)}
+        />
+      )}
       <LoadingModal loading={loading} />
       <form
         className="mx-auto my-12 grid h-full w-[1001px] border-4 bg-white"
