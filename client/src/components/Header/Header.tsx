@@ -11,12 +11,10 @@ import Loading from "../Loading";
 const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
-  const { loading, response, handlePost } = usePost(
-    "/account/api/token/black/",
-  );
+  const { loading, response, handlePost } = usePost("/account/api/logout/");
 
   const handleLogout = async () => {
-    const data = { refresh: localStorage.getItem("refresh") };
+    const data = { refresh_token: localStorage.getItem("refresh") };
     handlePost(data);
   };
 

@@ -8,14 +8,36 @@ import Loading from "../../components/Loading";
 import EmployeeDetail from "../../components/EmployeeDetail/EmployeeDetail";
 import ConfirmModal from "../../components/ConfirmDelete/ConfirmModal";
 
+// Components
+import { AlertSuccess, AlertError } from "../../components/Alert";
+
+// Hooks
+import { useRequest } from "../../hooks";
+
 // Utils
 import { getProfile } from "../../utils/fileHandler";
 
+type DeleteEmployeeResponse = {
+  detail: string;
+  employee: EmployeeData;
+};
+
 const Employees = () => {
   const [category, setCategory] = useState("ALL");
+  const [isActive, setIsActive] = useState(true);
   const { loading, data, setData } = useGet<EmployeesData>(
-    `/employee/list/?category=${category}`,
+    `/employee/list/?category=${category}&is_active=${isActive}`,
   );
+  const {
+    loading: deleteLoading,
+    error,
+    errorMessage,
+    response,
+    handleRequest,
+  } = useRequest<DeleteEmployeeResponse, { employee_id: number }>(
+    "/employee/list/",
+  );
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState<EmployeeData | null>(
     null,
@@ -24,6 +46,7 @@ const Employees = () => {
   const [employeeToRemove, setEmployeeToRemove] = useState<EmployeeData | null>(
     null,
   );
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   useEffect(() => {
     if (isModalOpen) {
@@ -35,6 +58,23 @@ const Employees = () => {
       }
     }
   }, [data, selectedEmployee, isModalOpen]);
+
+  useEffect(() => {
+    if (error) {
+      setShowDeleteAlert(true);
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (response) {
+      setShowDeleteAlert(true);
+      setData((prevData) =>
+        (prevData ?? []).filter(
+          (item) => item.employee_id !== response.employee.employee_id,
+        ),
+      );
+    }
+  }, [response]);
 
   const handleOpenModal = (employee: EmployeeData) => {
     setSelectedEmployee(employee);
@@ -58,11 +98,8 @@ const Employees = () => {
 
   const handleRemoveEmployee = () => {
     if (employeeToRemove) {
-      setData((prevData) =>
-        (prevData ?? []).filter(
-          (item) => item.employee_id !== employeeToRemove.employee_id,
-        ),
-      );
+      const employeeToRemoveId = employeeToRemove.employee_id;
+      handleRequest({ employee_id: employeeToRemoveId }, { method: "DELETE" });
       handleCloseConfirmModal();
     }
   };
@@ -70,6 +107,19 @@ const Employees = () => {
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
       {loading && <Loading loading={loading} />}
+      {deleteLoading && <Loading loading={deleteLoading} />}
+      {showDeleteAlert && response && (
+        <AlertSuccess
+          message={response.detail}
+          onClose={() => setShowDeleteAlert(false)}
+        />
+      )}
+      {showDeleteAlert && error && (
+        <AlertError
+          message={errorMessage}
+          onClose={() => setShowDeleteAlert(false)}
+        />
+      )}
       <Header />
       <main className="flex-1">
         <div className="px-6 py-4">
@@ -77,10 +127,20 @@ const Employees = () => {
             CABWAD List of Employees: <span className="text-gray-600">##</span>
           </h2>
         </div>
-        <div className="absolute top-20 right-2">
-          <button className="rounded px-4 py-1 text-blue-600 transition duration-300 hover:border-2 hover:border-blue-600 hover:bg-blue-100">
-            Resigned
-          </button>
+        <div className="absolute top-20 right-2 flex items-center">
+          <div className="mr-4 inline-block">
+            <label className="inline-flex cursor-pointer items-center">
+              <input
+                onClick={() => setIsActive(!isActive)}
+                type="checkbox"
+                className="peer sr-only"
+              />
+              <div className="peer relative h-6 w-11 rounded-full bg-gray-200 peer-checked:bg-blue-600 peer-focus:ring-4 peer-focus:ring-blue-300 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white rtl:peer-checked:after:-translate-x-full dark:border-gray-600 dark:bg-gray-700 dark:peer-checked:bg-blue-600"></div>
+              <span className="ms-3 text-sm font-medium text-blue-600">
+                RESIGNED
+              </span>
+            </label>
+          </div>
 
           <select
             name="Employment Status"
@@ -120,7 +180,7 @@ const Employees = () => {
                   src={getProfile(item.files) ?? displayPic}
                   alt="Employee Icon"
                   onError={(e) => {
-                    e.currentTarget.onerror = null; // Prevent infinite loop
+                    e.currentTarget.onerror = null;
                     e.currentTarget.src = displayPic;
                   }}
                   className="mt-4 h-[70px] w-[70px] rounded-[50%] border-2 border-slate-300"

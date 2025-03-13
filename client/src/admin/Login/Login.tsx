@@ -15,7 +15,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const { loading, error, errorMessage, response, handlePost } = usePost(
-    "/account/api/token/",
+    "/account/api/login/",
   );
 
   const navigate = useNavigate();
@@ -27,8 +27,8 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (response) {
-      localStorage.setItem("access", response.access);
-      localStorage.setItem("refresh", response.refresh);
+      localStorage.setItem("access", response.data.access);
+      localStorage.setItem("refresh", response.data.refresh);
       navigate("/dashboard");
     }
   }, [response, navigate]);

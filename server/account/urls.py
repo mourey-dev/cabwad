@@ -6,11 +6,14 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
-from .views import LoginView
+from .views import LoginView, LogoutView
 
 urlpatterns = [
-    path("api/token/", LoginView.as_view(), name="token_obtain_pair"),
-    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("api/token/black/", TokenBlacklistView.as_view(), name="token_black"),
-    path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify_view"),
+    # Authentication endpoints
+    path("login/", LoginView.as_view(), name="login"),
+    path("logout/", LogoutView.as_view(), name="logout"),
+    # JWT token endpoints
+    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("token/blacklist/", TokenBlacklistView.as_view(), name="token_blacklist"),
+    path("token/verify/", TokenVerifyView.as_view(), name="token_verify"),
 ]
