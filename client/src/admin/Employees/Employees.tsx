@@ -147,7 +147,7 @@ const Employees = () => {
             title="employment_status"
             defaultValue="ALL"
             onChange={(e) => setCategory(e.target.value)}
-            className="rounded border-2 text-blue-600"
+            className="rounded border-2 bg-white text-blue-600"
           >
             <option value="ALL">ALL</option>
             <option value="PERMANENT">PERMANENT</option>

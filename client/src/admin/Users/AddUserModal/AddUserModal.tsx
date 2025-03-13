@@ -3,19 +3,31 @@ import { useState } from "react";
 interface AddUserModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddUser: (user: { name: string; username: string }) => void;
+  onAddUser: (user: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    birthdate: string;
+    userType: string;
+  }) => void;
 }
 
 const AddUserModal = ({ isOpen, onClose, onAddUser }: AddUserModalProps) => {
-  const [name, setName] = useState("");
-  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [birthdate, setBirthdate] = useState("");
+  const [userType, setUserType] = useState("Admin");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (name && username) {
-      onAddUser({ name, username });
-      setName("");
-      setUsername("");
+    if (firstName && lastName && email && birthdate && userType) {
+      onAddUser({ firstName, lastName, email, birthdate, userType });
+      setFirstName("");
+      setLastName("");
+      setEmail("");
+      setBirthdate("");
+      setUserType("Admin");
       onClose();
     }
   };
@@ -29,27 +41,65 @@ const AddUserModal = ({ isOpen, onClose, onAddUser }: AddUserModalProps) => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Name
+              First Name
             </label>
             <input
               type="text"
-              className="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              className="mt-1 block w-full rounded-md border-black p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
               required
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Username
+              Last Name
             </label>
             <input
               type="text"
-              className="mt-1 block w-full rounded-md border-gray-300 p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              className="mt-1 block w-full rounded-md border-black p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
               required
             />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
+              className="mt-1 block w-full rounded-md border-black p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Birthdate
+            </label>
+            <input
+              type="date"
+              className="mt-1 block w-full rounded-md border-black p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              value={birthdate}
+              onChange={(e) => setBirthdate(e.target.value)}
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              User Type
+            </label>
+            <select
+              className="mt-1 block w-full rounded-md border-black p-2 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              value={userType}
+              onChange={(e) => setUserType(e.target.value)}
+              required
+            >
+              <option value="Super Admin">Super Admin</option>
+              <option value="Admin">Admin</option>
+            </select>
           </div>
           <div className="flex justify-end space-x-2">
             <button
