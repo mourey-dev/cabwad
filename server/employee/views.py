@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.parsers import JSONParser
 
@@ -25,6 +25,8 @@ from services.drive_services import (
 
 import base64
 from io import BytesIO
+
+from account.permissions import IsAdminOrSuperAdmin
 
 
 def get_civil_status(data):
@@ -62,7 +64,7 @@ def to_uppercase(data):
 
 class PDSView(APIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAdminOrSuperAdmin]
 
     def post(self, request):
         data = to_uppercase(request.data)
@@ -158,7 +160,7 @@ class PDSView(APIView):
 
 class EmployeeView(APIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAdminOrSuperAdmin]
 
     def get(self, request, pk=None, *args, **kwargs):
         if pk:
@@ -167,12 +169,16 @@ class EmployeeView(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             category = request.query_params.get("category")
-            if category == "ALL":
-                employees = Employee.objects.filter(is_active=True)
-            else:
-                employees = Employee.objects.filter(
-                    appointment_status=category, is_active=True
-                )
+            is_active = request.query_params.get("is_active")
+
+            # Build filter conditions
+            filters = {}
+            if category and category != "ALL":
+                filters["appointment_status"] = category
+            if is_active is not None:
+                filters["is_active"] = is_active.lower() == "true"
+
+            employees = Employee.objects.filter(**filters)
             serializer = EmployeeSerializer(employees, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -197,14 +203,16 @@ class EmployeeView(APIView):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk=None, *args, **kwargs):
-        if not pk:
+    def delete(self, request, *args, **kwargs):
+        employee_id = request.data.get("employee_id", None)
+
+        if not employee_id:
             return Response(
                 {"detail": "Employee ID is required"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        employee = get_object_or_404(Employee, pk=pk)
+        employee = get_object_or_404(Employee, employee_id=employee_id)
         employee.is_active = not employee.is_active  # Toggle the is_active field
         employee.save()
 
@@ -222,19 +230,29 @@ class EmployeeView(APIView):
 
 class EmployeeCount(APIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAdminOrSuperAdmin]
 
     def get(self, request):
         employees = Employee.objects.all()
 
-        total_permanent = employees.filter(appointment_status="PERMANENT").count()
-        total_casuals = employees.filter(appointment_status="CASUAL").count()
-        total_job_orders = employees.filter(appointment_status="JOB ORDER").count()
-        total_co_terminus = employees.filter(appointment_status="CO-TERMINUS").count()
-        total_contract_of_service = employees.filter(
-            appointment_status="CONTRACT OF SERVICE"
+        total_permanent = employees.filter(
+            appointment_status="PERMANENT", is_active=True
         ).count()
-        total_temporary = employees.filter(appointment_status="TEMPORARY").count()
+        total_casuals = employees.filter(
+            appointment_status="CASUAL", is_active=True
+        ).count()
+        total_job_orders = employees.filter(
+            appointment_status="JOB ORDER", is_active=True
+        ).count()
+        total_co_terminus = employees.filter(
+            appointment_status="CO-TERMINUS", is_active=True
+        ).count()
+        total_contract_of_service = employees.filter(
+            appointment_status="CONTRACT OF SERVICE", is_active=True
+        ).count()
+        total_temporary = employees.filter(
+            appointment_status="TEMPORARY", is_active=True
+        ).count()
 
         return Response(
             {
@@ -251,7 +269,7 @@ class EmployeeCount(APIView):
 
 class EmployeeFile(APIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = [IsAdminOrSuperAdmin]
     parser_classes = [JSONParser]
 
     def get(self, request):

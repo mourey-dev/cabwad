@@ -301,7 +301,7 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
               alt="Profile"
               className="h-full w-full object-cover"
               onError={(e) => {
-                e.currentTarget.onerror = null; // Prevent infinite loop
+                e.currentTarget.onerror = null;
                 e.currentTarget.src = Default;
               }}
             />

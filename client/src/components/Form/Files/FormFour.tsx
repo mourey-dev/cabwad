@@ -35,9 +35,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
   const { loading, error, errorMessage, response, handleRequest } = useRequest<
     PDSResponse,
     PDSForm
-  >("/employee/create-pds/", {
-    method: "POST",
-  });
+  >("/employee/create-pds/");
 
   useEffect(() => {
     if (error) setShowErrorAlert(true);
@@ -69,7 +67,9 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
 
   const submit = (data: PDSForm) => {
     console.log(data);
-    handleRequest(data);
+    handleRequest(data, {
+      method: "POST",
+    });
   };
 
   return (
