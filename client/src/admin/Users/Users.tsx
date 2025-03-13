@@ -67,10 +67,19 @@ const Employees = () => {
     }
   };
 
-  const handleAddUser = (user: { name: string; username: string }) => {
+  const handleAddUser = (user: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    birthdate: string;
+    userType: string;
+  }) => {
     const newUser: EmployeeData = {
-      name: user.name,
-      username: user.username,
+      employee_id: Date.now().toString(),
+      name: `${user.firstName} ${user.lastName}`,
+      username: user.email,
+      birthdate: new Date(user.birthdate),
+      userType: user.userType,
     };
     setData((prevData) => [...(prevData ?? []), newUser]);
   };
