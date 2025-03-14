@@ -1,15 +1,10 @@
 import { useState } from "react";
+import { AccountType } from "../../../types/account";
 
 interface AddUserModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAddUser: (user: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    birthdate: string;
-    userType: string;
-  }) => void;
+  onAddUser: (user: AccountType) => void;
 }
 
 const AddUserModal = ({ isOpen, onClose, onAddUser }: AddUserModalProps) => {
@@ -22,7 +17,13 @@ const AddUserModal = ({ isOpen, onClose, onAddUser }: AddUserModalProps) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (firstName && lastName && email && birthdate && userType) {
-      onAddUser({ firstName, lastName, email, birthdate, userType });
+      onAddUser({
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        birthdate,
+        user_type: userType,
+      });
       setFirstName("");
       setLastName("");
       setEmail("");
