@@ -28,7 +28,7 @@ const useRequest = <TResponse, TData = unknown>(
     setErrorMessage("");
 
     const finalConfig: RequestConfig<TData> = {
-      method: "POST",
+      method: "GET",
       ...defaultConfig,
       ...config,
       data,

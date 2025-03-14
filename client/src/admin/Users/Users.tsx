@@ -1,93 +1,91 @@
 import { useEffect, useState } from "react";
 import remove from "../../assets/images/remove-user.png";
 import displayPic from "../../assets/images/displayPic.png";
-import { useGet } from "../../hooks";
-import { EmployeesData, EmployeeData } from "../../types/employee";
 import { Header, Footer } from "../../components";
 import Loading from "../../components/Loading";
-import EmployeeDetail from "../../components/EmployeeDetail/EmployeeDetail";
 import ConfirmModal from "../../components/ConfirmDelete/ConfirmModal";
 import add from "../../assets/images/add.png";
-import AddUserModal from "../../admin/Users/AddUserModal/AddUserModal";
+import AddUserModal from "./AddUserModal/AddUserModal";
+import { useRequest } from "../../hooks";
+import { AccountType } from "../../types/account";
 
-const Employees = () => {
-  const [category, setCategory] = useState("ALL");
-  const { loading, data, setData } = useGet<EmployeesData>(
-    `/employee/list/?category=${category}`,
-  );
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedEmployee, setSelectedEmployee] = useState<EmployeeData | null>(
-    null,
-  );
+// Component
+import { AlertSuccess } from "../../components/Alert";
+
+type AccountResponse = {
+  status: string;
+  message: string;
+  data: AccountType[] | AccountType;
+};
+
+const Users = () => {
+  const [users, setUsers] = useState<AccountType[]>([]);
+  useState<AccountType | null>(null);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
-  const [employeeToRemove, setEmployeeToRemove] = useState<EmployeeData | null>(
+  const [accountToRemove, setAccountToRemove] = useState<AccountType | null>(
     null,
   );
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+
+  const { loading, error, response, setResponse, handleRequest } =
+    useRequest<AccountResponse>("account/api/");
 
   useEffect(() => {
-    if (isModalOpen) {
-      const updatedData = data?.find(
-        (item) => item.employee_id === selectedEmployee?.employee_id,
-      );
-      if (updatedData) {
-        setSelectedEmployee(updatedData);
-      }
-    }
-  }, [data, selectedEmployee, isModalOpen]);
+    const fetchUsers = async () => {
+      const response = await handleRequest();
+      setUsers(response.data as AccountType[]);
+    };
+    fetchUsers();
+  }, []);
 
-  const handleOpenModal = (employee: EmployeeData) => {
-    setSelectedEmployee(employee);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedEmployee(null);
-  };
-
-  const handleOpenConfirmModal = (employee: EmployeeData) => {
-    setEmployeeToRemove(employee);
+  const handleOpenConfirmModal = (account: AccountType) => {
+    setAccountToRemove(account);
     setIsConfirmModalOpen(true);
   };
 
   const handleCloseConfirmModal = () => {
     setIsConfirmModalOpen(false);
-    setEmployeeToRemove(null);
+    setAccountToRemove(null);
   };
 
-  const handleRemoveEmployee = () => {
-    if (employeeToRemove) {
-      setData((prevData) =>
-        (prevData ?? []).filter(
-          (item) => item.employee_id !== employeeToRemove.employee_id,
-        ),
+  const handleAlertClose = () => {
+    setShowAlert(false);
+    setAlertMessage("");
+  };
+
+  const handleRemoveUser = () => {
+    if (accountToRemove) {
+      handleRequest(
+        { id: accountToRemove.id },
+        {
+          method: "DELETE",
+        },
       );
+      setUsers(users.filter((user) => user.id !== accountToRemove.id));
+      setAccountToRemove(null);
       handleCloseConfirmModal();
+      setAlertMessage("User deactivated successfully");
+      setShowAlert(true);
     }
   };
 
-  const handleAddUser = (user: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    birthdate: string;
-    userType: string;
-  }) => {
-    const newUser: EmployeeData = {
-      employee_id: Date.now().toString(),
-      name: `${user.firstName} ${user.lastName}`,
-      username: user.email,
-      birthdate: new Date(user.birthdate),
-      userType: user.userType,
-    };
-    setData((prevData) => [...(prevData ?? []), newUser]);
+  const handleAddUser = async (user: AccountType) => {
+    const response = await handleRequest(user, { method: "POST" });
+    setUsers([...users, response.data as AccountType]);
+    setIsAddUserModalOpen(false);
+    setAlertMessage("User added successfully");
+    setShowAlert(true);
   };
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
       {loading && <Loading loading={loading} />}
       <Header />
+      {showAlert && (
+        <AlertSuccess message={alertMessage} onClose={handleAlertClose} />
+      )}
       <main className="flex-1">
         <div className="px-6 py-4">
           <h2 className="text-xl font-bold text-blue-600">
@@ -96,30 +94,24 @@ const Employees = () => {
         </div>
 
         <div className="mb-6 grid grid-cols-1 gap-6 px-4 py-6 sm:grid-cols-2 sm:px-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {data?.map((item) => (
-            <div
-              key={item.employee_id}
-              className="cursor-pointer"
-              onClick={() => handleOpenModal(item)}
-            >
+          {users.map((user) => (
+            <div key={user.id} className="cursor-pointer">
               <div className="relative flex h-50 w-full flex-col items-center rounded-md bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105 hover:bg-blue-600 sm:p-6">
                 <button
                   className="absolute top-2 right-2 transform cursor-pointer transition-transform duration-300 hover:scale-150"
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleOpenConfirmModal(item);
+                    handleOpenConfirmModal(user);
                   }}
                 >
                   <img src={remove} alt="Remove User" className="w-6" />
                 </button>
-                <img
-                  src={displayPic}
-                  alt="Employee Icon"
-                  className="mt-4 w-16"
-                />
+                <img src={displayPic} alt="User Icon" className="mt-4 w-16" />
                 <div className="flex flex-grow flex-col justify-between text-center">
-                  <p className="mt-2 font-bold text-gray-800">User Name</p>
-                  <p className="text-sm text-gray-500">Admin</p>
+                  <p className="mt-2 font-bold text-gray-800">
+                    {`${user.first_name} ${user.last_name}`}
+                  </p>
+                  <p className="text-sm text-gray-500">{user.user_type}</p>
                 </div>
               </div>
             </div>
@@ -133,20 +125,15 @@ const Employees = () => {
         </button>
       </main>
       <Footer />
-      {selectedEmployee && (
-        <EmployeeDetail
-          isOpen={isModalOpen}
-          onClose={handleCloseModal}
-          employee={selectedEmployee}
-          setData={setData}
-        />
-      )}
-      {employeeToRemove && (
+      {accountToRemove && (
         <ConfirmModal
           isOpen={isConfirmModalOpen}
           onClose={handleCloseConfirmModal}
-          onConfirm={handleRemoveEmployee}
-          employee={employeeToRemove}
+          onConfirm={handleRemoveUser}
+          employee={{
+            first_name: accountToRemove.first_name,
+            surname: accountToRemove.last_name,
+          }}
         />
       )}
       <AddUserModal
@@ -158,4 +145,4 @@ const Employees = () => {
   );
 };
 
-export default Employees;
+export default Users;

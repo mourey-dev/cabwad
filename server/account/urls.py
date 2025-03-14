@@ -6,9 +6,10 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
-from .views import LoginView, LogoutView
+from .views import LoginView, LogoutView, AccountView
 
 urlpatterns = [
+    path("", AccountView.as_view(), name="account"),
     # Authentication endpoints
     path("login/", LoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
