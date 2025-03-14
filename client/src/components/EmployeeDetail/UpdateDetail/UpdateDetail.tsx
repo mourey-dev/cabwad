@@ -26,22 +26,31 @@ export default function EmployeeUpdateModal({
     position: employee.position,
     birth_date: employee.birth_date,
     first_day_service: employee.first_day_service,
+    image: employee.image || "",
   });
 
-  // Handle Input Change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // Handle Form Submission
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setFormData({ ...formData, image: event.target?.result as string });
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Updated Data:", formData);
-    onClose(); // Close modal after submission
+    onClose();
   };
 
-  if (!isOpen) return null; // Don't render when closed
+  if (!isOpen) return null;
 
   return (
     <div className="bg-opacity-50 fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50">
@@ -49,10 +58,27 @@ export default function EmployeeUpdateModal({
         <h2 className="mb-4 text-center text-xl font-bold text-blue-900">
           Update Employee Information
         </h2>
-
-        {/* Form */}
         <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
-          {/* Employee Details */}
+          <div className="col-span-2 flex flex-col items-center">
+            <h3 className="mb-2 font-bold">Profile Image</h3>
+            <label className="flex h-32 w-32 cursor-pointer items-center justify-center overflow-hidden rounded-lg border-2 border-gray-300">
+              {formData.image ? (
+                <img
+                  src={formData.image}
+                  alt="Profile"
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <span className="text-gray-400">No Image</span>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageChange}
+              />
+            </label>
+          </div>
           <div className="col-span-2 md:col-span-1">
             <h3 className="mb-2 font-bold">Employee Details</h3>
             <input
@@ -98,8 +124,6 @@ export default function EmployeeUpdateModal({
               className="input-field mb-2 rounded border px-2 py-1"
             />
           </div>
-
-          {/* Employment Details */}
           <div className="col-span-2 md:col-span-1">
             <h3 className="mb-2 font-bold">Employment Details</h3>
             <input
@@ -151,8 +175,6 @@ export default function EmployeeUpdateModal({
               className="input-field mb-2 rounded border px-2 py-1"
             />
           </div>
-
-          {/* Contact Information */}
           <div className="col-span-2">
             <h3 className="mb-2 font-bold">Contact</h3>
             <input
@@ -170,8 +192,6 @@ export default function EmployeeUpdateModal({
               className="input-field mb-2 rounded border px-2 py-1"
             />
           </div>
-
-          {/* Buttons */}
           <div className="col-span-2 flex justify-end space-x-4">
             <button
               type="button"
