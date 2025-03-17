@@ -51,13 +51,13 @@ class File(models.Model):
 
 
 class Employee(models.Model):
-    employee_id = models.IntegerField()
+    employee_id = models.CharField(max_length=25, unique=True)
     first_name = models.CharField(max_length=255)
     surname = models.CharField(max_length=255)
     middle_name = models.CharField(max_length=255, null=True)
     appointment_status = models.CharField(max_length=20, null=True, blank=True)
     position = models.CharField(max_length=255, default=None)
-    birth_date = models.DateField(auto_now=True)
+    birth_date = models.DateField()
     first_day_service = models.DateField(auto_now=True)
     civil_service = models.CharField(max_length=255)
     civil_status = models.CharField(max_length=50)
@@ -73,3 +73,6 @@ class Employee(models.Model):
 
     class Meta:
         db_table = "employee"
+        verbose_name = "Employee"
+        verbose_name_plural = "Employees"
+        ordering = ["surname", "first_name"]

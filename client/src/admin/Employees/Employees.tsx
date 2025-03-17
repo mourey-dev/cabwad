@@ -8,6 +8,8 @@ import Loading from "../../components/Loading";
 import EmployeeDetail from "../../components/EmployeeDetail/EmployeeDetail";
 import ConfirmModal from "../../components/ConfirmDelete/ConfirmModal";
 
+import Pagination from "../../components/Pagination";
+
 // Components
 import { AlertSuccess, AlertError } from "../../components/Alert";
 
@@ -22,11 +24,27 @@ type DeleteEmployeeResponse = {
   employee: EmployeeData;
 };
 
+type PaginatedEmployeesData = {
+  status: string;
+  message: string;
+  links: {
+    next: string | null;
+    previous: string | null;
+  };
+  count: number;
+  total_pages: number;
+  current_page: number;
+  results: EmployeeData[];
+};
+
 const Employees = () => {
   const [category, setCategory] = useState("ALL");
   const [isActive, setIsActive] = useState(true);
-  const { loading, data, setData } = useGet<EmployeesData>(
-    `/employee/list/?category=${category}&is_active=${isActive}`,
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+
+  const { loading, data, setData } = useGet<PaginatedEmployeesData>(
+    `/employee/list/?category=${category}&is_active=${isActive}&page=${currentPage}&page_size=${pageSize}`,
   );
   const {
     loading: deleteLoading,
@@ -50,7 +68,7 @@ const Employees = () => {
 
   useEffect(() => {
     if (isModalOpen) {
-      const updatedData = data?.find(
+      const updatedData = data?.results.find(
         (item) => item.employee_id === selectedEmployee?.employee_id,
       );
       if (updatedData) {
@@ -68,11 +86,16 @@ const Employees = () => {
   useEffect(() => {
     if (response) {
       setShowDeleteAlert(true);
-      setData((prevData) =>
-        (prevData ?? []).filter(
-          (item) => item.employee_id !== response.employee.employee_id,
-        ),
-      );
+      setData((prevData) => {
+        if (!prevData) return prevData;
+        return {
+          ...prevData,
+          results: prevData.results.filter(
+            (item) => item.employee_id !== response.employee.employee_id,
+          ),
+          count: prevData.count - 1,
+        };
+      });
     }
   }, [response]);
 
@@ -104,6 +127,10 @@ const Employees = () => {
     }
   };
 
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
       {loading && <Loading loading={loading} />}
@@ -121,45 +148,59 @@ const Employees = () => {
         />
       )}
       <Header />
-      <main className="flex-1">
-        <div className="px-6 py-4">
-          <h2 className="text-xl font-bold text-blue-600">
-            CABWAD List of Employees: <span className="text-gray-600">##</span>
-          </h2>
-        </div>
-        <div className="absolute top-20 right-2 flex items-center">
-          <div className="mr-4 inline-block">
-            <label className="inline-flex cursor-pointer items-center">
-              <input
-                onClick={() => setIsActive(!isActive)}
-                type="checkbox"
-                className="peer sr-only"
-              />
-              <div className="peer relative h-6 w-11 rounded-full bg-gray-200 peer-checked:bg-blue-600 peer-focus:ring-4 peer-focus:ring-blue-300 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white rtl:peer-checked:after:-translate-x-full dark:border-gray-600 dark:bg-gray-700 dark:peer-checked:bg-blue-600"></div>
-              <span className="ms-3 text-sm font-medium text-blue-600">
-                RESIGNED
-              </span>
-            </label>
+      <main className="mb-4 flex-1">
+        <div className="right-2 flex items-center justify-between px-6 py-4">
+          <div className="">
+            <h2 className="text-xl font-bold text-blue-600">
+              CABWAD List of Employees:{" "}
+              <span className="text-gray-600">##</span>
+            </h2>
           </div>
+          {data && (
+            <Pagination
+              currentPage={data.current_page}
+              totalPages={data.total_pages}
+              pageSize={pageSize}
+              hasNext={!!data.links.next}
+              hasPrevious={!!data.links.previous}
+              onPageChange={handlePageChange}
+              onPageSizeChange={setPageSize}
+            />
+          )}
+          <div>
+            <div className="mr-4 inline-block">
+              <label className="inline-flex cursor-pointer items-center">
+                <input
+                  onClick={() => setIsActive(!isActive)}
+                  type="checkbox"
+                  className="peer sr-only"
+                />
+                <div className="peer relative h-6 w-11 rounded-full bg-gray-200 peer-checked:bg-blue-600 peer-focus:ring-4 peer-focus:ring-blue-300 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white rtl:peer-checked:after:-translate-x-full dark:border-gray-600 dark:bg-gray-700 dark:peer-checked:bg-blue-600"></div>
+                <span className="ms-3 text-sm font-medium text-blue-600">
+                  RESIGNED
+                </span>
+              </label>
+            </div>
 
-          <select
-            name="Employment Status"
-            title="employment_status"
-            defaultValue="ALL"
-            onChange={(e) => setCategory(e.target.value)}
-            className="rounded border-2 bg-white text-blue-600"
-          >
-            <option value="ALL">ALL</option>
-            <option value="PERMANENT">PERMANENT</option>
-            <option value="CASUAL">CASUAL</option>
-            <option value="JOB ORDER">JOB ORDER</option>
-            <option value="CO-TERMINUS">CO-TERMINUS</option>
-            <option value="CONTRACT OF SERVICE">CONTRACT OF SERVICE</option>
-            <option value="TEMPORARY">TEMPORARY</option>
-          </select>
+            <select
+              name="Employment Status"
+              title="employment_status"
+              defaultValue="ALL"
+              onChange={(e) => setCategory(e.target.value)}
+              className="rounded border-2 bg-white text-blue-600"
+            >
+              <option value="ALL">ALL</option>
+              <option value="PERMANENT">PERMANENT</option>
+              <option value="CASUAL">CASUAL</option>
+              <option value="JOB ORDER">JOB ORDER</option>
+              <option value="CO-TERMINUS">CO-TERMINUS</option>
+              <option value="CONTRACT OF SERVICE">CONTRACT OF SERVICE</option>
+              <option value="TEMPORARY">TEMPORARY</option>
+            </select>
+          </div>
         </div>
         <div className="mb-6 grid grid-cols-1 gap-6 px-4 py-6 sm:grid-cols-2 sm:px-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {data?.map((item) => (
+          {data?.results?.map((item) => (
             <div
               key={item.employee_id}
               className="cursor-pointer"
@@ -194,6 +235,18 @@ const Employees = () => {
             </div>
           ))}
         </div>
+
+        {data && (
+          <Pagination
+            currentPage={data.current_page}
+            totalPages={data.total_pages}
+            pageSize={pageSize}
+            hasNext={!!data.links.next}
+            hasPrevious={!!data.links.previous}
+            onPageChange={handlePageChange}
+            onPageSizeChange={setPageSize}
+          />
+        )}
       </main>
       <Footer />
       {selectedEmployee && (

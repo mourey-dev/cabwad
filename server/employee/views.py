@@ -27,6 +27,7 @@ import base64
 from io import BytesIO
 
 from account.permissions import IsAdminOrSuperAdmin
+from .pagination import EmployeePagination
 
 
 def get_civil_status(data):
@@ -161,6 +162,7 @@ class PDSView(APIView):
 class EmployeeView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAdminOrSuperAdmin]
+    pagination_class = EmployeePagination
 
     def get(self, request, pk=None, *args, **kwargs):
         if pk:
@@ -179,8 +181,13 @@ class EmployeeView(APIView):
                 filters["is_active"] = is_active.lower() == "true"
 
             employees = Employee.objects.filter(**filters)
-            serializer = EmployeeSerializer(employees, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+
+            # Initialize paginator
+            paginator = self.pagination_class()
+            paginated_employees = paginator.paginate_queryset(employees, request)
+
+            serializer = EmployeeSerializer(paginated_employees, many=True)
+            return paginator.get_paginated_response(serializer.data)
 
     def put(self, request, pk=None, *args, **kwargs):
         if not pk:

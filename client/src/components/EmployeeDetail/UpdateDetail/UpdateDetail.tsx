@@ -1,10 +1,27 @@
 import { useState } from "react";
 import { EmployeeData } from "../../../types/employee";
 
-interface EmployeeUpdateModalProps {
+type EmployeeUpdateModalProps {
   isOpen: boolean;
   onClose: () => void;
   employee: EmployeeData;
+}
+
+type EmployeeUpdateForm = {
+  employee_id: string;
+  surname: string;
+  first_name: string;
+  middle_name: string;
+  sex: string;
+  civil_status: string;
+  phone: string;
+  email: string;
+  employment_status: string;
+  eligibility: string;
+  position: string;
+  birth_date: string;
+  first_day_service: string;
+  image: string;
 }
 
 export default function EmployeeUpdateModal({
