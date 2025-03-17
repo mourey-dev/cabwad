@@ -1,3 +1,21 @@
+export type DeleteEmployeeResponse = {
+  detail: string;
+  employee: EmployeeData;
+};
+
+export type PaginatedEmployeesData = {
+  status: string;
+  message: string;
+  links: {
+    next: string | null;
+    previous: string | null;
+  };
+  count: number;
+  total_pages: number;
+  current_page: number;
+  results: EmployeeData[];
+};
+
 export type EmployeeFile = {
   name: string;
   file_id: string;
@@ -5,7 +23,7 @@ export type EmployeeFile = {
 };
 
 export type EmployeeData = {
-  employee_id: number;
+  employee_id: string;
   first_name: string;
   surname: string;
   middle_name: string;

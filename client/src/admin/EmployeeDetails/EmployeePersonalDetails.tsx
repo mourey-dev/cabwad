@@ -1,12 +1,41 @@
-import React from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import { Header, Footer } from "../../components";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEmployeeData } from "../../hooks/useEmployee";
+
+// Components
+import { Header, Footer, Loading } from "../../components";
+
+// Assets
 import Phone from "../../assets/images/contact-phone.png";
 import Email from "../../assets/images/contact-email.png";
 import back from "../../assets/images/back.png";
+import Default from "../../assets/images/default.png";
+
+// Utils
+import { getProfile } from "../../utils/fileHandler";
+
+const getValidDisplay = (value: string, defaultValue: string = "NONE") => {
+  return value.length === 0 ? defaultValue : value;
+};
+
+const getAge = (birthDate: string) => {
+  const today = new Date();
+  const birth = new Date(birthDate);
+  let age = today.getFullYear() - birth.getFullYear();
+  const m = today.getMonth() - birth.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+    age--;
+  }
+  return age;
+};
 
 const EmployeePersonalDetails = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const { employee, isLoading, isError, error } = useEmployeeData(id);
+
+  if (isLoading || !employee) {
+    return <Loading loading={true} />;
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-blue-600">
@@ -27,15 +56,27 @@ const EmployeePersonalDetails = () => {
           </button>
 
           <div className="mb-4 flex items-center border-b pb-4">
-            <div className="flex h-32 w-32 items-center justify-center border-2 border-gray-300">
-              <span className="text-gray-500">[Profile Image]</span>
-            </div>
+            <img
+              src={getProfile(employee.files) ?? Default}
+              alt="Profile"
+              className="h-32 w-32 object-cover"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = Default;
+              }}
+            />
             <div className="ml-6">
-              <h2 className="text-3xl font-bold">Employee Name</h2>
-              <p className="text-gray-600">Employee ID#</p>
+              <h2 className="text-3xl font-bold">{`${employee.first_name} ${employee.surname}`}</h2>
+              <p className="text-gray-600">{`#${employee.employee_id}`}</p>
               <div className="mt-2 flex items-center space-x-4">
-                <img src={Phone} alt="Phone" className="h-4 w-4" />
-                <img src={Email} alt="Email" className="h-4 w-4" />
+                <span className="text-blue flex items-center gap-2">
+                  <img src={Phone} alt="Phone" className="h-4 w-4" />
+                  {getValidDisplay(employee.phone)}
+                </span>
+                <span className="text-blue flex items-center gap-2">
+                  <img src={Email} alt="Email" className="h-4 w-4" />
+                  {getValidDisplay(employee.email)}
+                </span>
               </div>
               <div className="mt-3 flex space-x-3">
                 <button className="rounded bg-green-500 px-5 py-2 text-white hover:bg-green-600">
@@ -49,32 +90,37 @@ const EmployeePersonalDetails = () => {
           </div>
 
           <div className="bg-gray-200 p-3 text-lg font-bold">
-            Personal Information
+            PERSONAL INFORMATION
           </div>
           <div className="grid grid-cols-2 gap-4 p-6">
             <p>
-              <strong>Sex:</strong>{" "}
+              SEX: <strong>{getValidDisplay(employee.sex)}</strong>
             </p>
             <p>
-              <strong>Date of Birth:</strong>{" "}
+              DATE OF BIRTH:{" "}
+              <strong>{getValidDisplay(employee.birth_date)}</strong>
             </p>
             <p>
-              <strong>Age:</strong>{" "}
+              AGE: <strong>{getAge(employee.birth_date)}</strong>
             </p>
             <p>
-              <strong>Address:</strong>{" "}
+              ADDRESS: <strong>NONE</strong>
             </p>
             <p>
-              <strong>Employment Status:</strong>{" "}
+              EMPLOYMENT STATUS:{" "}
+              <strong>{getValidDisplay(employee.appointment_status)}</strong>
             </p>
             <p>
-              <strong>First Day of Service:</strong>{" "}
+              FIRST DAY OF SERVICE:{" "}
+              <strong>{getValidDisplay(employee.first_day_service)}</strong>
             </p>
             <p>
-              <strong>Civil Status:</strong>{" "}
+              CIVIL STATUS:{" "}
+              <strong>{getValidDisplay(employee.civil_status)}</strong>
             </p>
             <p>
-              <strong>Civil Service Eligibility:</strong>{" "}
+              CIVIL SERVICE ELIGIBILITY:{" "}
+              <strong>{getValidDisplay(employee.civil_service)}</strong>
             </p>
           </div>
 

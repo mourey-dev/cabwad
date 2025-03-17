@@ -1,85 +1,57 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import remove from "../../assets/images/remove-user.png";
-import displayPic from "../../assets/images/displayPic.png";
-import { useGet } from "../../hooks";
-import { EmployeesData, EmployeeData } from "../../types/employee";
-import { Header, Footer } from "../../components";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom"; // Import useParams and useNavigate
+
+import { useGetQuery, useDeleteMutation } from "../../hooks/useCustomQuery";
+import { EmployeeData } from "../../types/employee";
+import { Header, Footer, FilterBar, EmployeeCard } from "../../components";
 import Loading from "../../components/Loading";
 import ConfirmModal from "../../components/ConfirmDelete/ConfirmModal";
 import Pagination from "../../components/Pagination";
 import { AlertSuccess, AlertError } from "../../components/Alert";
-import { useRequest } from "../../hooks";
-import { getProfile } from "../../utils/fileHandler";
 
-type DeleteEmployeeResponse = {
-  detail: string;
-  employee: EmployeeData;
-};
+import { useEmployeeData } from "../../hooks/useEmployee";
 
-type PaginatedEmployeesData = {
-  status: string;
-  message: string;
-  links: {
-    next: string | null;
-    previous: string | null;
-  };
-  count: number;
-  total_pages: number;
-  current_page: number;
-  results: EmployeeData[];
-};
+// Types
+import {
+  DeleteEmployeeResponse,
+  PaginatedEmployeesData,
+} from "../../types/employee";
 
 const Employees = () => {
   const navigate = useNavigate(); // Initialize navigate
+  const { pageNumber } = useParams();
   const [category, setCategory] = useState("ALL");
   const [isActive, setIsActive] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(Number(pageNumber) || 1);
   const [pageSize, setPageSize] = useState(20);
-
-  const { loading, data, setData } = useGet<PaginatedEmployeesData>(
-    `/employee/list/?category=${category}&is_active=${isActive}&page=${currentPage}&page_size=${pageSize}`,
-  );
-
-  const {
-    loading: deleteLoading,
-    error,
-    errorMessage,
-    response,
-    handleRequest,
-  } = useRequest<DeleteEmployeeResponse, { employee_id: number }>(
-    "/employee/list/",
-  );
-
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [employeeToRemove, setEmployeeToRemove] = useState<EmployeeData | null>(
     null,
   );
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
-  useEffect(() => {
-    if (error) {
-      setShowDeleteAlert(true);
-    }
-  }, [error]);
+  // Use custom GET query
+  const { data, isLoading: loading } = useGetQuery<PaginatedEmployeesData>(
+    [
+      "employees",
+      category,
+      isActive.toString(),
+      currentPage.toString(),
+      pageSize.toString(),
+    ],
+    `/employee/list/?category=${category}&is_active=${isActive}&page=${currentPage}&page_size=${pageSize}`,
+  );
 
-  useEffect(() => {
-    if (response) {
-      setShowDeleteAlert(true);
-      setData((prevData) => {
-        if (!prevData) return prevData;
-        return {
-          ...prevData,
-          results: prevData.results.filter(
-            (item) => item.employee_id !== response.employee.employee_id,
-          ),
-          count: prevData.count - 1,
-        };
-      });
-    }
-  }, [response]);
+  // Use custom DELETE mutation
+  const deleteMutation = useDeleteMutation<DeleteEmployeeResponse>(
+    "/employee/list/",
+    ["employees"],
+  );
+
+  const { prefetchEmployee } = useEmployeeData();
 
   const handleOpenEmployeePage = (employee: EmployeeData) => {
+    prefetchEmployee(employee); // Cache the employee data before navigation
     navigate(`/admin/employee_details/${employee.employee_id}`);
   };
 
@@ -95,32 +67,55 @@ const Employees = () => {
 
   const handleRemoveEmployee = () => {
     if (employeeToRemove) {
-      handleRequest(
-        { employee_id: employeeToRemove.employee_id },
-        { method: "DELETE" },
-      );
-      handleCloseConfirmModal();
+      deleteMutation.mutate(employeeToRemove.employee_id, {
+        onSuccess: () => {
+          setShowDeleteAlert(true);
+          handleCloseConfirmModal();
+        },
+        onError: (error) => {
+          setShowDeleteAlert(true);
+        },
+      });
     }
   };
 
   const handlePageChange = (newPage: number) => {
     setCurrentPage(newPage);
+    navigate(`/admin/employees/page/${newPage}`);
   };
+
+  useEffect(() => {
+    if (pageNumber && Number(pageNumber) !== currentPage) {
+      setCurrentPage(Number(pageNumber));
+    }
+  }, [pageNumber]);
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
       {loading && <Loading loading={loading} />}
-      {deleteLoading && <Loading loading={deleteLoading} />}
-      {showDeleteAlert && response && (
+      {deleteMutation.isPending && <Loading loading={true} />}
+      {showDeleteAlert && deleteMutation.isSuccess && (
         <AlertSuccess
-          message={response.detail}
+          message={
+            deleteMutation.data?.detail || "Employee deleted successfully"
+          }
           onClose={() => setShowDeleteAlert(false)}
         />
       )}
-      {showDeleteAlert && error && (
+      {showDeleteAlert && deleteMutation.isError && (
         <AlertError
-          message={errorMessage}
+          message={
+            (deleteMutation.error as Error)?.message || "An error occurred"
+          }
           onClose={() => setShowDeleteAlert(false)}
+        />
+      )}
+      {isConfirmModalOpen && employeeToRemove && (
+        <ConfirmModal
+          isOpen={isConfirmModalOpen}
+          onClose={handleCloseConfirmModal}
+          onConfirm={handleRemoveEmployee}
+          employee={employeeToRemove}
         />
       )}
       <Header />
@@ -132,7 +127,9 @@ const Employees = () => {
               <span className="text-gray-600">##</span>
             </h2>
           </div>
-          {data && (
+          {!data?.count ? (
+            ""
+          ) : (
             <Pagination
               currentPage={data.current_page}
               totalPages={data.total_pages}
@@ -144,73 +141,27 @@ const Employees = () => {
             />
           )}
           <div>
-            <div className="mr-4 inline-block">
-              <label className="inline-flex cursor-pointer items-center">
-                <input
-                  onClick={() => setIsActive(!isActive)}
-                  type="checkbox"
-                  className="peer sr-only"
-                />
-                <div className="peer relative h-6 w-11 rounded-full bg-gray-200 peer-checked:bg-blue-600 peer-focus:ring-4 peer-focus:ring-blue-300 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white"></div>
-                <span className="ms-3 text-sm font-medium text-blue-600">
-                  RESIGNED
-                </span>
-              </label>
-            </div>
-            <select
-              name="Employment Status"
-              title="employment_status"
-              defaultValue="ALL"
-              onChange={(e) => setCategory(e.target.value)}
-              className="rounded border-2 bg-white text-blue-600"
-            >
-              <option value="ALL">ALL</option>
-              <option value="PERMANENT">PERMANENT</option>
-              <option value="CASUAL">CASUAL</option>
-              <option value="JOB ORDER">JOB ORDER</option>
-              <option value="CO-TERMINUS">CO-TERMINUS</option>
-              <option value="CONTRACT OF SERVICE">CONTRACT OF SERVICE</option>
-              <option value="TEMPORARY">TEMPORARY</option>
-            </select>
+            <FilterBar
+              category={category}
+              onCategoryChange={setCategory}
+              isActive={isActive}
+              onActiveChange={setIsActive}
+            />
           </div>
         </div>
         <div className="mb-6 grid grid-cols-1 gap-6 px-4 py-6 sm:grid-cols-2 sm:px-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {data?.results?.map((item) => (
-            <div
+            <EmployeeCard
               key={item.employee_id}
-              className="cursor-pointer"
-              onClick={() => handleOpenEmployeePage(item)}
-            >
-              <div className="relative flex h-60 w-full flex-col items-center rounded-md bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105 hover:bg-blue-600 sm:p-6">
-                <button
-                  className="absolute top-2 right-2 transform cursor-pointer transition-transform duration-300 hover:scale-150"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleOpenConfirmModal(item);
-                  }}
-                >
-                  <img src={remove} alt="Remove User" className="w-6" />
-                </button>
-
-                <img
-                  src={getProfile(item.files) ?? displayPic}
-                  alt="Employee Icon"
-                  onError={(e) => {
-                    e.currentTarget.onerror = null;
-                    e.currentTarget.src = displayPic;
-                  }}
-                  className="mt-4 h-[70px] w-[70px] rounded-[50%] border-2 border-slate-300"
-                />
-                <div className="flex flex-grow flex-col justify-between text-center">
-                  <p className="mt-2 font-bold text-gray-800">{`${item.first_name} ${item.surname}`}</p>
-                  <p className="text-sm text-gray-500">{`${item.appointment_status}`}</p>
-                  <p className="text-xs text-gray-400">{`${item.department}`}</p>
-                </div>
-              </div>
-            </div>
+              employee={item}
+              onSelect={handleOpenEmployeePage}
+              onRemove={handleOpenConfirmModal}
+            />
           ))}
         </div>
-        {data && (
+        {!data?.count ? (
+          ""
+        ) : (
           <Pagination
             currentPage={data.current_page}
             totalPages={data.total_pages}

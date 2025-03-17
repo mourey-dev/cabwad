@@ -165,8 +165,10 @@ class EmployeeView(APIView):
     pagination_class = EmployeePagination
 
     def get(self, request, pk=None, *args, **kwargs):
-        if pk:
-            employee = get_object_or_404(Employee, pk=pk)
+        employee_id = kwargs.get("employee_id", "")
+
+        if employee_id:
+            employee = get_object_or_404(Employee, employee_id=employee_id)
             serializer = EmployeeSerializer(employee)
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
