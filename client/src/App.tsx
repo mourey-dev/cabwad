@@ -4,6 +4,7 @@ import Dashboard from "./admin/Dashboard/Dashboard";
 import Users from "./admin/Users/Users";
 import LoginPage from "./admin/Login/Login";
 import Form from "./admin/Form/Form";
+import EmployeePersonalDetails from "./admin/EmployeeDetails/EmployeePersonalDetails";
 
 // Routes
 import { ProtectedRoute, LoginRoute } from "./routes";
@@ -22,6 +23,10 @@ function App() {
           <Route path="/admin/employees" element={<Employees />} />
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/form/:page" element={<Form />} />
+          <Route
+            path="/admin/employee_details"
+            element={<EmployeePersonalDetails />}
+          />
         </Route>
 
         {/* NOT INCLUDED ON PATH */}

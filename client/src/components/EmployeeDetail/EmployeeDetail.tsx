@@ -328,7 +328,13 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
                 SEX: {employee.sex || "NONE"}
               </p>
               <p className="text-gray-800 uppercase">
+                AGE: {employee.age || "NONE"}
+              </p>
+              <p className="text-gray-800 uppercase">
                 CIVIL STATUS: {employee.civil_status || "NONE"}
+              </p>
+              <p className="text-gray-800 uppercase">
+                ADDRESS: {employee.address || "NONE"}
               </p>
 
               <h3 className="mt-4 font-bold uppercase">Contact</h3>
