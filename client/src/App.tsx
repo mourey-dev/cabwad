@@ -24,7 +24,7 @@ function App() {
           <Route path="/admin/dashboard" element={<Dashboard />} />
           <Route path="/admin/form/:page" element={<Form />} />
           <Route
-            path="/admin/employee_details"
+            path="/admin/employee_details/:id"
             element={<EmployeePersonalDetails />}
           />
         </Route>

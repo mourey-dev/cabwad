@@ -1,14 +1,31 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { Header, Footer } from "../../components";
 import Phone from "../../assets/images/contact-phone.png";
 import Email from "../../assets/images/contact-email.png";
+import back from "../../assets/images/back.png";
 
 const EmployeePersonalDetails = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex min-h-screen flex-col bg-blue-600">
       <Header />
       <main className="flex-1 px-6 py-4">
         <div className="max-w-8xl mx-auto rounded-lg bg-white p-8 shadow-md">
+          {/* Back Button */}
+          <button
+            onClick={() => navigate(-1)}
+            className="mb-4 flex items-center space-x-2 text-blue-600 hover:text-blue-800"
+          >
+            <img
+              src={back}
+              alt="Back"
+              className="h-5 w-5 transition-transform duration-300 hover:scale-120"
+            />
+            <span className="text-md font-medium">Back</span>
+          </button>
+
           <div className="mb-4 flex items-center border-b pb-4">
             <div className="flex h-32 w-32 items-center justify-center border-2 border-gray-300">
               <span className="text-gray-500">[Profile Image]</span>
@@ -16,7 +33,7 @@ const EmployeePersonalDetails = () => {
             <div className="ml-6">
               <h2 className="text-3xl font-bold">Employee Name</h2>
               <p className="text-gray-600">Employee ID#</p>
-              <div className="mt-2 flex items-center space-x-50">
+              <div className="mt-2 flex items-center space-x-4">
                 <img src={Phone} alt="Phone" className="h-4 w-4" />
                 <img src={Email} alt="Email" className="h-4 w-4" />
               </div>
