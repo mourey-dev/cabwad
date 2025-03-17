@@ -93,34 +93,53 @@ const EmployeePersonalDetails = () => {
             PERSONAL INFORMATION
           </div>
           <div className="grid grid-cols-2 gap-4 p-6">
-            <p>
-              SEX: <strong>{getValidDisplay(employee.sex)}</strong>
+            <p className="text-xs/1 text-gray-500">
+              SEX:
+              <p className="text-lg text-black">
+                <strong>{getValidDisplay(employee.sex)}</strong>
+              </p>
             </p>
-            <p>
+            <p className="text-xs/1 text-gray-500">
               DATE OF BIRTH:{" "}
-              <strong>{getValidDisplay(employee.birth_date)}</strong>
+              <p className="text-lg text-black">
+                <strong>{getValidDisplay(employee.birth_date)}</strong>
+              </p>
             </p>
-            <p>
-              AGE: <strong>{getAge(employee.birth_date)}</strong>
+            <p className="text-xs/1 text-gray-500">
+              AGE:
+              <p className="text-lg text-black">
+                <strong>{getAge(employee.birth_date)}</strong>
+              </p>
             </p>
-            <p>
-              ADDRESS: <strong>NONE</strong>
+            <p className="text-xs/1 text-gray-500">
+              ADDRESS:
+              <p className="text-lg text-black">
+                <strong>NONE</strong>
+              </p>
             </p>
-            <p>
+            <p className="text-xs/1 text-gray-500">
               EMPLOYMENT STATUS:{" "}
-              <strong>{getValidDisplay(employee.appointment_status)}</strong>
+              <p className="text-lg text-black">
+                <strong>{getValidDisplay(employee.appointment_status)}</strong>
+              </p>
             </p>
-            <p>
+            <p className="text-xs/1 text-gray-500">
               FIRST DAY OF SERVICE:{" "}
-              <strong>{getValidDisplay(employee.first_day_service)}</strong>
+              <p className="text-lg text-black">
+                <strong>{getValidDisplay(employee.first_day_service)}</strong>
+              </p>
             </p>
-            <p>
+            <p className="text-xs/1 text-gray-500">
               CIVIL STATUS:{" "}
-              <strong>{getValidDisplay(employee.civil_status)}</strong>
+              <p className="text-lg text-black">
+                <strong>{getValidDisplay(employee.civil_status)}</strong>
+              </p>
             </p>
-            <p>
+            <p className="text-xs/1 text-gray-500">
               CIVIL SERVICE ELIGIBILITY:{" "}
-              <strong>{getValidDisplay(employee.civil_service)}</strong>
+              <p className="text-lg text-black">
+                <strong>{getValidDisplay(employee.civil_service)}</strong>
+              </p>
             </p>
           </div>
 

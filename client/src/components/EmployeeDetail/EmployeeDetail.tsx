@@ -448,13 +448,13 @@ const EmployeeDetail: React.FC<EmployeeDetailProps> = ({
         />
       )}
 
-      {/* {isUpdateModalOpen && (
+      {isUpdateModalOpen && (
         <EmployeeUpdateModal
           isOpen={isUpdateModalOpen}
           onClose={() => setIsUpdateModalOpen(false)}
           employee={employee}
         />
-      )} */}
+      )}
 
       <ConfirmationModal
         isOpen={isConfirmationModalOpen}
