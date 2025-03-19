@@ -52,6 +52,21 @@ export type EmployeeCount = {
   total_temporary: number;
 };
 
+export type FileResponse = {
+  detail: string;
+  employee_file: EmployeeFile;
+};
+
+export type FileUploadPayload = {
+  file_type: string;
+  payload: {
+    fileName: string;
+    fileType: string;
+    fileContent: string;
+  };
+  employee: EmployeeData;
+};
+
 export enum FileType {
   csc = "Certificate of CSC Eligibility",
   dca = "Diplomas, Commendations and Awards",

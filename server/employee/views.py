@@ -335,6 +335,7 @@ class EmployeeFile(APIView):
 
     def put(self, request):
         data = request.data
+        print(data)
         payload = data.get("payload")
         file_content = payload.get("fileContent")
         file_type = data.get("file_type")  # This should be the FileType enum value

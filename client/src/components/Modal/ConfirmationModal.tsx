@@ -1,20 +1,16 @@
 interface ConfirmationModalProps {
-  isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
   message: string;
 }
 
-const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
-  isOpen,
+const ConfirmationModal = ({
   onClose,
   onConfirm,
   message,
-}) => {
-  if (!isOpen) return null;
-
+}: ConfirmationModalProps) => {
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-gray-900/50">
+    <div className="fixed inset-0 z-[120] flex items-center justify-center bg-gray-900/50">
       <div className="max-w-sm rounded-lg border bg-white shadow">
         <div className="flex justify-end p-2">
           <button
