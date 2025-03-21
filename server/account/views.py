@@ -8,6 +8,7 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from .serializers import LoginSerializer, AccountSerializer
 from .models import User
 from .permissions import IsAdminOrSuperAdmin
+from .pagination import AccountPagination
 
 
 class LoginView(TokenObtainPairView):
@@ -66,19 +67,36 @@ class LogoutView(APIView):
 class AccountView(APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAdminOrSuperAdmin]
+    pagination_class = AccountPagination
 
     def get(self, request):
         try:
-            users = User.objects.filter(is_active=True)
-            serializer = AccountSerializer(users, many=True)
-            return Response(
-                {
-                    "status": "success",
-                    "message": "Accounts retrieved successfully",
-                    "data": serializer.data,
-                },
-                status=status.HTTP_200_OK,
-            )
+            # Get query parameters
+            is_active = request.query_params.get("is_active")
+            user_type = request.query_params.get("user_type")
+
+            # Build filter conditions
+            filters = {}
+            if is_active is not None:
+                filters["is_active"] = is_active.lower() == "true"
+            if user_type:
+                if user_type == "SUPER ADMIN":
+                    filters["is_superuser"] = True
+                elif user_type == "ADMIN":
+                    filters["is_admin"] = True
+                    filters["is_superuser"] = False
+
+            # Get users with filters
+            users = User.objects.filter(**filters)
+
+            # Initialize paginator
+            paginator = self.pagination_class()
+            paginated_users = paginator.paginate_queryset(users, request)
+
+            # Serialize the paginated data
+            serializer = AccountSerializer(paginated_users, many=True)
+            return paginator.get_paginated_response(serializer.data)
+
         except Exception as e:
             print("Error retrieving accounts:", str(e))
             return Response(

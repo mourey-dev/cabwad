@@ -17,6 +17,16 @@ import {
   PaginatedEmployeesData,
 } from "../../types/employee";
 
+const options = [
+  "ALL",
+  "PERMANENT",
+  "CASUAL",
+  "JOB ORDER",
+  "CO-TERMINUS",
+  "CONTRACT OF SERVICE",
+  "TEMPORARY",
+];
+
 const Employees = () => {
   const navigate = useNavigate(); // Initialize navigate
   const { pageNumber } = useParams();
@@ -146,6 +156,7 @@ const Employees = () => {
               onCategoryChange={setCategory}
               isActive={isActive}
               onActiveChange={setIsActive}
+              options={options}
             />
           </div>
         </div>
@@ -159,9 +170,7 @@ const Employees = () => {
             />
           ))}
         </div>
-        {!data?.count ? (
-          ""
-        ) : (
+        {data?.count && data.count >= 10 ? (
           <Pagination
             currentPage={data.current_page}
             totalPages={data.total_pages}
@@ -171,7 +180,7 @@ const Employees = () => {
             onPageChange={handlePageChange}
             onPageSizeChange={setPageSize}
           />
-        )}
+        ) : null}
       </main>
       <Footer />
     </div>

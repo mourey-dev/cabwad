@@ -23,7 +23,7 @@ function App() {
           </Route>
 
           <Route element={<ProtectedRoute />}>
-            <Route path="/admin/users" element={<Users />} />
+            <Route path="/admin/users/page/:page" element={<Users />} />
             <Route
               path="/admin/employees/page/:pageNumber"
               element={<Employees />}

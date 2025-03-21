@@ -1,25 +1,30 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import remove from "../../assets/images/remove-user.png";
 import displayPic from "../../assets/images/displayPic.png";
-import { Header, Footer } from "../../components";
+import { Header, Footer, FilterBar, Pagination } from "../../components";
 import Loading from "../../components/Loading";
 import ConfirmModal from "../../components/ConfirmDelete/ConfirmModal";
 import add from "../../assets/images/add.png";
 import AddUserModal from "./AddUserModal/AddUserModal";
-import { useRequest } from "../../hooks";
-import { AccountType } from "../../types/account";
+import { AccountType, AccountResponse } from "../../types/account";
+import { useGetQuery } from "../../hooks/useCustomQuery";
+import { useNavigate, useParams } from "react-router-dom";
+import { useCreateAccount, useDeleteAccount } from "../../hooks/useAccount";
+import { useQueryClient } from "@tanstack/react-query";
 
 // Component
 import { AlertSuccess } from "../../components/Alert";
 
-type AccountResponse = {
-  status: string;
-  message: string;
-  data: AccountType[] | AccountType;
-};
+const options = ["ALL", "ADMIN", "SUPER ADMIN"];
 
 const Users = () => {
-  const [users, setUsers] = useState<AccountType[]>([]);
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const { pageNumber } = useParams();
+  const [currentPage, setCurrentPage] = useState(Number(pageNumber) || 1);
+  const [pageSize, setPageSize] = useState(20);
+  const [isActive, setIsActive] = useState(true);
+  const [userType, setUserType] = useState("ALL");
   useState<AccountType | null>(null);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [accountToRemove, setAccountToRemove] = useState<AccountType | null>(
@@ -28,17 +33,18 @@ const Users = () => {
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
+  const { data, isLoading } = useGetQuery<AccountResponse>(
+    [
+      userType,
+      isActive.toString(),
+      currentPage.toString(),
+      pageSize.toString(),
+    ],
+    `/account/list/?user_type=${userType}&is_active=${isActive}&page=${currentPage}&page_size=${pageSize}`,
+  );
 
-  const { loading, error, response, setResponse, handleRequest } =
-    useRequest<AccountResponse>("account/api/");
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const response = await handleRequest();
-      setUsers(response.data as AccountType[]);
-    };
-    fetchUsers();
-  }, []);
+  const { mutate: createAccount, isPending: isCreating } = useCreateAccount();
+  const { mutate: deleteAccount, isPending: isDeleting } = useDeleteAccount();
 
   const handleOpenConfirmModal = (account: AccountType) => {
     setAccountToRemove(account);
@@ -55,46 +61,104 @@ const Users = () => {
     setAlertMessage("");
   };
 
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+    navigate(`/admin/users/page/${newPage}`);
+  };
+
   const handleRemoveUser = () => {
-    if (accountToRemove) {
-      handleRequest(
-        { id: accountToRemove.id },
-        {
-          method: "DELETE",
+    if (accountToRemove?.id) {
+      deleteAccount(accountToRemove.id, {
+        onSuccess: (response) => {
+          handleCloseConfirmModal();
+          setAlertMessage(response.message || "User deactivated successfully");
+          setShowAlert(true);
+
+          // Invalidate the current query to refresh the list
+          queryClient.invalidateQueries({
+            queryKey: [
+              userType,
+              isActive.toString(),
+              currentPage.toString(),
+              pageSize.toString(),
+            ],
+          });
         },
-      );
-      setUsers(users.filter((user) => user.id !== accountToRemove.id));
-      setAccountToRemove(null);
-      handleCloseConfirmModal();
-      setAlertMessage("User deactivated successfully");
-      setShowAlert(true);
+        onError: (error) => {
+          setAlertMessage(error.message || "Failed to deactivate user");
+          setShowAlert(true);
+          handleCloseConfirmModal();
+        },
+      });
     }
   };
 
-  const handleAddUser = async (user: AccountType) => {
-    const response = await handleRequest(user, { method: "POST" });
-    setUsers([...users, response.data as AccountType]);
-    setIsAddUserModalOpen(false);
-    setAlertMessage("User added successfully");
-    setShowAlert(true);
+  const handleAddUser = (userData: Omit<AccountType, "id">) => {
+    createAccount(userData, {
+      onSuccess: (response) => {
+        setIsAddUserModalOpen(false);
+        setAlertMessage(response.message || "User added successfully");
+        setShowAlert(true);
+
+        // Match the exact query key structure used in useGetQuery
+        queryClient.invalidateQueries({
+          queryKey: [
+            userType,
+            isActive.toString(),
+            currentPage.toString(),
+            pageSize.toString(),
+          ],
+        });
+      },
+      onError: (error) => {
+        setAlertMessage(error.message || "Failed to add user");
+        setShowAlert(true);
+      },
+    });
   };
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
-      {loading && <Loading loading={loading} />}
+      {isLoading ||
+        isCreating ||
+        (isDeleting && (
+          <Loading loading={isLoading || isCreating || isDeleting} />
+        ))}
       <Header />
       {showAlert && (
         <AlertSuccess message={alertMessage} onClose={handleAlertClose} />
       )}
       <main className="flex-1">
-        <div className="px-6 py-4">
+        <div className="right-2 flex items-center justify-between px-6 py-4">
           <h2 className="text-xl font-bold text-blue-600">
             CABWAD List of Admins:
           </h2>
+          {!data?.count ? (
+            ""
+          ) : (
+            <Pagination
+              currentPage={data.current_page}
+              totalPages={data.total_pages}
+              pageSize={pageSize}
+              hasNext={!!data.links.next}
+              hasPrevious={!!data.links.previous}
+              onPageChange={handlePageChange}
+              onPageSizeChange={setPageSize}
+            />
+          )}
+          <div>
+            <FilterBar
+              category={userType}
+              onCategoryChange={setUserType}
+              isActive={isActive}
+              onActiveChange={setIsActive}
+              options={options}
+            />
+          </div>
         </div>
 
         <div className="mb-6 grid grid-cols-1 gap-6 px-4 py-6 sm:grid-cols-2 sm:px-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {users.map((user) => (
+          {data?.results?.map((user) => (
             <div key={user.id} className="cursor-pointer">
               <div className="relative flex h-50 w-full flex-col items-center rounded-md bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105 hover:bg-blue-600 sm:p-6">
                 <button

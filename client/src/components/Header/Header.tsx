@@ -8,10 +8,14 @@ import usePost from "../../hooks/usePost";
 // Component
 import Loading from "../Loading";
 
+// Utils
+import { isAuthorizedSuperAdmin } from "../../utils/dataHandler";
+
 const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
-  const { loading, response, handlePost } = usePost("/account/api/logout/");
+  const isSuperAdmin = isAuthorizedSuperAdmin();
+  const { loading, response, handlePost } = usePost("/account/logout/");
 
   const handleLogout = async () => {
     const data = { refresh_token: localStorage.getItem("refresh") };
@@ -44,9 +48,14 @@ const Header = () => {
         >
           HOME
         </a>
-        <a href="/admin/users" className="mr-10 font-semibold text-blue-700">
-          MANAGE USER
-        </a>
+        {isSuperAdmin && (
+          <a
+            href="/admin/users/page/1"
+            className="mr-10 font-semibold text-blue-700"
+          >
+            MANAGE USER
+          </a>
+        )}
         <div className="relative">
           <button
             type="button"

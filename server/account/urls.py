@@ -9,7 +9,7 @@ from rest_framework_simplejwt.views import (
 from .views import LoginView, LogoutView, AccountView
 
 urlpatterns = [
-    path("", AccountView.as_view(), name="account"),
+    path("list/", AccountView.as_view(), name="accounts"),
     # Authentication endpoints
     path("login/", LoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),

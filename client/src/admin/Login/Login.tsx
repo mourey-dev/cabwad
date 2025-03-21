@@ -14,9 +14,8 @@ const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { loading, error, errorMessage, response, handlePost } = usePost(
-    "/account/api/login/",
-  );
+  const { loading, error, errorMessage, response, handlePost } =
+    usePost("/account/login/");
 
   const navigate = useNavigate();
 

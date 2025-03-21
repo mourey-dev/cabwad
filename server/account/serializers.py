@@ -26,13 +26,14 @@ class LoginSerializer(TokenObtainPairSerializer):
 
         data = super().validate(attrs)
 
-        # Add extra responses
-        data["user"] = {
-            "id": user.id,
-            "username": user.username,
-            "email": user.email,
-            "role": user.role,
-        }
+        # Customize token claims
+        token = self.get_token(user)
+        token["is_admin"] = user.is_admin
+        token["is_superuser"] = user.is_superuser
+
+        # Update access and refresh tokens with new claims
+        data["access"] = str(token.access_token)
+        data["refresh"] = str(token)
 
         return data
 
