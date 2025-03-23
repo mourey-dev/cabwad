@@ -4,12 +4,16 @@ import { EmployeeFile, FileType, EmployeeData } from "../../types/employee";
 // Components
 import { ConfirmationModal } from "../Modal";
 import { AlertSuccess, AlertError } from "../Alert";
-import { ActionButton, Loading } from "../";
+import { Loading } from "../";
 import { useState } from "react";
 import FileModal from "./FileModal";
+import Dropdown from "../Dropdown";
 
 // Hooks
 import { useDeleteEmployeeFile } from "../../hooks/useEmployee";
+
+// Context
+import { useStatus } from "../../context/StatusContext";
 
 type RequirementProps = {
   employee: EmployeeData;
@@ -41,11 +45,7 @@ const Requirement = ({
   const [fileModal, setFileModal] = useState(false);
   const [mode, setMode] = useState<"add" | "update">("add");
   const [deleteModal, setDeleteModal] = useState(false);
-  const [response, setResponse] = useState({
-    success: false,
-    error: false,
-    message: "",
-  });
+  const { status, setStatus, resetStatus } = useStatus();
   const { mutate: deleteFile, isPending } = useDeleteEmployeeFile();
 
   const handleViewFile = (file: EmployeeFile | undefined) => {
@@ -60,11 +60,6 @@ const Requirement = ({
     setFileModal(!fileModal);
   };
 
-  const handleMode = (newMode: "add" | "update") => {
-    setMode(newMode);
-    toggleFileModal();
-  };
-
   const confirmDelete = () => {
     deleteFile(
       { file_id: fileId, employee },
@@ -72,12 +67,12 @@ const Requirement = ({
         onSuccess: (data) => {
           toggleDeleteModal();
           resetDropdown();
-          setResponse({ ...response, success: true, message: data.detail });
+          setStatus({ ...status, success: true, message: data.detail });
         },
         onError: () => {
           toggleDeleteModal();
-          setResponse({
-            ...response,
+          setStatus({
+            ...status,
             error: true,
             message: "Failed to delete File",
           });
@@ -92,17 +87,11 @@ const Requirement = ({
 
   return (
     <div>
-      {response.success && (
-        <AlertSuccess
-          onClose={() => setResponse({ ...response, success: false })}
-          message={response.message}
-        />
+      {status.success && (
+        <AlertSuccess onClose={resetStatus} message={status.message} />
       )}
-      {response.error && (
-        <AlertError
-          onClose={() => setResponse({ ...response, error: false })}
-          message={response.message}
-        />
+      {status.error && (
+        <AlertError onClose={resetStatus} message={status.message} />
       )}
       <div className="relative">
         {isPending && <Loading loading={isPending} />}
@@ -112,7 +101,6 @@ const Requirement = ({
             fileType={fileType}
             employee={employee}
             toggleModal={toggleFileModal}
-            setResponse={setResponse}
             resetDropdown={resetDropdown}
             mode={mode}
             fileId={fileId}
@@ -136,32 +124,13 @@ const Requirement = ({
         </p>
 
         {dropdown === index && (
-          <div className="absolute left-0 z-100 mt-1 w-32 rounded-md bg-white shadow-lg">
-            <ActionButton
-              label="INSERT"
-              disabled={!!employeeFile}
-              onClick={() => handleMode("add")}
-              className={`block w-full px-4 py-2 text-left text-sm uppercase hover:bg-gray-300 ${!employeeFile ? "" : "disabled:opacity-50"}`}
-            />
-            <ActionButton
-              label="VIEW"
-              disabled={!employeeFile}
-              onClick={() => handleViewFile(employeeFile)}
-              className={`block w-full px-4 py-2 text-left text-sm uppercase hover:bg-gray-300 ${employeeFile ? "" : "disabled:opacity-50"}`}
-            />
-            <ActionButton
-              label="UPDATE"
-              disabled={!employeeFile}
-              onClick={() => handleMode("update")}
-              className={`block w-full px-4 py-2 text-left text-sm uppercase hover:bg-gray-300 ${employeeFile ? "" : "disabled:opacity-50"}`}
-            />
-            <ActionButton
-              label="DELETE"
-              disabled={!employeeFile}
-              onClick={toggleDeleteModal}
-              className={`block w-full px-4 py-2 text-left text-sm uppercase hover:bg-red-200 ${employeeFile ? "" : "disabled:opacity-50"}`}
-            />
-          </div>
+          <Dropdown
+            employeeFile={employeeFile}
+            toggleFileModal={toggleFileModal}
+            toggleDeleteModal={toggleDeleteModal}
+            handleViewFile={() => handleViewFile(employeeFile)}
+            setMode={setMode}
+          />
         )}
       </div>
     </div>

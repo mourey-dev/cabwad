@@ -1,3 +1,3 @@
-import { ProfileHeader } from "./ProfileHeader";
+import ProfileHeader from "./ProfileHeader";
 
 export default ProfileHeader;

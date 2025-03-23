@@ -5,6 +5,9 @@ import {
   useUpdateEmployeeFile,
 } from "../../hooks/useEmployee";
 
+// Context
+import { useStatus } from "../../context/StatusContext";
+
 // Utils
 import { convertToBase64 } from "../../utils/fileHandler";
 
@@ -19,13 +22,6 @@ type FileModalProps = {
   employee: EmployeeData;
   toggleModal: () => void;
   resetDropdown: () => void;
-  setResponse: React.Dispatch<
-    React.SetStateAction<{
-      success: boolean;
-      error: boolean;
-      message: string;
-    }>
-  >;
   mode: "add" | "update";
   fileId: string;
 };
@@ -35,10 +31,10 @@ const FileModal = ({
   employee,
   toggleModal,
   resetDropdown,
-  setResponse,
   mode,
   fileId,
 }: FileModalProps) => {
+  const { setStatus } = useStatus();
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { mutateAsync: uploadFile, isPending: isUploading } = useEmployeeFile();
   const { mutateAsync: updateFile, isPending: isUpdating } =
@@ -71,13 +67,13 @@ const FileModal = ({
         resetDropdown();
         toggleModal();
         setSelectedFile(null);
-        setResponse((prev) => ({
+        setStatus((prev) => ({
           ...prev,
           success: true,
           message: response.detail,
         }));
       } catch (error) {
-        setResponse((prev) => ({
+        setStatus((prev) => ({
           ...prev,
           error: true,
           message: `Failed to ${mode} file`,
