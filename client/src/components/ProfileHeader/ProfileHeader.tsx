@@ -21,9 +21,9 @@ import { useStatus } from "../../context/StatusContext";
 
 // Components
 import ContactInfo from "./ContactInfo";
-import { ProfileModal } from "../Modal";
+import { ProfileModal, UpdateEmployeeModal } from "../Modal";
 import { ActionButton } from "../";
-import Loading from "../Loading/";
+import Loading from "../Loading";
 import { AlertError, AlertSuccess } from "../Alert";
 
 type ProfileHeaderProps = {
@@ -32,13 +32,16 @@ type ProfileHeaderProps = {
 
 const ProfileHeader = ({ employee }: ProfileHeaderProps) => {
   const [showModal, setShowModal] = useState(false);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
   const { status, setStatus, resetStatus } = useStatus();
   const { mutateAsync: uploadFile, isPending: isUploading } = useEmployeeFile();
   const { mutateAsync: updateFile, isPending: isUpdating } =
     useUpdateEmployeeFile();
 
-  const toggleModal = () => {
-    setShowModal(!showModal);
+  const toggleModal = (
+    setModal: React.Dispatch<React.SetStateAction<boolean>>,
+  ) => {
+    setModal((prev) => !prev);
   };
 
   const handleChangeProfile = async (file: File) => {
@@ -90,9 +93,14 @@ const ProfileHeader = ({ employee }: ProfileHeaderProps) => {
       {status.error && (
         <AlertError onClose={resetStatus} message={status.message} />
       )}
+      <UpdateEmployeeModal
+        show={showUpdateModal}
+        onClose={() => toggleModal(setShowUpdateModal)}
+        employee={employee}
+      />
       <ProfileModal
         status={showModal}
-        toggleStatus={toggleModal}
+        toggleStatus={() => toggleModal(setShowModal)}
         handleChangeProfile={handleChangeProfile}
       />
       <img
@@ -110,13 +118,14 @@ const ProfileHeader = ({ employee }: ProfileHeaderProps) => {
         <ContactInfo phone={employee.phone} email={employee.email} />
         <div className="mt-4 flex space-x-4">
           <ActionButton
+            onClick={() => toggleModal(setShowUpdateModal)}
             label="Update Info"
             className="rounded bg-green-500 px-5 py-2 text-white hover:bg-green-600"
           />
           <ActionButton
+            onClick={() => toggleModal(setShowModal)}
             label="Upload Profile Image"
             className="rounded bg-blue-500 px-5 py-2 text-white hover:bg-blue-600"
-            onClick={toggleModal}
           />
         </div>
       </div>

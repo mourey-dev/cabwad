@@ -39,6 +39,7 @@ export type EmployeeData = {
   phone: string;
   email: string;
   folder_id: string;
+  address: string;
 };
 
 export type EmployeesData = EmployeeData[];

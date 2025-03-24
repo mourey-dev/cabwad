@@ -191,14 +191,16 @@ class EmployeeView(APIView):
             serializer = EmployeeSerializer(paginated_employees, many=True)
             return paginator.get_paginated_response(serializer.data)
 
-    def put(self, request, pk=None, *args, **kwargs):
-        if not pk:
+    def put(self, request, *args, **kwargs):
+        employee_id = kwargs.get("employee_id", "")
+
+        if not employee_id:
             return Response(
                 {"detail": "Employee ID is required"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        employee = get_object_or_404(Employee, pk=pk)
+        employee = get_object_or_404(Employee, employee_id=employee_id)
         serializer = EmployeeSerializer(employee, data=request.data, partial=True)
 
         if serializer.is_valid():

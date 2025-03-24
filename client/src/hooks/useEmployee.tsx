@@ -56,6 +56,68 @@ export const useEmployeeData = (employeeId?: string) => {
   };
 };
 
+// Update the useUpdateEmployee hook to properly invalidate the employees list query
+export const useUpdateEmployee = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      employeeData,
+      employeeId,
+    }: {
+      employeeData: Partial<EmployeeData>;
+      employeeId: string;
+    }) => {
+      const response = await axiosInstance.put<{
+        detail: string;
+        employee: EmployeeData;
+      }>(`/employee/list/${employeeId}/`, employeeData);
+      return response.data;
+    },
+    onSuccess: (data, variables) => {
+      // Update the cache for the specific employee
+      queryClient.setQueryData<EmployeeData>(
+        ["employee", variables.employeeId],
+        (oldData) => {
+          if (!oldData) return data.employee;
+
+          return {
+            ...oldData,
+            ...data.employee,
+          };
+        },
+      );
+
+      // Invalidate the employees list to force a refetch
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+
+      // Also update the employees list if it's in the cache
+      queryClient.setQueriesData<PaginatedEmployeesData>(
+        { queryKey: ["employees"] },
+        (oldData) => {
+          if (!oldData) return oldData;
+
+          return {
+            ...oldData,
+            results: oldData.results.map((employee) =>
+              employee.employee_id === variables.employeeId
+                ? { ...employee, ...data.employee }
+                : employee,
+            ),
+          };
+        },
+      );
+
+      return data;
+    },
+    onError: (error: Error) => {
+      console.error("Error updating employee:", error);
+      throw new Error(`Failed to update employee: ${error.message}`);
+    },
+  });
+};
+
+// Update the useEmployeeFile hook for file uploads
 export const useEmployeeFile = () => {
   const queryClient = useQueryClient();
 
@@ -68,7 +130,7 @@ export const useEmployeeFile = () => {
       return response.data;
     },
     onSuccess: (newData, variables) => {
-      // Update the cache directly
+      // Update the employee detail cache
       queryClient.setQueryData(
         ["employee", variables.employee.employee_id],
         (oldData: EmployeeData | undefined) => {
@@ -80,10 +142,14 @@ export const useEmployeeFile = () => {
           };
         },
       );
+
+      // Invalidate employees list queries
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
     },
   });
 };
 
+// Update the useDeleteEmployeeFile hook
 export const useDeleteEmployeeFile = () => {
   const queryClient = useQueryClient();
 
@@ -104,7 +170,7 @@ export const useDeleteEmployeeFile = () => {
       return response.data;
     },
     onSuccess: (_, variables) => {
-      // Update cache by removing the deleted file
+      // Update employee detail cache
       queryClient.setQueryData(
         ["employee", variables.employee.employee_id],
         (oldData: EmployeeData | undefined) => {
@@ -118,10 +184,14 @@ export const useDeleteEmployeeFile = () => {
           };
         },
       );
+
+      // Invalidate employees list queries
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
     },
   });
 };
 
+// Update the useUpdateEmployeeFile hook
 export const useUpdateEmployeeFile = () => {
   const queryClient = useQueryClient();
 
@@ -144,6 +214,7 @@ export const useUpdateEmployeeFile = () => {
       return response.data;
     },
     onSuccess: (newData, variables) => {
+      // Update employee detail cache
       queryClient.setQueryData(
         ["employee", variables.employee.employee_id],
         (oldData: EmployeeData | undefined) => {
@@ -157,6 +228,9 @@ export const useUpdateEmployeeFile = () => {
           };
         },
       );
+
+      // Invalidate employees list queries
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
     },
   });
 };

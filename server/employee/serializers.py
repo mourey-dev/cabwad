@@ -18,6 +18,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
     position = serializers.CharField(required=False, allow_blank=True)
     employee_id = serializers.CharField(required=False, allow_blank=True)
     department = serializers.CharField(required=False, allow_blank=True)
+    address = serializers.CharField(required=False, allow_blank=True)
     birth_date = serializers.DateField(required=False, allow_null=True)
 
     class Meta:
@@ -30,6 +31,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
             "appointment_status",
             "position",
             "birth_date",
+            "address",
             "first_day_service",
             "civil_service",
             "civil_status",
@@ -83,12 +85,21 @@ class EmployeeSerializer(serializers.ModelSerializer):
         return employee
 
     def update(self, instance, validated_data):
-        files_data = validated_data.pop("files")
+        # Use pop with a default empty list if files aren't provided
+        files_data = validated_data.pop("files", [])
+
+        # Update the instance with the remaining validated data
         instance = super().update(instance, validated_data)
-        instance.files.clear()
-        for file_data in files_data:
-            File.objects.create(**file_data)
-        instance.files.set(
-            File.objects.filter(file_id__in=[file["file_id"] for file in files_data])
-        )
+
+        # Only modify files if files_data is provided
+        if files_data:
+            instance.files.clear()
+            for file_data in files_data:
+                File.objects.create(**file_data)
+            instance.files.set(
+                File.objects.filter(
+                    file_id__in=[file["file_id"] for file in files_data]
+                )
+            )
+
         return instance

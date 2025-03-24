@@ -88,7 +88,7 @@ const EmployeePersonalDetails = () => {
             <div className="text-xs/1 text-gray-500">
               ADDRESS:
               <p className="text-lg text-black">
-                <strong>NONE</strong>
+                <strong>{employee.address}</strong>
               </p>
             </div>
             <div className="text-xs/1 text-gray-500">
