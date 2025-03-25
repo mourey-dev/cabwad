@@ -234,3 +234,58 @@ export const useUpdateEmployeeFile = () => {
     },
   });
 };
+
+export const useToggleEmployeeStatus = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      employeeId,
+      action = "toggle",
+    }: {
+      employeeId: string;
+      action?: "activate" | "deactivate" | "toggle";
+    }) => {
+      const response = await axiosInstance.patch<{
+        detail: string;
+        employee: EmployeeData;
+      }>(`/employee/list/${employeeId}/`, {
+        employee_id: employeeId,
+        action,
+      });
+      return response.data;
+    },
+    onSuccess: (data, variables) => {
+      // Update the cache for the specific employee
+      queryClient.setQueryData<EmployeeData>(
+        ["employee", variables.employeeId],
+        (oldData) => {
+          if (!oldData) return data.employee;
+
+          return {
+            ...oldData,
+            ...data.employee,
+          };
+        },
+      );
+
+      // IMPORTANT: Invalidate ALL employee list queries with their variations
+      // This ensures both active and inactive lists get refreshed
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          const queryKey = Array.isArray(query.queryKey)
+            ? query.queryKey[0]
+            : query.queryKey;
+          return queryKey === "employees";
+        },
+        refetchType: "all", // Force immediate refetch
+      });
+
+      return data;
+    },
+    onError: (error: Error) => {
+      console.error("Error toggling employee status:", error);
+      throw new Error(`Failed to update employee status: ${error.message}`);
+    },
+  });
+};

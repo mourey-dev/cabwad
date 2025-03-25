@@ -1,21 +1,24 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // Import useParams and useNavigate
 
-import { useGetQuery, useDeleteMutation } from "../../hooks/useCustomQuery";
+import { useGetQuery } from "../../hooks/useCustomQuery";
 import { EmployeeData } from "../../types/employee";
 import { Header, Footer, FilterBar, EmployeeCard } from "../../components";
 import Loading from "../../components/Loading";
-import ConfirmModal from "../../components/ConfirmDelete/ConfirmModal";
+import { ConfirmationModal } from "../../components/Modal";
 import Pagination from "../../components/Pagination";
 import { AlertSuccess, AlertError } from "../../components/Alert";
 
-import { useEmployeeData } from "../../hooks/useEmployee";
+import {
+  useEmployeeData,
+  useToggleEmployeeStatus,
+} from "../../hooks/useEmployee";
+
+// Utils
+import { formatName } from "../../utils/formatters";
 
 // Types
-import {
-  DeleteEmployeeResponse,
-  PaginatedEmployeesData,
-} from "../../types/employee";
+import { PaginatedEmployeesData } from "../../types/employee";
 
 const options = [
   "ALL",
@@ -39,6 +42,9 @@ const Employees = () => {
     null,
   );
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const confirmationMessage = isActive
+    ? "Are you sure you want to delete"
+    : "Are you sure you want to return";
 
   // Use custom GET query
   const { data, isLoading: loading } = useGetQuery<PaginatedEmployeesData>(
@@ -53,10 +59,14 @@ const Employees = () => {
   );
 
   // Use custom DELETE mutation
-  const deleteMutation = useDeleteMutation<DeleteEmployeeResponse>(
-    "/employee/list/",
-    ["employees"],
-  );
+  const {
+    mutate: toggleStatus,
+    isPending,
+    isSuccess,
+    isError,
+    error,
+    data: toggleResponse,
+  } = useToggleEmployeeStatus();
 
   const { prefetchEmployee } = useEmployeeData();
 
@@ -77,15 +87,23 @@ const Employees = () => {
 
   const handleRemoveEmployee = () => {
     if (employeeToRemove) {
-      deleteMutation.mutate(employeeToRemove.employee_id, {
-        onSuccess: () => {
-          setShowDeleteAlert(true);
-          handleCloseConfirmModal();
+      const action = isActive ? "deactivate" : "activate";
+
+      toggleStatus(
+        {
+          employeeId: employeeToRemove.employee_id,
+          action,
         },
-        onError: (error) => {
-          setShowDeleteAlert(true);
+        {
+          onSuccess: () => {
+            setShowDeleteAlert(true);
+            handleCloseConfirmModal();
+          },
+          onError: () => {
+            setShowDeleteAlert(true);
+          },
         },
-      });
+      );
     }
   };
 
@@ -103,29 +121,28 @@ const Employees = () => {
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
       {loading && <Loading loading={loading} />}
-      {deleteMutation.isPending && <Loading loading={true} />}
-      {showDeleteAlert && deleteMutation.isSuccess && (
+      {isPending && <Loading loading={true} />}
+      {showDeleteAlert && isSuccess && (
         <AlertSuccess
           message={
-            deleteMutation.data?.detail || "Employee deleted successfully"
+            toggleResponse?.detail ||
+            `Employee ${isActive ? "deactivated" : "activated"} successfully`
           }
           onClose={() => setShowDeleteAlert(false)}
         />
       )}
-      {showDeleteAlert && deleteMutation.isError && (
+      {showDeleteAlert && isError && (
         <AlertError
-          message={
-            (deleteMutation.error as Error)?.message || "An error occurred"
-          }
+          message={(error as Error)?.message || "An error occurred"}
           onClose={() => setShowDeleteAlert(false)}
         />
       )}
       {isConfirmModalOpen && employeeToRemove && (
-        <ConfirmModal
-          isOpen={isConfirmModalOpen}
+        <ConfirmationModal
           onClose={handleCloseConfirmModal}
           onConfirm={handleRemoveEmployee}
-          employee={employeeToRemove}
+          message={`${confirmationMessage} ${formatName(employeeToRemove.first_name, employeeToRemove.surname)}?`}
+          isError={isActive}
         />
       )}
       <Header />
@@ -165,6 +182,7 @@ const Employees = () => {
             <EmployeeCard
               key={item.employee_id}
               employee={item}
+              isActive={isActive}
               onSelect={handleOpenEmployeePage}
               onRemove={handleOpenConfirmModal}
             />

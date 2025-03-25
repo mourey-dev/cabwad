@@ -1,5 +1,5 @@
 import { useState } from "react";
-import remove from "../../assets/images/remove-user.png";
+import remove from "../../assets/images/remove.png";
 import displayPic from "../../assets/images/displayPic.png";
 import { Header, Footer, FilterBar, Pagination } from "../../components";
 import Loading from "../../components/Loading";

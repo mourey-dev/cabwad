@@ -2,12 +2,14 @@ interface ConfirmationModalProps {
   onClose: () => void;
   onConfirm: () => void;
   message: string;
+  isError?: boolean;
 }
 
 const ConfirmationModal = ({
   onClose,
   onConfirm,
   message,
+  isError = false,
 }: ConfirmationModalProps) => {
   return (
     <div className="fixed inset-0 z-[120] flex items-center justify-center bg-gray-900/50">
@@ -17,7 +19,7 @@ const ConfirmationModal = ({
             title="Close Modal"
             onClick={onClose}
             type="button"
-            className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
+            className="ml-auto inline-flex cursor-pointer items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900"
           >
             <svg
               className="h-5 w-5"
@@ -36,7 +38,7 @@ const ConfirmationModal = ({
 
         <div className="p-6 pt-0 text-center">
           <svg
-            className="mx-auto h-20 w-20 text-red-600"
+            className={`mx-auto h-20 w-20 ${isError ? "text-red-600" : "text-green-600"}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -53,14 +55,16 @@ const ConfirmationModal = ({
             {message}
           </h3>
           <button
+            type="button"
             onClick={onConfirm}
-            className="mr-2 inline-flex items-center rounded-lg bg-red-600 px-3 py-2.5 text-base font-medium text-white hover:bg-red-800 focus:ring-4 focus:ring-red-300"
+            className={`mr-2 inline-flex cursor-pointer items-center rounded-lg px-3 py-2.5 text-base font-medium text-white focus:ring-4 ${isError ? "bg-red-600 hover:bg-red-800 focus:ring-red-300" : "bg-green-600 hover:bg-green-800 focus:ring-green-300"}`}
           >
             Yes, I'm sure
           </button>
           <button
+            type="button"
             onClick={onClose}
-            className="inline-flex items-center rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-base font-medium text-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200"
+            className="inline-flex cursor-pointer items-center rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-base font-medium text-gray-900 hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200"
           >
             No, cancel
           </button>

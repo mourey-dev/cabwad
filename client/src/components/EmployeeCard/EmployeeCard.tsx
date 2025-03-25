@@ -1,5 +1,6 @@
 import { EmployeeData } from "../../types/employee";
-import remove from "../../assets/images/remove-user.png";
+import remove from "../../assets/images/remove.png";
+import plus from "../../assets/images/plus.png";
 import displayPic from "../../assets/images/displayPic.png";
 import { getProfile } from "../../utils/fileHandler";
 
@@ -7,20 +8,31 @@ interface EmployeeCardProps {
   employee: EmployeeData;
   onSelect: (employee: EmployeeData) => void;
   onRemove: (employee: EmployeeData) => void;
+  isActive: boolean;
 }
 
-const EmployeeCard = ({ employee, onSelect, onRemove }: EmployeeCardProps) => {
+const EmployeeCard = ({
+  employee,
+  onSelect,
+  onRemove,
+  isActive,
+}: EmployeeCardProps) => {
   return (
     <div className="cursor-pointer" onClick={() => onSelect(employee)}>
       <div className="relative flex h-60 w-full flex-col items-center rounded-md bg-white p-4 shadow-md transition-transform duration-300 hover:scale-105 hover:bg-blue-600 sm:p-6">
         <button
+          type="button"
           className="absolute top-2 right-2 transform cursor-pointer transition-transform duration-300 hover:scale-150"
           onClick={(e) => {
             e.stopPropagation();
             onRemove(employee);
           }}
         >
-          <img src={remove} alt="Remove User" className="w-6" />
+          <img
+            src={isActive ? remove : plus}
+            alt="Add/Remove User"
+            className="w-6"
+          />
         </button>
 
         <img

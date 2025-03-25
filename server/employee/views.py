@@ -214,6 +214,46 @@ class EmployeeView(APIView):
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def patch(self, request, *args, **kwargs):
+        """
+        Toggle employee active status or update specific status.
+        Used for activating/deactivating employees.
+        """
+        employee_id = request.data.get("employee_id", None)
+        action = request.data.get(
+            "action", "toggle"
+        )  # 'activate', 'deactivate', or 'toggle'
+
+        if not employee_id:
+            return Response(
+                {"detail": "Employee ID is required"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        employee = get_object_or_404(Employee, employee_id=employee_id)
+
+        # Update is_active based on the specified action
+        if action == "activate":
+            employee.is_active = True
+        elif action == "deactivate":
+            employee.is_active = False
+        else:  # default to toggle
+            employee.is_active = not employee.is_active
+
+        employee.save()
+
+        # Get the appropriate action message
+        action_message = "activated" if employee.is_active else "deactivated"
+
+        serializer = EmployeeSerializer(employee)
+        return Response(
+            {
+                "detail": f"Employee {action_message} successfully",
+                "employee": serializer.data,
+            },
+            status=status.HTTP_200_OK,
+        )
+
     def delete(self, request, *args, **kwargs):
         employee_id = request.data.get("employee_id", None)
 
