@@ -7,12 +7,14 @@ import usePost from "../../hooks/usePost";
 
 // Component
 import Loading from "../Loading";
+import ChangePassword from "../../components/ChangePassModal/ChangePassword";
 
 // Utils
 import { isAuthorizedSuperAdmin } from "../../utils/dataHandler";
 
 const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showChangePassword, setShowChangePassword] = useState(false);
   const navigate = useNavigate();
   const isSuperAdmin = isAuthorizedSuperAdmin();
   const { loading, response, handlePost } = usePost("/account/logout/");
@@ -67,7 +69,7 @@ const Header = () => {
 
           {/* Dropdown Menu */}
           {showDropdown && (
-            <div className="absolute right-0 mt-2 w-36 rounded-md border bg-white shadow-lg">
+            <div className="absolute right-0 mt-2 w-40 rounded-md border bg-white shadow-lg">
               <button
                 type="button"
                 onClick={handleLogout}
@@ -75,10 +77,24 @@ const Header = () => {
               >
                 Log Out
               </button>
+              <button
+                type="button"
+                onClick={() => setShowChangePassword(true)}
+                className="block w-full rounded-md px-4 py-1 text-left text-gray-700 hover:bg-gray-400"
+              >
+                Change Password
+              </button>
             </div>
           )}
         </div>
       </nav>
+
+      {/* Change Password Modal */}
+      <ChangePassword
+        isOpen={showChangePassword}
+        onClose={() => setShowChangePassword(false)}
+        employeeId="12345" // Replace with the actual employee ID
+      />
     </header>
   );
 };
