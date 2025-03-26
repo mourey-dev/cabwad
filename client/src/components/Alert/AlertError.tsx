@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
+import { useStatus } from "../../context/StatusContext";
 
 interface AlertErrorProps {
   message: string;
-  onClose: () => void;
 }
 
-const AlertError: React.FC<AlertErrorProps> = ({ message, onClose }) => {
+const AlertError: React.FC<AlertErrorProps> = ({ message }) => {
   const [isVisible, setIsVisible] = useState(true);
+  const { resetStatus } = useStatus();
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-      onClose();
+      resetStatus();
     }, 3000);
 
     return () => clearTimeout(timer);
@@ -20,7 +21,7 @@ const AlertError: React.FC<AlertErrorProps> = ({ message, onClose }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed top-0 left-10 z-50 my-4 flex max-w-lg items-center rounded-md bg-red-200 px-6 py-4 text-lg">
+    <div className="fixed top-0 left-10 z-[100] my-4 flex max-w-lg items-center rounded-md bg-red-200 px-6 py-4 text-lg">
       <svg
         viewBox="0 0 24 24"
         className="mr-3 h-5 w-5 text-red-600 sm:h-5 sm:w-5"

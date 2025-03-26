@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import usePost from "../../hooks/usePost";
+import { useStatus } from "../../context/StatusContext";
 
 // Component
 import Loading from "../Loading";
-import ChangePassword from "../../components/ChangePassModal/ChangePassword";
+import ChangePassword from "../Modal/ChangePasswordModal";
 
 // Utils
 import { isAuthorizedSuperAdmin } from "../../utils/dataHandler";
@@ -93,7 +94,6 @@ const Header = () => {
       <ChangePassword
         isOpen={showChangePassword}
         onClose={() => setShowChangePassword(false)}
-        employeeId="12345" // Replace with the actual employee ID
       />
     </header>
   );

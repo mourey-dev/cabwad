@@ -3,17 +3,26 @@ import remove from "../../assets/images/remove.png";
 import displayPic from "../../assets/images/displayPic.png";
 import { Header, Footer, FilterBar, Pagination } from "../../components";
 import Loading from "../../components/Loading";
-import ConfirmModal from "../../components/ConfirmDelete/ConfirmModal";
+import { ConfirmationModal } from "../../components/Modal";
 import add from "../../assets/images/add.png";
+import plus from "../../assets/images/plus.png";
 import AddUserModal from "./AddUserModal/AddUserModal";
 import { AccountType, AccountResponse } from "../../types/account";
 import { useGetQuery } from "../../hooks/useCustomQuery";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCreateAccount, useDeleteAccount } from "../../hooks/useAccount";
+import {
+  useCreateAccount,
+  useDeleteAccount,
+  useToggleAccountStatus,
+} from "../../hooks/useAccount";
 import { useQueryClient } from "@tanstack/react-query";
+import { formatName } from "../../utils/formatters";
+
+// Context
+import { useStatus } from "../../context/StatusContext";
 
 // Component
-import { AlertSuccess } from "../../components/Alert";
+import { AlertSuccess, AlertError } from "../../components/Alert";
 
 const options = ["ALL", "ADMIN", "SUPER ADMIN"];
 
@@ -31,8 +40,6 @@ const Users = () => {
     null,
   );
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
   const { data, isLoading } = useGetQuery<AccountResponse>(
     [
       userType,
@@ -42,9 +49,13 @@ const Users = () => {
     ],
     `/account/list/?user_type=${userType}&is_active=${isActive}&page=${currentPage}&page_size=${pageSize}`,
   );
-
+  const { status, setStatus } = useStatus();
+  const confirmationMessage = isActive
+    ? "Are you sure you want to delete"
+    : "Are you sure you want to return";
   const { mutate: createAccount, isPending: isCreating } = useCreateAccount();
   const { mutate: deleteAccount, isPending: isDeleting } = useDeleteAccount();
+  const { mutate: toggleAccountStatus } = useToggleAccountStatus();
 
   const handleOpenConfirmModal = (account: AccountType) => {
     setAccountToRemove(account);
@@ -54,11 +65,6 @@ const Users = () => {
   const handleCloseConfirmModal = () => {
     setIsConfirmModalOpen(false);
     setAccountToRemove(null);
-  };
-
-  const handleAlertClose = () => {
-    setShowAlert(false);
-    setAlertMessage("");
   };
 
   const handlePageChange = (newPage: number) => {
@@ -71,8 +77,11 @@ const Users = () => {
       deleteAccount(accountToRemove.id, {
         onSuccess: (response) => {
           handleCloseConfirmModal();
-          setAlertMessage(response.message || "User deactivated successfully");
-          setShowAlert(true);
+          setStatus({
+            ...status,
+            success: true,
+            message: response.message || "User deactivated successfully",
+          });
 
           // Invalidate the current query to refresh the list
           queryClient.invalidateQueries({
@@ -85,8 +94,11 @@ const Users = () => {
           });
         },
         onError: (error) => {
-          setAlertMessage(error.message || "Failed to deactivate user");
-          setShowAlert(true);
+          setStatus({
+            ...status,
+            success: false,
+            message: error.message || "Failed to deactivate user",
+          });
           handleCloseConfirmModal();
         },
       });
@@ -97,8 +109,11 @@ const Users = () => {
     createAccount(userData, {
       onSuccess: (response) => {
         setIsAddUserModalOpen(false);
-        setAlertMessage(response.message || "User added successfully");
-        setShowAlert(true);
+        setStatus({
+          ...status,
+          success: true,
+          message: response.message || "User added successfully",
+        });
 
         // Match the exact query key structure used in useGetQuery
         queryClient.invalidateQueries({
@@ -111,23 +126,64 @@ const Users = () => {
         });
       },
       onError: (error) => {
-        setAlertMessage(error.message || "Failed to add user");
-        setShowAlert(true);
+        setStatus({
+          ...status,
+          success: false,
+          message: error.message || "Failed to add user",
+        });
       },
     });
   };
 
+  const handleToggleUserStatus = () => {
+    if (accountToRemove?.id) {
+      // Just send the ID and let the server handle the toggling
+      toggleAccountStatus(
+        { id: accountToRemove.id },
+        {
+          onSuccess: (response) => {
+            handleCloseConfirmModal();
+
+            // Use the response to determine the new status
+            const actionText = isActive ? "activated" : "deactivated";
+            setStatus({
+              ...status,
+              success: true,
+              message: response.message || `User ${actionText} successfully`,
+            });
+
+            // Invalidate queries to refresh the data
+            queryClient.invalidateQueries({
+              queryKey: [
+                userType,
+                isActive.toString(),
+                currentPage.toString(),
+                pageSize.toString(),
+              ],
+            });
+          },
+          onError: (error) => {
+            setStatus({
+              ...status,
+              error: true,
+              success: false,
+              message: error.message || "Failed to update user status",
+            });
+            handleCloseConfirmModal();
+          },
+        },
+      );
+    }
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
-      {isLoading ||
-        isCreating ||
-        (isDeleting && (
-          <Loading loading={isLoading || isCreating || isDeleting} />
-        ))}
-      <Header />
-      {showAlert && (
-        <AlertSuccess message={alertMessage} onClose={handleAlertClose} />
+      {(isLoading || isCreating || isDeleting) && (
+        <Loading loading={isLoading || isCreating || isDeleting} />
       )}
+      <Header />
+      {status.success && <AlertSuccess message={status.message} />}
+      {status.error && <AlertError message={status.message} />}
       <main className="flex-1">
         <div className="right-2 flex items-center justify-between px-6 py-4">
           <h2 className="text-xl font-bold text-blue-600">
@@ -168,7 +224,11 @@ const Users = () => {
                     handleOpenConfirmModal(user);
                   }}
                 >
-                  <img src={remove} alt="Remove User" className="w-6" />
+                  <img
+                    src={isActive ? remove : plus}
+                    alt="Add/Remove User"
+                    className="w-6"
+                  />
                 </button>
                 <img src={displayPic} alt="User Icon" className="mt-4 w-16" />
                 <div className="flex flex-grow flex-col justify-between text-center">
@@ -190,14 +250,11 @@ const Users = () => {
       </main>
       <Footer />
       {accountToRemove && (
-        <ConfirmModal
-          isOpen={isConfirmModalOpen}
+        <ConfirmationModal
           onClose={handleCloseConfirmModal}
-          onConfirm={handleRemoveUser}
-          employee={{
-            first_name: accountToRemove.first_name,
-            surname: accountToRemove.last_name,
-          }}
+          onConfirm={handleToggleUserStatus}
+          message={`${confirmationMessage} ${formatName(accountToRemove.first_name, accountToRemove.last_name)}?`}
+          isError={isActive}
         />
       )}
       <AddUserModal

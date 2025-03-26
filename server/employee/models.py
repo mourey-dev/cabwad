@@ -59,7 +59,7 @@ class Employee(models.Model):
     position = models.CharField(max_length=255, default=None)
     birth_date = models.DateField()
     address = models.CharField(max_length=255, default="NONE", blank=True)
-    first_day_service = models.DateField(auto_now=True)
+    first_day_service = models.DateField()
     civil_service = models.CharField(max_length=255)
     civil_status = models.CharField(max_length=50)
     sex = models.CharField(max_length=255)

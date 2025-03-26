@@ -249,9 +249,7 @@ export default function EmployeeUpdateModal({
             </div>
           </div>
 
-          <div className="col-span-2 md:col-span-1">
-            <h3 className="mb-2 font-bold">Employment Details</h3>
-
+          <div className="col-span-2 pt-8 md:col-span-1">
             <div>
               <label
                 htmlFor="address"

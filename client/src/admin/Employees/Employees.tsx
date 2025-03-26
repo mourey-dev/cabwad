@@ -9,6 +9,9 @@ import { ConfirmationModal } from "../../components/Modal";
 import Pagination from "../../components/Pagination";
 import { AlertSuccess, AlertError } from "../../components/Alert";
 
+// Context
+import { useStatus } from "../../context/StatusContext";
+
 import {
   useEmployeeData,
   useToggleEmployeeStatus,
@@ -41,7 +44,7 @@ const Employees = () => {
   const [employeeToRemove, setEmployeeToRemove] = useState<EmployeeData | null>(
     null,
   );
-  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+  const { status, setStatus } = useStatus();
   const confirmationMessage = isActive
     ? "Are you sure you want to delete"
     : "Are you sure you want to return";
@@ -96,15 +99,35 @@ const Employees = () => {
         },
         {
           onSuccess: () => {
-            setShowDeleteAlert(true);
+            setStatus({
+              ...status,
+              success: true,
+              message: `Employee ${isActive ? "deactivated" : "activated"} successfully`,
+            });
             handleCloseConfirmModal();
           },
           onError: () => {
-            setShowDeleteAlert(true);
+            setStatus({
+              ...status,
+              success: false,
+              message: "An error occurred",
+            });
           },
         },
       );
     }
+  };
+
+  const handleCategoryChange = (newCategory: string) => {
+    setCategory(newCategory);
+    navigate(`/admin/employees/page/1`);
+    setCurrentPage(1);
+  };
+
+  const handleActiveChange = (newActive: boolean) => {
+    setIsActive(newActive);
+    navigate(`/admin/employees/page/1`);
+    setCurrentPage(1);
   };
 
   const handlePageChange = (newPage: number) => {
@@ -122,19 +145,17 @@ const Employees = () => {
     <div className="flex min-h-screen flex-col bg-gray-100">
       {loading && <Loading loading={loading} />}
       {isPending && <Loading loading={true} />}
-      {showDeleteAlert && isSuccess && (
+      {status.success && isSuccess && (
         <AlertSuccess
           message={
             toggleResponse?.detail ||
             `Employee ${isActive ? "deactivated" : "activated"} successfully`
           }
-          onClose={() => setShowDeleteAlert(false)}
         />
       )}
-      {showDeleteAlert && isError && (
+      {status.error && isError && (
         <AlertError
           message={(error as Error)?.message || "An error occurred"}
-          onClose={() => setShowDeleteAlert(false)}
         />
       )}
       {isConfirmModalOpen && employeeToRemove && (
@@ -151,7 +172,7 @@ const Employees = () => {
           <div>
             <h2 className="text-xl font-bold text-blue-600">
               CABWAD List of Employees:{" "}
-              <span className="text-gray-600">##</span>
+              <span className="text-blue-800">{data?.count}</span>
             </h2>
           </div>
           {!data?.count ? (
@@ -170,9 +191,9 @@ const Employees = () => {
           <div>
             <FilterBar
               category={category}
-              onCategoryChange={setCategory}
+              onCategoryChange={handleCategoryChange}
               isActive={isActive}
-              onActiveChange={setIsActive}
+              onActiveChange={handleActiveChange}
               options={options}
             />
           </div>

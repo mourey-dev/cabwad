@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
+import { useStatus } from "../../context/StatusContext";
 
 interface AlertSuccessProps {
   message: string;
-  onClose: () => void;
 }
 
-const AlertSuccess: React.FC<AlertSuccessProps> = ({ message, onClose }) => {
+const AlertSuccess: React.FC<AlertSuccessProps> = ({ message }) => {
   const [isVisible, setIsVisible] = useState(true);
+  const { resetStatus } = useStatus();
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(false);
-      onClose();
+      resetStatus();
     }, 3000);
 
     return () => clearTimeout(timer);

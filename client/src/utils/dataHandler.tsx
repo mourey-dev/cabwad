@@ -85,3 +85,33 @@ export const getAge = (birthDate: string) => {
   }
   return age;
 };
+
+export const validatePassword = (
+  oldPassword: string,
+  newPassword: string,
+  confirmPassword: string,
+) => {
+  if (!oldPassword || !newPassword || !confirmPassword) {
+    return { error: true, message: "All fields are required." };
+  }
+
+  if (newPassword !== confirmPassword) {
+    return { error: true, message: "Passwords do not match." };
+  }
+
+  if (newPassword.length < 8) {
+    return {
+      error: true,
+      message: "Password must be at least 8 characters long.",
+    };
+  }
+
+  if (oldPassword === newPassword) {
+    return {
+      error: true,
+      message: "New password must be different from the old password.",
+    };
+  }
+
+  return { error: false, message: "" };
+};

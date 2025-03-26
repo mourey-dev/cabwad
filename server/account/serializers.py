@@ -68,3 +68,23 @@ class AccountSerializer(serializers.Serializer):
             internal_data["is_admin"] = user_type == "Admin"
             internal_data["is_superuser"] = user_type == "Super Admin"
         return internal_data
+
+
+class ChangePasswordSerializer(serializers.Serializer):
+    """
+    Serializer for password change endpoint.
+    """
+
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True, min_length=8)
+    confirm_password = serializers.CharField(required=True, min_length=8)
+
+    def validate(self, data):
+        """
+        Check that the new password and confirm password match.
+        """
+        if data["new_password"] != data["confirm_password"]:
+            raise serializers.ValidationError(
+                {"confirm_password": "New passwords must match."}
+            )
+        return data

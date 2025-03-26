@@ -3,6 +3,7 @@ import arrow from "../../assets/images/right-arrow.png";
 
 // Component
 import { Header, Footer } from "../../components";
+import { AlertSuccess, AlertError } from "../../components/Alert";
 import Loading from "../../components/Loading";
 
 // Hooks
@@ -11,13 +12,19 @@ import { useGet } from "../../hooks";
 // Types
 import { EmployeeCount } from "../../types/employee";
 
+// Context
+import { useStatus } from "../../context/StatusContext";
+
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
+  const { status } = useStatus();
   const { loading, data } = useGet<EmployeeCount>("/employee/count/");
 
   return (
     <div className="flex min-h-screen flex-col text-white">
       {loading && <Loading loading={loading} />}
+      {status.success && <AlertSuccess message={status.message} />}
+      {status.error && <AlertError message={status.message} />}
       <Header />
 
       {/* Main Content */}

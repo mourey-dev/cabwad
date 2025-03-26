@@ -140,3 +140,56 @@ export const useDeleteAccount = () => {
     },
   });
 };
+
+export const useToggleAccountStatus = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (data: { id: number; is_active?: boolean }) => {
+      // Use PATCH instead of PUT for partial updates
+      const response = await axiosInstance.patch<ApiResponse<AccountType>>(
+        "/account/list/", // Path to your endpoint
+        data,
+      );
+      return response.data;
+    },
+    onSuccess: (response, variables) => {
+      // COMPREHENSIVE INVALIDATION STRATEGY:
+
+      // 1. Invalidate all account-related queries
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+
+      // 2. Invalidate specific account by ID
+      queryClient.invalidateQueries({
+        queryKey: ["account", String(variables.id)],
+      });
+
+      // 3. CRITICAL FIX: Invalidate the exact pattern used in useGetQuery
+      // This is the pattern you're using in your Users component
+      queryClient.invalidateQueries({
+        predicate: (query) => {
+          // Check if it's an array query key with at least 4 items
+          const queryKey = query.queryKey;
+          if (!Array.isArray(queryKey) || queryKey.length < 4) {
+            return false;
+          }
+
+          // If the second element is a string (isActive flag), invalidate
+          if (typeof queryKey[1] === "string") {
+            return true;
+          }
+
+          return false;
+        },
+      });
+
+      return response;
+    },
+    onError: (error: any) => {
+      // Enhanced error handling to extract API error messages if available
+      const errorMessage =
+        error.response?.data?.message || error.message || "An error occurred";
+      throw new Error(`Failed to toggle account status: ${errorMessage}`);
+    },
+  });
+};

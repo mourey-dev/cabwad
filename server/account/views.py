@@ -5,10 +5,11 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
-from .serializers import LoginSerializer, AccountSerializer
+from .serializers import LoginSerializer, AccountSerializer, ChangePasswordSerializer
 from .models import User
 from .permissions import IsAdminOrSuperAdmin
 from .pagination import AccountPagination
+from django.contrib.auth import update_session_auth_hash
 
 
 class LoginView(TokenObtainPairView):
@@ -151,6 +152,53 @@ class AccountView(APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
 
+    def patch(self, request):
+        """
+        Toggle the is_active status of an account.
+        """
+        try:
+            # Extract user_id from request data
+            user_id = request.data.get("id")
+            if not user_id:
+                return Response(
+                    {"status": "error", "message": "User ID is required"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Retrieve the user
+            user = User.objects.get(id=user_id)
+
+            # Toggle the is_active status
+            user.is_active = not user.is_active
+            user.save()
+
+            # Prepare status message
+            action = "activated" if user.is_active else "deactivated"
+
+            return Response(
+                {
+                    "status": "success",
+                    "message": f"Account {action} successfully",
+                    "data": {
+                        "id": user.id,
+                        "email": user.email,
+                        "is_active": user.is_active,
+                    },
+                },
+                status=status.HTTP_200_OK,
+            )
+        except User.DoesNotExist:
+            return Response(
+                {"status": "error", "message": "Account not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        except Exception as e:
+            print(f"Error toggling account active status: {str(e)}")
+            return Response(
+                {"status": "error", "message": "Failed to toggle account status"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
     def put(self, request):
         try:
             user_id = request.data.get("id")
@@ -217,5 +265,145 @@ class AccountView(APIView):
             print("Error deactivating account:", str(e))
             return Response(
                 {"status": "error", "message": "Failed to deactivate account"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+
+class ChangePasswordView(APIView):
+    """
+    An endpoint for changing user password.
+    """
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            serializer = ChangePasswordSerializer(data=request.data)
+
+            if serializer.is_valid():
+                user = request.user
+                old_password = serializer.validated_data["old_password"]
+                new_password = serializer.validated_data["new_password"]
+
+                # Check if old password is correct
+                if not user.check_password(old_password):
+                    return Response(
+                        {
+                            "status": "error",
+                            "detail": "Current password is incorrect.",
+                        },
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+
+                # Check if new password is different from old password
+                if old_password == new_password:
+                    return Response(
+                        {
+                            "status": "error",
+                            "detail": "New password cannot be the same as the current password.",
+                        },
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+
+                # Set the new password
+                user.set_password(new_password)
+                user.save()
+
+                # Maintain user session if needed
+                update_session_auth_hash(request, user)
+
+                return Response(
+                    {"status": "success", "detail": "Password updated successfully."},
+                    status=status.HTTP_200_OK,
+                )
+
+            return Response(
+                {
+                    "status": "error",
+                    "detail": "Invalid data",
+                    "errors": serializer.errors,
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        except Exception as e:
+            print(f"Error changing password: {str(e)}")
+            return Response(
+                {"status": "error", "detail": "Failed to change password"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
+
+
+class AdminChangePasswordView(APIView):
+    """
+    An endpoint for administrators to reset user passwords.
+    """
+
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            # Check if user has admin permissions
+            if not request.user.is_admin and not request.user.is_superuser:
+                return Response(
+                    {
+                        "status": "error",
+                        "message": "You do not have permission to perform this action.",
+                    },
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+
+            # Get user ID and new password
+            user_id = request.data.get("user_id")
+            new_password = request.data.get("new_password")
+
+            if not user_id or not new_password:
+                return Response(
+                    {
+                        "status": "error",
+                        "message": "User ID and new password are required.",
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Validate password length
+            if len(new_password) < 8:
+                return Response(
+                    {
+                        "status": "error",
+                        "message": "Password must be at least 8 characters long.",
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Get the user
+            from .models import User
+
+            try:
+                user = User.objects.get(id=user_id)
+            except User.DoesNotExist:
+                return Response(
+                    {"status": "error", "message": "User not found."},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+
+            # Set the new password
+            user.set_password(new_password)
+            user.save()
+
+            return Response(
+                {
+                    "status": "success",
+                    "message": f"Password for {user.email} has been reset successfully.",
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        except Exception as e:
+            print(f"Error resetting password: {str(e)}")
+            return Response(
+                {"status": "error", "message": "Failed to reset password"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
