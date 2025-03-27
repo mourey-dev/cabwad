@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // Import useParams and useNavigate
+import { useParams, useNavigate } from "react-router-dom";
 
 import { useGetQuery } from "../../hooks/useCustomQuery";
 import { EmployeeData } from "../../types/employee";
 import { Header, Footer, FilterBar, EmployeeCard } from "../../components";
+import SearchBar from "../../components/SearchBar";
 import Loading from "../../components/Loading";
 import { ConfirmationModal } from "../../components/Modal";
 import Pagination from "../../components/Pagination";
@@ -46,6 +47,7 @@ const Employees = () => {
   const [employeeToRemove, setEmployeeToRemove] = useState<EmployeeData | null>(
     null,
   );
+  const [searchQuery, setSearchQuery] = useState(""); // State for search query
 
   const { status, setStatus } = useStatus();
   const confirmationMessage = isActive
@@ -135,6 +137,13 @@ const Employees = () => {
     updateNavigation(category, active, newPage.toString());
   };
 
+  // Filter employees based on the search query
+  const filteredEmployees = data?.results?.filter((employee) =>
+    `${employee.first_name} ${employee.surname}`
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase()),
+  );
+
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
       {loading && <Loading loading={loading} />}
@@ -169,18 +178,12 @@ const Employees = () => {
               <span className="text-blue-800">{data?.count}</span>
             </h2>
           </div>
-          {!data?.count ? (
-            ""
-          ) : (
-            <Pagination
-              currentPage={data.current_page}
-              totalPages={data.total_pages}
-              hasNext={!!data.links.next}
-              hasPrevious={!!data.links.previous}
-              onPageChange={handlePageChange}
+          <div className="flex gap-4">
+            <SearchBar
+              value={searchQuery}
+              onChange={setSearchQuery}
+              placeholder="Search employees..."
             />
-          )}
-          <div>
             <FilterBar
               category={category}
               onCategoryChange={handleCategoryChange}
@@ -191,7 +194,7 @@ const Employees = () => {
           </div>
         </div>
         <div className="mb-6 grid grid-cols-1 gap-6 px-4 py-6 sm:grid-cols-2 sm:px-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {data?.results?.map((item) => (
+          {filteredEmployees?.map((item) => (
             <EmployeeCard
               key={item.employee_id}
               employee={item}
