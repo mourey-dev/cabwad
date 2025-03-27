@@ -45,7 +45,7 @@ function App() {
               <Route element={<ProtectedRoute />}>
                 <Route path="/admin/users/page/:page" element={<Users />} />
                 <Route
-                  path="/admin/employees/page/:pageNumber"
+                  path="/admin/employees/page/:pageNumber/:category/:status"
                   element={<Employees />}
                 />
                 <Route path="/admin/dashboard" element={<Dashboard />} />

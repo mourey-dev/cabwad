@@ -63,7 +63,7 @@ const Dashboard: React.FC = () => {
         </div>
         <div className="mt-2">
           <button
-            onClick={() => navigate("/admin/employees/page/1")}
+            onClick={() => navigate("/admin/employees/page/1/all/active")}
             className="font-inter cursor-pointer text-sm underline hover:text-blue-500"
           >
             Employee List &gt; &gt;

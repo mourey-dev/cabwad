@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom"; // Import useParams and useNavigate
 
 import { useGetQuery } from "../../hooks/useCustomQuery";
@@ -34,16 +34,19 @@ const options = [
 ];
 
 const Employees = () => {
-  const navigate = useNavigate(); // Initialize navigate
-  const { pageNumber } = useParams();
-  const [category, setCategory] = useState("ALL");
-  const [isActive, setIsActive] = useState(true);
-  const [currentPage, setCurrentPage] = useState(Number(pageNumber) || 1);
-  const [pageSize, setPageSize] = useState(20);
+  const {
+    pageNumber = "1",
+    category = "all",
+    status: active = "active",
+  } = useParams();
+  const isActive = active === "active";
+
+  const navigate = useNavigate();
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [employeeToRemove, setEmployeeToRemove] = useState<EmployeeData | null>(
     null,
   );
+
   const { status, setStatus } = useStatus();
   const confirmationMessage = isActive
     ? "Are you sure you want to delete"
@@ -51,14 +54,8 @@ const Employees = () => {
 
   // Use custom GET query
   const { data, isLoading: loading } = useGetQuery<PaginatedEmployeesData>(
-    [
-      "employees",
-      category,
-      isActive.toString(),
-      currentPage.toString(),
-      pageSize.toString(),
-    ],
-    `/employee/list/?category=${category}&is_active=${isActive}&page=${currentPage}&page_size=${pageSize}`,
+    ["employees", category, isActive.toString(), pageNumber.toString()],
+    `/employee/list/?category=${category.toUpperCase()}&is_active=${isActive}&page=${pageNumber}`,
   );
 
   // Use custom DELETE mutation
@@ -116,28 +113,27 @@ const Employees = () => {
     }
   };
 
+  const updateNavigation = (
+    newCategory: string,
+    newActive: string,
+    newPageNumber: string,
+  ) => {
+    navigate(
+      `/admin/employees/page/${newPageNumber}/${newCategory.toLowerCase()}/${newActive}`,
+    );
+  };
+
   const handleCategoryChange = (newCategory: string) => {
-    setCategory(newCategory);
-    navigate(`/admin/employees/page/1`);
-    setCurrentPage(1);
+    updateNavigation(newCategory, active, "1");
   };
 
   const handleActiveChange = (newActive: boolean) => {
-    setIsActive(newActive);
-    navigate(`/admin/employees/page/1`);
-    setCurrentPage(1);
+    updateNavigation(category, newActive ? "active" : "inactive", "1");
   };
 
   const handlePageChange = (newPage: number) => {
-    setCurrentPage(newPage);
-    navigate(`/admin/employees/page/${newPage}`);
+    updateNavigation(category, active, newPage.toString());
   };
-
-  useEffect(() => {
-    if (pageNumber && Number(pageNumber) !== currentPage) {
-      setCurrentPage(Number(pageNumber));
-    }
-  }, [pageNumber]);
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
@@ -179,11 +175,9 @@ const Employees = () => {
             <Pagination
               currentPage={data.current_page}
               totalPages={data.total_pages}
-              pageSize={pageSize}
               hasNext={!!data.links.next}
               hasPrevious={!!data.links.previous}
               onPageChange={handlePageChange}
-              onPageSizeChange={setPageSize}
             />
           )}
           <div>
@@ -211,11 +205,9 @@ const Employees = () => {
           <Pagination
             currentPage={data.current_page}
             totalPages={data.total_pages}
-            pageSize={pageSize}
             hasNext={!!data.links.next}
             hasPrevious={!!data.links.previous}
             onPageChange={handlePageChange}
-            onPageSizeChange={setPageSize}
           />
         ) : null}
       </main>
