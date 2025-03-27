@@ -65,8 +65,6 @@ const Employees = () => {
   const {
     mutate: toggleStatus,
     isPending,
-    isSuccess,
-    isError,
     error,
     data: toggleResponse,
   } = useToggleEmployeeStatus();

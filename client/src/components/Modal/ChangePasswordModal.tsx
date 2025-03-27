@@ -214,16 +214,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ isOpen, onClose }) => {
               <>
                 <div className="mt-1 h-1 w-full overflow-hidden rounded-full bg-gray-200">
                   <div
-                    className={`h-full ${getStrengthColor()}`}
-                    style={{
-                      width: passwordStrength
-                        ? passwordStrength === "weak"
-                          ? "33%"
-                          : passwordStrength === "medium"
-                            ? "66%"
-                            : "100%"
-                        : "0%",
-                    }}
+                    className={`h-full ${getStrengthColor()} ${passwordStrength && passwordStrength === "weak" ? "w-1/3" : passwordStrength === "medium" ? "w-2/3" : passwordStrength === "strong" ? "w-full" : ""}`}
                   ></div>
                 </div>
                 <p
