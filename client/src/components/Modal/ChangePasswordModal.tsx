@@ -61,9 +61,10 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ isOpen, onClose }) => {
     if (apiError) {
       const message = apiErrorMessage || "Failed to change password";
       setStatus({ ...status, error: true, message });
+    } else {
     }
 
-    if (response) {
+    if (response && !apiError) {
       const message = response.detail || "Password changed successfully!";
       setStatus({ ...status, success: true, message });
 
@@ -111,6 +112,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ isOpen, onClose }) => {
 
     if (error) {
       setStatus({ ...status, error, message });
+      return;
     }
 
     handlePost({
