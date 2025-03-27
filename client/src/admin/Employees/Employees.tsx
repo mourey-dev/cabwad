@@ -145,7 +145,7 @@ const Employees = () => {
     <div className="flex min-h-screen flex-col bg-gray-100">
       {loading && <Loading loading={loading} />}
       {isPending && <Loading loading={true} />}
-      {status.success && isSuccess && (
+      {status.success && (
         <AlertSuccess
           message={
             toggleResponse?.detail ||
@@ -153,7 +153,7 @@ const Employees = () => {
           }
         />
       )}
-      {status.error && isError && (
+      {status.error && (
         <AlertError
           message={(error as Error)?.message || "An error occurred"}
         />

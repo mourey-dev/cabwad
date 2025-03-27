@@ -67,10 +67,7 @@ const ChangePassword: React.FC<ChangePasswordProps> = ({ isOpen, onClose }) => {
       const message = response.detail || "Password changed successfully!";
       setStatus({ ...status, success: true, message });
 
-      // Close modal after success
-      setTimeout(() => {
-        onClose();
-      }, 2000);
+      onClose();
     }
   }, [apiError, response]);
 
