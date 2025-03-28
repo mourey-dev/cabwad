@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -174,6 +175,7 @@ class EmployeeView(APIView):
         else:
             category = request.query_params.get("category")
             is_active = request.query_params.get("is_active")
+            search_query = request.query_params.get("search", "")
 
             # Build filter conditions
             filters = {}
@@ -182,7 +184,17 @@ class EmployeeView(APIView):
             if is_active is not None:
                 filters["is_active"] = is_active.lower() == "true"
 
+            # Get all employees that match the filters
             employees = Employee.objects.filter(**filters)
+
+            # Apply search filter if provided
+            if search_query:
+                # Case-insensitive search across name fields
+                employees = employees.filter(
+                    Q(first_name__icontains=search_query)
+                    | Q(surname__icontains=search_query)
+                    | Q(middle_name__icontains=search_query)
+                )
 
             # Initialize paginator
             paginator = self.pagination_class()

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { useGetQuery } from "../../hooks/useCustomQuery";
@@ -48,16 +48,34 @@ const Employees = () => {
     null,
   );
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(""); // Debounced search query
 
   const { status, setStatus } = useStatus();
   const confirmationMessage = isActive
     ? "Are you sure you want to delete"
     : "Are you sure you want to return";
 
-  // Use custom GET query
+  // Debounce the search query to avoid making too many requests
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearchQuery(searchQuery);
+    }, 1000); // Wait 300ms after user stops typing
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchQuery]);
+
+  // Use custom GET query with search query as a dependency
   const { data, isLoading: loading } = useGetQuery<PaginatedEmployeesData>(
-    ["employees", category, isActive.toString(), pageNumber.toString()],
-    `/employee/list/?category=${category.toUpperCase()}&is_active=${isActive}&page=${pageNumber}`,
+    [
+      "employees",
+      category,
+      isActive.toString(),
+      pageNumber.toString(),
+      debouncedSearchQuery,
+    ],
+    `/employee/list/?category=${category.toUpperCase()}&is_active=${isActive}&page=${pageNumber}&search=${encodeURIComponent(debouncedSearchQuery)}`,
   );
 
   // Use custom DELETE mutation
@@ -137,12 +155,14 @@ const Employees = () => {
     updateNavigation(category, active, newPage.toString());
   };
 
-  // Filter employees based on the search query
-  const filteredEmployees = data?.results?.filter((employee) =>
-    `${employee.first_name} ${employee.surname}`
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase()),
-  );
+  // Handle search input change
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    // Reset to first page when search changes
+    if (pageNumber !== "1") {
+      updateNavigation(category, active, "1");
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
@@ -181,7 +201,7 @@ const Employees = () => {
           <div className="flex flex-grow justify-center">
             <SearchBar
               value={searchQuery}
-              onChange={setSearchQuery}
+              onChange={handleSearchChange} // Use the new handler
               placeholder="Search employees..."
             />
           </div>
@@ -196,15 +216,19 @@ const Employees = () => {
           </div>
         </div>
         <div className="mb-6 grid grid-cols-1 gap-6 px-4 py-6 sm:grid-cols-2 sm:px-6 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-          {filteredEmployees?.map((item) => (
-            <EmployeeCard
-              key={item.employee_id}
-              employee={item}
-              isActive={isActive}
-              onSelect={handleOpenEmployeePage}
-              onRemove={handleOpenConfirmModal}
-            />
-          ))}
+          {data?.results?.map(
+            (
+              item, // Use data.results directly, no need for filteredEmployees
+            ) => (
+              <EmployeeCard
+                key={item.employee_id}
+                employee={item}
+                isActive={isActive}
+                onSelect={handleOpenEmployeePage}
+                onRemove={handleOpenConfirmModal}
+              />
+            ),
+          )}
         </div>
         {data?.count && data.count >= 10 ? (
           <Pagination
