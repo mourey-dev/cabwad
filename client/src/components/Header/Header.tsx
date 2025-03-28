@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import usePost from "../../hooks/usePost";
-import { useStatus } from "../../context/StatusContext";
 
 // Component
 import Loading from "../Loading";

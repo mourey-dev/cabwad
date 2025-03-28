@@ -2,6 +2,8 @@ import { useForm } from "react-hook-form";
 import { EmployeeData } from "../../types/employee";
 import { toUpperCase } from "../../utils/formatters";
 import { useUpdateEmployee } from "../../hooks/useEmployee";
+import { positions } from "../../data/positions";
+import { useState } from "react";
 
 // Context
 import { useStatus } from "../../context/StatusContext";
@@ -61,6 +63,23 @@ export default function EmployeeUpdateModal({
       address: employee.address.toUpperCase(),
     },
   });
+  const [filteredPositions, setFilteredPositions] = useState<string[]>([]);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+
+    if (value === "") {
+      setFilteredPositions([]);
+      setShowDropdown(false);
+    } else {
+      const filtered = positions.filter((position) =>
+        position.toLowerCase().includes(value.toLowerCase()),
+      );
+      setFilteredPositions(filtered);
+      setShowDropdown(true);
+    }
+  };
 
   const onSubmit = (data: EmployeeUpdateForm) => {
     updateEmployee(
@@ -112,6 +131,7 @@ export default function EmployeeUpdateModal({
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="grid grid-cols-2 gap-4"
+          autoComplete="off"
         >
           <div className="col-span-2 md:col-span-1">
             <h3 className="mb-2 font-bold">Employee Details</h3>
@@ -131,6 +151,7 @@ export default function EmployeeUpdateModal({
                     setValue("employee_id", toUpperCase(e.target.value)),
                 })}
                 className="input-field mt-1 w-full rounded border px-2 py-1"
+                autoComplete="off"
               />
               {errors.employee_id && (
                 <p className="text-sm text-red-500" role="alert">
@@ -154,6 +175,7 @@ export default function EmployeeUpdateModal({
                     setValue("surname", toUpperCase(e.target.value)),
                 })}
                 className="input-field mt-1 w-full rounded border px-2 py-1"
+                autoComplete="off"
               />
               {errors.surname && (
                 <p className="text-sm text-red-500" role="alert">
@@ -177,6 +199,7 @@ export default function EmployeeUpdateModal({
                     setValue("first_name", toUpperCase(e.target.value)),
                 })}
                 className="input-field mt-1 w-full rounded border px-2 py-1"
+                autoComplete="off"
               />
               {errors.first_name && (
                 <p className="text-sm text-red-500" role="alert">
@@ -199,6 +222,7 @@ export default function EmployeeUpdateModal({
                     setValue("middle_name", toUpperCase(e.target.value)),
                 })}
                 className="input-field mt-1 w-full rounded border px-2 py-1"
+                autoComplete="off"
               />
             </div>
 
@@ -213,6 +237,7 @@ export default function EmployeeUpdateModal({
                 id="sex"
                 {...register("sex", { required: "Sex is required" })}
                 className="input-field mt-1 w-full rounded border px-2 py-1"
+                autoComplete="off"
               >
                 <option value="">SELECT SEX</option>
                 <option value="MALE">MALE</option>
@@ -240,6 +265,7 @@ export default function EmployeeUpdateModal({
                     setValue("civil_status", toUpperCase(e.target.value)),
                 })}
                 className="input-field mt-1 w-full rounded border px-2 py-1"
+                autoComplete="off"
               />
               {errors.civil_status && (
                 <p className="text-sm text-red-500" role="alert">
@@ -265,6 +291,7 @@ export default function EmployeeUpdateModal({
                     setValue("address", toUpperCase(e.target.value)),
                 })}
                 className="input-field mt-1 w-full rounded border px-2 py-1"
+                autoComplete="off"
               />
               {errors.address && (
                 <p className="text-sm text-red-500" role="alert">
@@ -280,15 +307,24 @@ export default function EmployeeUpdateModal({
               >
                 Appointment Status *
               </label>
-              <input
+              <select
                 id="employment_status"
                 {...register("employment_status", {
                   required: "Status is required",
-                  onChange: (e) =>
-                    setValue("employment_status", toUpperCase(e.target.value)),
                 })}
                 className="input-field mt-1 w-full rounded border px-2 py-1"
-              />
+                autoComplete="off"
+              >
+                <option value="" disabled>
+                  Select an employment status
+                </option>
+                <option value="PERMANENT">PERMANENT</option>
+                <option value="CASUAL">CASUAL</option>
+                <option value="JOB ORDER">JOB ORDER</option>
+                <option value="CO-TERMINUS">CO-TERMINUS</option>
+                <option value="CONTACT OF SERVICE">CONTACT OF SERVICE</option>
+                <option value="TEMPORARY">TEMPORARY</option>
+              </select>
               {errors.employment_status && (
                 <p className="text-sm text-red-500" role="alert">
                   {errors.employment_status.message}
@@ -310,10 +346,11 @@ export default function EmployeeUpdateModal({
                     setValue("eligibility", toUpperCase(e.target.value)),
                 })}
                 className="input-field mt-1 w-full rounded border px-2 py-1"
+                autoComplete="off"
               />
             </div>
 
-            <div>
+            <div className="relative">
               <label
                 htmlFor="position"
                 className="block text-sm font-medium text-gray-700"
@@ -324,15 +361,34 @@ export default function EmployeeUpdateModal({
                 id="position"
                 {...register("position", {
                   required: "Position is required",
-                  onChange: (e) =>
-                    setValue("position", toUpperCase(e.target.value)),
+                  onChange: handleChange,
                 })}
-                className="input-field mt-1 w-full rounded border px-2 py-1"
+                className="input-field mt-1 w-full rounded border px-2 py-1 uppercase"
+                autoComplete="off"
               />
               {errors.position && (
                 <p className="text-sm text-red-500" role="alert">
                   {errors.position.message}
                 </p>
+              )}
+
+              {/* Display dropdown for position selection */}
+              {showDropdown && filteredPositions.length > 0 && (
+                <div className="ring-opacity-5 absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 ring-1 shadow-lg ring-black">
+                  {filteredPositions.map((position, index) => (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        setValue("position", position.toUpperCase());
+                        setShowDropdown(false);
+                        setFilteredPositions([]);
+                      }}
+                      className="cursor-pointer px-4 py-2 uppercase hover:bg-gray-100"
+                    >
+                      {position}
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
 
@@ -350,6 +406,7 @@ export default function EmployeeUpdateModal({
                   required: "Birth date is required",
                 })}
                 className="input-field mt-1 w-full rounded border px-2 py-1"
+                autoComplete="off"
               />
               {errors.birth_date && (
                 <p className="text-sm text-red-500" role="alert">
@@ -372,6 +429,7 @@ export default function EmployeeUpdateModal({
                   required: "First day of service is required",
                 })}
                 className="input-field mt-1 w-full rounded border px-2 py-1"
+                autoComplete="off"
               />
               {errors.first_day_service && (
                 <p className="text-sm text-red-500" role="alert">
@@ -398,6 +456,7 @@ export default function EmployeeUpdateModal({
                     required: "Phone number is required",
                   })}
                   className="input-field mt-1 rounded border px-2 py-1"
+                  autoComplete="off"
                 />
                 {errors.phone && (
                   <p className="text-sm text-red-500" role="alert">
@@ -423,6 +482,7 @@ export default function EmployeeUpdateModal({
                     },
                   })}
                   className="input-field mt-1 rounded border px-2 py-1"
+                  autoComplete="off"
                 />
                 {errors.email && (
                   <p className="text-sm text-red-500" role="alert">

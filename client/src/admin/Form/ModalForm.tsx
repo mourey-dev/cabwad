@@ -1,52 +1,12 @@
 import PDSForm from "../../types/form";
 import { UseFormRegister, UseFormSetValue } from "react-hook-form";
-
+import { positions } from "../../data/positions";
 import { useState } from "react";
 
 type ModalFormProps = {
   register: UseFormRegister<PDSForm>;
   setValue: UseFormSetValue<PDSForm>;
 };
-
-const positions = [
-  "Accounting Processor B",
-  "Administrative Services Aide",
-  "Administrative Services Officer A",
-  "Administration Services Assistant A",
-  "Administration Services Assistant C",
-  "Cashier D",
-  "Collection Assistant",
-  "Customer Service Assistant A",
-  "Customer Service Assistant B",
-  "Customer Service Assistant C",
-  "Customer Service Assistant D",
-  "Customer Service Officer B",
-  "Division Manager C",
-  "Driver",
-  "Engineering Aide A",
-  "Engineering Aide B",
-  "Engineering Assistant A",
-  "General Manager",
-  "Senior Accounting Processor B",
-  "Senior Corporate Accountant C",
-  "Senior Engineer A",
-  "Storekeeper B",
-  "Supply Assistant B",
-  "Utility Worker A",
-  "Utility Worker B",
-  "Utilities Service Assistant E",
-  "Water Maintenance Foreman",
-  "Water Maintenance Man A",
-  "Water Maintenance Man B",
-  "Water Maintenance Man C",
-  "Water Resources Facilities Operator A",
-  "Water Resources Facilities Operator B",
-  "Water Resources Facilities Operator C",
-  "Water Resources Facilities Operator Foreman",
-  "Water Resources Facilities Tender A",
-  "Water Resources Facilities Tender B",
-  "Water Utilities Development Officer A",
-];
 
 const ModalForm = ({ register, setValue }: ModalFormProps) => {
   const [showModal, setShowModal] = useState(true);
@@ -101,6 +61,7 @@ const ModalForm = ({ register, setValue }: ModalFormProps) => {
               className="mt-1 w-full rounded border p-2"
               autoFocus
               required
+              autoComplete="off"
             />
           </div>
 
@@ -114,6 +75,7 @@ const ModalForm = ({ register, setValue }: ModalFormProps) => {
               {...register("employment_status")}
               required
               className="mt-1 w-full rounded border p-2"
+              autoComplete="off"
             >
               <option value="" disabled>
                 Select an employment status
@@ -127,7 +89,7 @@ const ModalForm = ({ register, setValue }: ModalFormProps) => {
             </select>
           </div>
 
-          <div className="relative w-full">
+          <div className="relative mb-4 w-full">
             <input
               type="text"
               value={searchTerm}
@@ -136,6 +98,7 @@ const ModalForm = ({ register, setValue }: ModalFormProps) => {
               })}
               placeholder="Enter Employee Position"
               className="w-full rounded border p-2"
+              autoComplete="off"
               required
             />
             {showDropdown && filteredPositions.length > 0 && (
@@ -163,6 +126,7 @@ const ModalForm = ({ register, setValue }: ModalFormProps) => {
               {...register("department")}
               required
               className="mt-1 w-full rounded border p-2"
+              autoComplete="off"
             >
               <option value="" disabled>
                 Select a department
@@ -177,15 +141,17 @@ const ModalForm = ({ register, setValue }: ModalFormProps) => {
           </div>
 
           <div className="mb-4">
-            <label htmlFor="department" className="block font-semibold">
+            <label htmlFor="first_day_service" className="block font-semibold">
               First Day of Service:
             </label>
             <input
+              id="first_day_service"
               title="first_day_service"
               {...register("first_day_service")}
               type="date"
               className="mt-1 w-full rounded border p-2"
               required
+              autoComplete="off"
             />
           </div>
           <div className="flex justify-center">
