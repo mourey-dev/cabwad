@@ -1,5 +1,7 @@
 // Assets
 import Default from "../../assets/images/default.png";
+import maleEmployee from "../../assets/images/male-employee.jpg";
+import femaleEmployee from "../../assets/images/female-employee.jpg";
 
 // State
 import { useState } from "react";
@@ -33,7 +35,7 @@ type ProfileHeaderProps = {
 const ProfileHeader = ({ employee }: ProfileHeaderProps) => {
   const [showModal, setShowModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
-  const { status, setStatus, resetStatus } = useStatus();
+  const { status, setStatus } = useStatus();
   const { mutateAsync: uploadFile, isPending: isUploading } = useEmployeeFile();
   const { mutateAsync: updateFile, isPending: isUpdating } =
     useUpdateEmployeeFile();
@@ -87,12 +89,8 @@ const ProfileHeader = ({ employee }: ProfileHeaderProps) => {
 
   return (
     <div className="mb-4 flex items-center border-b pb-4">
-      {status.success && (
-        <AlertSuccess onClose={resetStatus} message={status.message} />
-      )}
-      {status.error && (
-        <AlertError onClose={resetStatus} message={status.message} />
-      )}
+      {status.success && <AlertSuccess message={status.message} />}
+      {status.error && <AlertError message={status.message} />}
       <UpdateEmployeeModal
         show={showUpdateModal}
         onClose={() => toggleModal(setShowUpdateModal)}
@@ -109,7 +107,8 @@ const ProfileHeader = ({ employee }: ProfileHeaderProps) => {
         className="h-32 w-32 object-cover"
         onError={(e) => {
           e.currentTarget.onerror = null;
-          e.currentTarget.src = Default;
+          e.currentTarget.src =
+            employee.sex === "MALE" ? maleEmployee : femaleEmployee;
         }}
       />
       <div className="ml-6">

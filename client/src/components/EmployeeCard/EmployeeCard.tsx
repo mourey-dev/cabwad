@@ -2,6 +2,8 @@ import { EmployeeData } from "../../types/employee";
 import remove from "../../assets/images/remove.png";
 import plus from "../../assets/images/plus.png";
 import displayPic from "../../assets/images/displayPic.png";
+import maleEmployee from "../../assets/images/male-employee.jpg";
+import femaleEmployee from "../../assets/images/female-employee.jpg";
 import { getProfile } from "../../utils/fileHandler";
 
 interface EmployeeCardProps {
@@ -40,7 +42,8 @@ const EmployeeCard = ({
           alt="Employee Icon"
           onError={(e) => {
             e.currentTarget.onerror = null;
-            e.currentTarget.src = displayPic;
+            e.currentTarget.src =
+              employee.sex === "MALE" ? maleEmployee : femaleEmployee;
           }}
           className="mt-4 h-[70px] w-[70px] rounded-[50%] border-2 border-slate-300"
         />
