@@ -178,12 +178,14 @@ const Employees = () => {
               <span className="text-blue-800">{data?.count}</span>
             </h2>
           </div>
-          <div className="flex gap-4">
+          <div className="flex flex-grow justify-center">
             <SearchBar
               value={searchQuery}
               onChange={setSearchQuery}
               placeholder="Search employees..."
             />
+          </div>
+          <div className="flex gap-4">
             <FilterBar
               category={category}
               onCategoryChange={handleCategoryChange}
