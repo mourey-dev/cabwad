@@ -66,7 +66,6 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
   };
 
   const submit = (data: PDSForm) => {
-    console.log(data);
     handleRequest(data, {
       method: "POST",
     });
@@ -75,12 +74,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
   return (
     <div>
       {response && <PDSPostModal url={response.pds_link} />}
-      {error && showErrorAlert && (
-        <AlertError
-          message={errorMessage}
-          onClose={() => setShowErrorAlert(false)}
-        />
-      )}
+      {error && showErrorAlert && <AlertError message={errorMessage} />}
       <LoadingModal loading={loading} />
       <form
         className="mx-auto my-12 grid h-full w-[1001px] border-4 bg-white"

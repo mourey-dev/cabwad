@@ -9,19 +9,34 @@ import PDSForm from "../../types/form";
 
 import { useParams, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 type RouteParams = Record<string, string | undefined>;
 
 const Form = () => {
-  const { page } = useParams<RouteParams>();
+  const { page, employeeId, mode } = useParams<RouteParams>();
   const navigate = useNavigate();
   const currentPage: number = Number(page) || 1;
   const { register, handleSubmit, setValue } = useForm<PDSForm>();
 
+  useEffect(() => {
+    if (employeeId) {
+      setValue("employee_id", employeeId);
+    }
+  }, []);
+
+  const nextPage = (page: number) => {
+    navigate(
+      employeeId
+        ? `/admin/form/${page}/${employeeId}/${mode}`
+        : `/admin/form/${page}`,
+    );
+  };
+
   const forms: Record<number, JSX.Element> = {
-    1: <FormOne register={register} />,
-    2: <FormTwo register={register} />,
-    3: <FormThree register={register} />,
+    1: <FormOne register={register} nextPage={nextPage} />,
+    2: <FormTwo register={register} nextPage={nextPage} />,
+    3: <FormThree register={register} nextPage={nextPage} />,
     4: (
       <FormFour
         register={register}
@@ -41,7 +56,7 @@ const Form = () => {
     <div className="">
       {forms[currentPage]}
       <Pagination />
-      <ModalForm register={register} setValue={setValue} />
+      {!employeeId && <ModalForm register={register} setValue={setValue} />}
     </div>
   );
 };

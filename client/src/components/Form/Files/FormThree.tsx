@@ -2,15 +2,13 @@ import arrow from "../../../assets/images/right-arrow.png";
 
 import { UseFormRegister } from "react-hook-form";
 import PDSForm from "../../../types/form";
-import { useNavigate } from "react-router-dom";
 
 type FormThreeProps = {
   register: UseFormRegister<PDSForm>;
+  nextPage: (page: number) => void;
 };
 
-const FormThree = ({ register }: FormThreeProps) => {
-  const navigate = useNavigate();
-
+const FormThree = ({ register, nextPage }: FormThreeProps) => {
   return (
     <div>
       <form
@@ -291,7 +289,7 @@ const FormThree = ({ register }: FormThreeProps) => {
           <button
             type="button"
             className="absolute top-10 right-[-20px] flex cursor-pointer items-center gap-2 rounded-full bg-green-500 p-4 hover:bg-green-300"
-            onClick={() => navigate("/admin/form/4")}
+            onClick={() => nextPage(4)}
           >
             <span className="font-semibold text-white">Next</span>
             <img src={arrow} alt="arrow-right" className="h-5 w-5" />

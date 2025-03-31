@@ -235,7 +235,7 @@ export type PDSForm = {
   voluntary_work: VoluntaryWork;
   learning_development: LearningDevelopment;
   other_information: OtherInformation;
-  employee_id: number;
+  employee_id: string;
   employment_status: string;
   position: string;
   department: string;

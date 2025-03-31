@@ -2,15 +2,13 @@ import arrow from "../../../assets/images/right-arrow.png";
 
 import { UseFormRegister } from "react-hook-form";
 import PDSForm from "../../../types/form";
-import { useNavigate } from "react-router-dom";
 
 type FormOneProps = {
   register: UseFormRegister<PDSForm>;
+  nextPage: (page: number) => void;
 };
 
-const FormOne = ({ register }: FormOneProps) => {
-  const navigate = useNavigate();
-
+const FormOne = ({ register, nextPage }: FormOneProps) => {
   return (
     <div>
       <form
@@ -1465,7 +1463,7 @@ const FormOne = ({ register }: FormOneProps) => {
             <button
               type="button"
               className="absolute top-10 right-[-20px] flex cursor-pointer items-center gap-2 rounded-full bg-green-500 p-4 hover:bg-green-300"
-              onClick={() => navigate("/admin/form/2")}
+              onClick={() => nextPage(2)}
             >
               <span className="font-semibold text-white">Next</span>
               <img src={arrow} alt="arrow-right" className="h-5 w-5" />

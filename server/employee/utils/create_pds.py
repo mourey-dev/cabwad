@@ -50,6 +50,8 @@ def create_pds(data):
     writer.write(output_pdf)
     output_pdf.seek(0)  # Move the cursor to the beginning of the BytesIO object
 
+    return output_pdf
+
     parent_folder = "1bXWiVgFCnq7J93SjKjkeeGBX1uOFN30G"
     folder_name = f"{data.get('p_surname')}, {data.get('p_first_name')}"
     file_name = f"{folder_name}_PDS"

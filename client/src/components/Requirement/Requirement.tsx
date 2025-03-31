@@ -3,11 +3,10 @@ import { EmployeeFile, FileType, EmployeeData } from "../../types/employee";
 
 // Components
 import { ConfirmationModal } from "../Modal";
-import { AlertSuccess, AlertError } from "../Alert";
 import { Loading } from "../";
 import { useState } from "react";
 import FileModal from "./FileModal";
-import Dropdown from "../Dropdown";
+import { Dropdown, CustomDropdown } from "../Dropdown";
 
 // Hooks
 import { useDeleteEmployeeFile } from "../../hooks/useEmployee";
@@ -45,7 +44,7 @@ const Requirement = ({
   const [fileModal, setFileModal] = useState(false);
   const [mode, setMode] = useState<"add" | "update">("add");
   const [deleteModal, setDeleteModal] = useState(false);
-  const { status, setStatus, resetStatus } = useStatus();
+  const { status, setStatus } = useStatus();
   const { mutate: deleteFile, isPending } = useDeleteEmployeeFile();
 
   const handleViewFile = (file: EmployeeFile | undefined) => {
@@ -85,18 +84,15 @@ const Requirement = ({
     setDeleteModal(!deleteModal);
   };
 
+  // Check if the current document is a PDS
+  const isPdsDocument = document.key === "pds";
+
   return (
     <div>
-      {status.success && (
-        <AlertSuccess onClose={resetStatus} message={status.message} />
-      )}
-      {status.error && (
-        <AlertError onClose={resetStatus} message={status.message} />
-      )}
       <div className="relative">
         {isPending && <Loading loading={isPending} />}
 
-        {fileModal && (
+        {fileModal && !isPdsDocument && (
           <FileModal
             fileType={fileType}
             employee={employee}
@@ -124,16 +120,28 @@ const Requirement = ({
         </p>
 
         {dropdown === index && (
-          <Dropdown
-            employeeFile={employeeFile}
-            toggleFileModal={toggleFileModal}
-            toggleDeleteModal={toggleDeleteModal}
-            handleViewFile={() => handleViewFile(employeeFile)}
-            setMode={setMode}
-          />
+          <>
+            {isPdsDocument ? (
+              <CustomDropdown
+                employeeFile={employeeFile}
+                url={`/admin/form/1/${employee.employee_id}`}
+                handleViewFile={() => handleViewFile(employeeFile)}
+                toggleDeleteModal={toggleDeleteModal}
+              />
+            ) : (
+              <Dropdown
+                employeeFile={employeeFile}
+                toggleFileModal={toggleFileModal}
+                toggleDeleteModal={toggleDeleteModal}
+                handleViewFile={() => handleViewFile(employeeFile)}
+                setMode={setMode}
+              />
+            )}
+          </>
         )}
       </div>
     </div>
   );
 };
+
 export default Requirement;

@@ -14,7 +14,7 @@ def build_drive_service():
     return service
 
 
-def create_folder(folder_name, parent_folder_id):
+def create_folder(folder_name, parent_folder_id="1bXWiVgFCnq7J93SjKjkeeGBX1uOFN30G"):
     """Create a folder in Google Drive."""
     service = build_drive_service()
 

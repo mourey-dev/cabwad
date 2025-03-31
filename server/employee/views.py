@@ -8,9 +8,7 @@ from rest_framework import status
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.parsers import JSONParser
 
-from .utils.update_dict_key import update_dict_key
-from .utils.create_pds import create_pds
-from .utils.destructure_dict import destructure_dict
+from .helper.pds_builder import PDSBuilder
 
 from .models import Employee, File, FileType
 from .serializers import EmployeeSerializer
@@ -19,6 +17,7 @@ from .utils.file_handler import file64_to_file
 
 from services.drive_services import (
     get_file_to_folder,
+    create_folder,
     upload_to_drive,
     delete_file,
     update_file,
@@ -69,95 +68,255 @@ class PDSView(APIView):
     permission_classes = [IsAdminOrSuperAdmin]
 
     def post(self, request):
-        data = to_uppercase(request.data)
-        profile = request.data.get("other_information").pop("of_profile")
+        try:
+            # Get profile data if available
+            other_information = request.data.get("other_information", {})
+            profile = other_information.get("profile", "") if other_information else ""
 
-        update_dict_key(data["learning_development"])
-        update_dict_key(data["civil_service_eligibility"])
-        update_dict_key(data["work_experience"])
-        update_dict_key(data["voluntary_work"])
-        update_dict_key(data["other_information"]["skills"])
+            # Convert data to uppercase for consistency
+            data = to_uppercase(request.data)
 
-        data["civil_service_eligibility"] = destructure_dict(
-            data["civil_service_eligibility"]
-        )
-        data["work_experience"] = destructure_dict(data["work_experience"])
-        data["voluntary_work"] = destructure_dict(data["voluntary_work"])
-        data["learning_development"] = destructure_dict(data["learning_development"])
-        data["other_information"].update(
-            destructure_dict(data["other_information"]["skills"])
-        )
+            # Step 1. Extract personal information
+            personal_information = data.get("personal_information", {})
+            if not personal_information:
+                return Response(
+                    {"detail": "Personal information is required"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
-        # Remove the skills key from other_information
-        data["other_information"].pop("skills")
+            # Prepare employee data
+            employee_id = data.get("employee_id", "")
 
-        combined_data = {}
-        combined_data.update(data["personal_information"])
-        combined_data.update(data["family_background"])
-        combined_data.update(data["educational_background"])
-        combined_data.update(data["civil_service_eligibility"])
-        combined_data.update(data["work_experience"])
-        combined_data.update(data["voluntary_work"])
-        combined_data.update(data["learning_development"])
-        combined_data.update(data["other_information"])
+            # Check if employee already exists
+            existing_employee = None
+            if employee_id:
+                try:
+                    existing_employee = Employee.objects.get(employee_id=employee_id)
+                except Employee.DoesNotExist:
+                    existing_employee = None
 
-        pds = create_pds(combined_data)
-        file = pds.get("file")
+            if existing_employee:
+                # If employee exists, use their folder_id
+                folder_id = existing_employee.folder_id
+                if not folder_id:
+                    return Response(
+                        {"detail": "Existing employee has no associated folder"},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
 
-        if profile:
-            file_io = file64_to_file(profile)  # Changed from file to profile
-            file_name = f"{'Profile'}_{combined_data.get('p_surname')}".upper()
-            folder_id = pds["folder_id"]
-            file_info = upload_to_drive(
-                file_io, file_name, folder_id
-            )  # Removed empty string parameter
-            profile_data = {
-                "name": file_info["name"],
-                "file_id": file_info["id"],
-                "uploaded": True,
-                "file_type": "profile",
-            }
-        else:
-            profile_data = None  # Handle case when there's no profile
+                # For existing employee, just create the PDS file
+                try:
+                    # Create PDS File
+                    pds_builder = (
+                        PDSBuilder(data)
+                        .update_pds_data()
+                        .destruct_pds_data()
+                        .update()
+                        .create_pds()
+                    )
+                    pds = pds_builder.build()
 
-        employee = {
-            "employee_id": data["employee_id"],
-            "first_name": combined_data["p_first_name"],
-            "surname": combined_data["p_surname"],
-            "middle_name": data.get("middle_name", ""),
-            "appointment_status": data.get("employment_status", ""),
-            "position": data["position"],
-            "department": data["department"],
-            "civil_status": get_civil_status(combined_data),
-            "folder_id": pds["folder_id"],
-            "birth_date": combined_data.get("p_birth_date", ""),
-            "first_day_service": data["first_day_service"],
-            "sex": get_sex(combined_data),
-            "phone": combined_data["p_mobile"],
-            "email": combined_data["p_email"],
-            "files": [
-                {
-                    "name": file["name"],
-                    "file_id": file["id"],
-                    "uploaded": True,
-                    "file_type": "pds",
-                },
-            ]
-            + (
-                [profile_data] if profile_data else []
-            ),  # Only add profile_data if it exists
-        }
+                    file_name = f"PERSONAL DATA SHEET_{personal_information.get('p_surname', '')}, {personal_information.get('p_first_name', '')}"
 
-        serializer = EmployeeSerializer(data=employee)
-        if serializer.is_valid():
-            serializer.save()
+                    # Check if existing PDS file already exists
+                    pds_file = None
+                    for file in existing_employee.files.all():
+                        if file.file_type.lower() == "pds":
+                            pds_file = file
+                            break
+
+                    if pds_file:
+                        # Update existing PDS file
+                        g_file = update_file(pds_file.file_id, pds, file_name)
+
+                        # Update file record
+                        pds_file.name = g_file["name"]
+                        pds_file.save()
+                    else:
+                        # Upload new PDS file
+                        g_file = upload_to_drive(pds, file_name, folder_id)
+
+                        if not g_file or "id" not in g_file:
+                            return Response(
+                                {"detail": "Failed to upload PDS file to Google Drive"},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            )
+
+                        # Create and attach new File record
+                        new_file = File.objects.create(
+                            name=g_file["name"],
+                            file_id=g_file["id"],
+                            uploaded=True,
+                            file_type="pds",
+                        )
+
+                        existing_employee.files.add(new_file)
+
+                    return Response(
+                        {
+                            "detail": "PDS created successfully for existing employee",
+                            "pds_link": f"https://drive.google.com/file/d/{g_file.get('id')}/view?usp=sharing",
+                        },
+                        status=status.HTTP_200_OK,
+                    )
+
+                except Exception as e:
+                    return Response(
+                        {"detail": f"PDS creation error: {str(e)}"},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    )
+            else:
+                # For new employee, prepare the full employee data
+                employee = {
+                    "employee_id": employee_id,
+                    "first_name": personal_information.get("p_first_name", ""),
+                    "surname": personal_information.get("p_surname", ""),
+                    "middle_name": personal_information.get("p_middle_name", ""),
+                    "appointment_status": data.get("employment_status", ""),
+                    "position": data.get("position", ""),
+                    "department": data.get("department", ""),
+                    "civil_status": get_civil_status(personal_information),
+                    "birth_date": personal_information.get("p_birth_date", ""),
+                    "first_day_service": data.get("first_day_service"),
+                    "sex": get_sex(personal_information),
+                    "phone": personal_information.get("p_mobile", ""),
+                    "email": personal_information.get("p_email", ""),
+                    "civil_service": data.get("civil_service", ""),
+                }
+
+                # Validate employee data
+                serializer = EmployeeSerializer(data=employee)
+                if not serializer.is_valid():
+                    return Response(
+                        serializer.errors, status=status.HTTP_400_BAD_REQUEST
+                    )
+
+                # Step 2. Create Folder for employee
+                try:
+                    folder_name = f"{personal_information.get('p_surname', '')}, {personal_information.get('p_first_name', '')}"
+                    folder_id = create_folder(folder_name)
+                    if not folder_id:
+                        return Response(
+                            {"detail": "Failed to create folder in Google Drive"},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                        )
+                except Exception as e:
+                    return Response(
+                        {"detail": f"Folder creation error: {str(e)}"},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    )
+
+                # Step 3. Create PDS File
+                try:
+                    pds_builder = (
+                        PDSBuilder(data)
+                        .update_pds_data()
+                        .destruct_pds_data()
+                        .update()
+                        .create_pds()
+                    )
+                    pds = pds_builder.build()
+
+                    file_name = f"PERSONAL DATA SHEET_{personal_information.get('p_surname', '')}, {personal_information.get('p_first_name', '')}"
+                    g_file = upload_to_drive(pds, file_name, folder_id)
+
+                    if not g_file or "id" not in g_file:
+                        return Response(
+                            {"detail": "Failed to upload PDS file to Google Drive"},
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                        )
+                except Exception as e:
+                    return Response(
+                        {"detail": f"PDS creation error: {str(e)}"},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    )
+
+                # Initialize files list with PDS file
+                files_list = [
+                    {
+                        "name": g_file["name"],
+                        "file_id": g_file["id"],
+                        "uploaded": True,
+                        "file_type": "pds",
+                    }
+                ]
+
+                # Step 4. Upload Profile if provided
+                profile_data = None
+                if profile:
+                    try:
+                        file_io = file64_to_file(profile)
+                        if not file_io:
+                            return Response(
+                                {"detail": "Invalid profile image data"},
+                                status=status.HTTP_400_BAD_REQUEST,
+                            )
+
+                        file_name = f"PROFILE_{personal_information.get('p_surname', '')}, {personal_information.get('p_first_name', '')}"
+                        file_info = upload_to_drive(file_io, file_name, folder_id)
+
+                        if file_info and "id" in file_info:
+                            profile_data = {
+                                "name": file_info["name"],
+                                "file_id": file_info["id"],
+                                "uploaded": True,
+                                "file_type": "profile",
+                            }
+                            files_list.append(profile_data)
+                    except Exception as e:
+                        # Continue even if profile upload fails
+                        print(f"Profile upload error: {str(e)}")
+
+                # Update employee data with folder ID
+                employee["folder_id"] = folder_id
+
+                # Save employee to database
+                serializer = EmployeeSerializer(data=employee)
+                if not serializer.is_valid():
+                    # Clean up Drive files if employee save fails
+                    try:
+                        for file_item in files_list:
+                            delete_file(file_item["file_id"])
+                    except Exception:
+                        pass
+
+                    return Response(
+                        serializer.errors, status=status.HTTP_400_BAD_REQUEST
+                    )
+
+                emp_instance = serializer.save()
+
+                # Add files to the employee
+                for file_data in files_list:
+                    file = File.objects.create(
+                        name=file_data["name"],
+                        file_id=file_data["file_id"],
+                        uploaded=file_data["uploaded"],
+                        file_type=file_data["file_type"],
+                    )
+                    emp_instance.files.add(file)
+
+                return Response(
+                    {
+                        "detail": "Employee created successfully",
+                        "pds_link": f"https://drive.google.com/file/d/{g_file.get('id')}/view?usp=sharing",
+                    },
+                    status=status.HTTP_201_CREATED,
+                )
+
+        except Exception as e:
             return Response(
-                {
-                    "pds_link": f"https://drive.google.com/file/d/{file.get('id')}/view?usp=sharing"
-                },
-                status=status.HTTP_201_CREATED,
+                {"detail": f"An error occurred: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
             )
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request):
+        employee_id = request.get("employee_id")
+        data = to_uppercase(request.data)
+        pds_builder = (
+            PDSBuilder(data).update_pds_data().destruct_pds_data().update().create_pds()
+        )
+        pds = pds_builder.build()
 
 
 class EmployeeView(APIView):
@@ -389,7 +548,7 @@ class EmployeeFile(APIView):
 
     def put(self, request):
         data = request.data
-        print(data)
+
         payload = data.get("payload")
         file_content = payload.get("fileContent")
         file_type = data.get("file_type")  # This should be the FileType enum value

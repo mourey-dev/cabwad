@@ -1,12 +1,36 @@
 from rest_framework import serializers
 from .models import Employee, File
 from datetime import datetime
+import re
 
 
 class FileSerializer(serializers.ModelSerializer):
     class Meta:
         model = File
         fields = ["name", "file_id", "uploaded", "file_type"]
+
+
+class CustomDateField(serializers.DateField):
+    """Custom DateField that handles multiple date formats"""
+
+    def to_internal_value(self, value):
+        if not value:
+            return None
+
+        if isinstance(value, str):
+            # Try to parse MM/DD/YYYY format
+            date_pattern = re.compile(r"(\d{1,2})/(\d{1,2})/(\d{4})")
+            match = date_pattern.match(value)
+
+            if match:
+                try:
+                    month, day, year = map(int, match.groups())
+                    return datetime(year, month, day).date()
+                except ValueError:
+                    pass
+
+        # Let the parent class handle standard formats
+        return super().to_internal_value(value)
 
 
 class EmployeeSerializer(serializers.ModelSerializer):
@@ -19,7 +43,9 @@ class EmployeeSerializer(serializers.ModelSerializer):
     employee_id = serializers.CharField(required=False, allow_blank=True)
     department = serializers.CharField(required=False, allow_blank=True)
     address = serializers.CharField(required=False, allow_blank=True)
-    birth_date = serializers.DateField(required=False, allow_null=True)
+    # Replace standard DateField with our CustomDateField
+    birth_date = CustomDateField(required=False, allow_null=True)
+    folder_id = serializers.CharField(required=False, allow_blank=True)
 
     class Meta:
         model = Employee
@@ -53,9 +79,16 @@ class EmployeeSerializer(serializers.ModelSerializer):
         return data
 
     def validate_birth_date(self, value):
-        """Validate birth_date is a valid date"""
-        if value and value > datetime.now().date():
+        """
+        Validate birth_date is not in the future.
+        Format conversion is now handled by CustomDateField.
+        """
+        if value is None:
+            return datetime.now().date()
+
+        if value > datetime.now().date():
             raise serializers.ValidationError("Birth date cannot be in the future")
+
         return value
 
     def validate_employee_id(self, value):

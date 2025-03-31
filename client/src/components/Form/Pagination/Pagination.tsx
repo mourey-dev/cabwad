@@ -3,13 +3,17 @@ import leftArrow from "../../../assets/images/left-arrow-pagination.png";
 import rightArrow from "../../../assets/images/right-arrow-pagination.png";
 
 const Pagination = ({ totalPages = 4 }) => {
-  const { page } = useParams();
+  const { page, employeeId, mode } = useParams();
   const navigate = useNavigate();
   const currentPage = Number(page) || 1;
 
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
-      navigate(`/admin/form/${page}`);
+      navigate(
+        employeeId
+          ? `/admin/form/${page}/${employeeId}/${mode}`
+          : `/admin/form/${page}`,
+      );
     }
   };
 
