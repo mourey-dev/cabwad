@@ -12,7 +12,7 @@ const ServiceRecordForm: React.FC = () => {
           <div className="border-b bg-white px-10 py-10 pb-4">
             <div className="flex items-center">
               <div className="absolute left-100">
-                <img src={logo} alt="Company Logo" className="h-30 w-30" />
+                <img src={logo} alt="Company Logo" className="h-30 w-32" />
               </div>
               {/* Header Text centered */}
               <div className="flex-grow text-center">
