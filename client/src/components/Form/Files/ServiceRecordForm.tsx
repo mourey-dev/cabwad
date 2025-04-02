@@ -203,6 +203,15 @@ const ServiceRecordForm: React.FC = () => {
               </div>
             </div>
           </div>
+          {/* Save Button */}
+          <div className="mx-auto mt-6 flex items-end justify-end text-center">
+            <button
+              type="button"
+              className="rounded-full bg-yellow-500 px-10 py-4 text-white hover:bg-yellow-400"
+            >
+              Save
+            </button>
+          </div>
         </div>
       </div>
       <Footer />
