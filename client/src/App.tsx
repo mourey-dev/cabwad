@@ -16,6 +16,10 @@ const Form = lazy(() => import("./admin/Form/Form"));
 const EmployeePersonalDetails = lazy(
   () => import("./admin/EmployeeDetails/EmployeePersonalDetails"),
 );
+const ServiceRecord = lazy(() => import("./admin/ServiceRecord/ServiceRecord"));
+const ServiceRecordForm = lazy(
+  () => import("./components/Form/Files/ServiceRecordForm"),
+);
 
 // Create an optimized query client
 const queryClient = new QueryClient({
@@ -57,6 +61,14 @@ function App() {
                 <Route
                   path="/admin/employee_details/:id"
                   element={<EmployeePersonalDetails />}
+                />
+                <Route
+                  path="/admin/service_record"
+                  element={<ServiceRecord />}
+                />
+                <Route
+                  path="/admin/service_record/service_record_form"
+                  element={<ServiceRecordForm />}
                 />
               </Route>
 
