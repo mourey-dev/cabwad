@@ -1,13 +1,24 @@
 import React from "react";
 import logo from "../../../assets/images/logo-white.png";
 import { Header, Footer } from "../../../components";
+import BackButton from "../../../components/BackButton"; // Import BackButton
 
 const ServiceRecordForm: React.FC = () => {
+  const handleBackClick = () => {
+    // Logic for navigating back, e.g., using history from react-router-dom
+    window.history.back();
+  };
+
   return (
     <div>
       <Header />
       <div className="min-h-screen bg-blue-700 p-8 text-black">
         <div className="min-h-screen bg-blue-700 p-8 text-black">
+          {/* Back Button */}
+          <div className="mb-4">
+            <BackButton onClick={handleBackClick} />
+          </div>
+
           {/* Header Section */}
           <div className="border-b bg-white px-10 py-10 pb-4">
             <div className="flex items-center">

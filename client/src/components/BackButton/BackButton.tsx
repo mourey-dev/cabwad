@@ -7,7 +7,7 @@ interface BackButtonProps {
 export const BackButton = ({ onClick }: BackButtonProps) => (
   <button
     onClick={onClick}
-    className="mb-4 flex items-center space-x-2 text-blue-600 hover:text-blue-800"
+    className="hover:text-grey mb-4 flex items-center space-x-2 text-black"
   >
     <img
       src={back}
