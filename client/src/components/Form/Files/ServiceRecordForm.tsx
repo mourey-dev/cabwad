@@ -59,17 +59,17 @@ const ServiceRecordForm: React.FC = () => {
               <div className="mt-1 flex gap-2">
                 <input
                   type="text"
-                  className="w-1/3 border border-gray-300 bg-gray-100 p-2"
+                  className="w-1/3 border border-gray-300 bg-gray-100 p-2 uppercase"
                   placeholder="Surname"
                 />
                 <input
                   type="text"
-                  className="w-1/3 border border-gray-300 bg-gray-100 p-2"
+                  className="w-1/3 border border-gray-300 bg-gray-100 p-2 uppercase"
                   placeholder="Given Name"
                 />
                 <input
                   type="text"
-                  className="w-1/3 border border-gray-300 bg-gray-100 p-2"
+                  className="w-1/3 border border-gray-300 bg-gray-100 p-2 uppercase"
                   placeholder="Middle Name"
                 />
                 <p className="mt-1 text-xs text-black">
@@ -88,7 +88,7 @@ const ServiceRecordForm: React.FC = () => {
                 />
                 <input
                   type="text"
-                  className="w-1/2 border border-gray-300 bg-gray-100 p-2"
+                  className="w-1/2 border border-gray-300 bg-gray-100 p-2 uppercase"
                   placeholder="Place of Birth"
                 />
                 <p className="mt-1 text-xs text-black">
@@ -153,31 +153,31 @@ const ServiceRecordForm: React.FC = () => {
                     <td className="border border-black px-10 py-3">
                       <input
                         type="text"
-                        className="w-full bg-transparent text-center outline-none"
+                        className="w-full bg-transparent text-center uppercase outline-none"
                       />
                     </td>
                     <td className="border border-black py-3">
                       <input
                         type="text"
-                        className="w-full bg-transparent text-center outline-none"
+                        className="w-full bg-transparent text-center uppercase outline-none"
                       />
                     </td>
                     <td className="border border-black py-3">
                       <input
-                        type="text"
+                        type="number"
                         className="w-full bg-transparent text-center outline-none"
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
                       <input
                         type="text"
-                        className="w-full bg-transparent text-center outline-none"
+                        className="w-full bg-transparent text-center uppercase outline-none"
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
                       <input
                         type="text"
-                        className="w-full bg-transparent text-center outline-none"
+                        className="w-full bg-transparent text-center uppercase outline-none"
                       />
                     </td>
                   </tr>
@@ -218,9 +218,15 @@ const ServiceRecordForm: React.FC = () => {
           <div className="mx-auto mt-6 flex items-end justify-end text-center">
             <button
               type="button"
-              className="rounded-full bg-yellow-500 px-10 py-4 text-white hover:bg-yellow-400"
+              className="mr-5 rounded-full bg-yellow-500 px-10 py-2 text-white hover:bg-yellow-400"
             >
               Save
+            </button>
+            <button
+              type="button"
+              className="rounded-full bg-green-500 px-10 py-2 text-white hover:bg-green-400"
+            >
+              Print
             </button>
           </div>
         </div>
