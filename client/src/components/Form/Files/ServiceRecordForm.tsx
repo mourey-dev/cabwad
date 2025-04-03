@@ -51,6 +51,11 @@ const ServiceRecordForm: React.FC = () => {
                   SERVICE RECORD
                 </h2>
               </div>
+              <div className="absolute right-35 mt-23">
+                <label htmlFor="" className="text-xs">
+                  (Employee ID)
+                </label>
+              </div>
             </div>
 
             {/* Name Input Fields */}
