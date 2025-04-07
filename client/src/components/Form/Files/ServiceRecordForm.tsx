@@ -5,7 +5,6 @@ import BackButton from "../../../components/BackButton"; // Import BackButton
 
 const ServiceRecordForm: React.FC = () => {
   const handleBackClick = () => {
-    // Logic for navigating back, e.g., using history from react-router-dom
     window.history.back();
   };
 
@@ -13,68 +12,78 @@ const ServiceRecordForm: React.FC = () => {
     <div>
       <Header />
       <div className="min-h-screen bg-blue-700 p-8 text-black">
-        <div className="min-h-screen bg-blue-700 p-8 text-black">
-          {/* Back Button */}
-          <div className="mb-4">
-            <BackButton onClick={handleBackClick} />
-          </div>
+        {/* Back Button */}
+        <div className="mb-4">
+          <BackButton onClick={handleBackClick} />
+        </div>
+        <div className="mx-auto w-full overflow-x-auto">
+          <form
+            className="mx-auto w-[1400px] border-4 bg-white"
+            autoComplete="off"
+          >
+            {/* Header Section */}
+            <div className="bg-white px-10 py-10">
+              <div className="flex items-center justify-between">
+                {/* Logo */}
+                <div className="">
+                  <img src={logo} alt="Company Logo" className="h-30 w-30" />
+                </div>
 
-          {/* Header Section */}
-          <div className="border-b bg-white px-10 py-10 pb-4">
-            <div className="flex items-center">
-              <div className="absolute left-100">
-                <img src={logo} alt="Company Logo" className="h-30 w-32" />
-              </div>
-              {/* Header Text centered */}
-              <div className="flex-grow text-center">
-                <h1 className="text-xl font-bold">CABUYAO WATER DISTRICT</h1>
-                <p
-                  className="mt-2 text-sm"
-                  style={{ fontFamily: "'Times New Roman'" }}
-                >
-                  B1 L40 Katapatan Homes, Banay-Banay, Cabuyao, Laguna
-                </p>
-                <p
-                  className="mt-2 text-sm"
-                  style={{ fontFamily: "'Times New Roman'" }}
-                >
-                  Tel: (049) 832-1620 / 304-0049
-                </p>
-                <p
-                  className="mt-2 text-sm"
-                  style={{ fontFamily: "'Times New Roman'" }}
-                >
-                  E-mail: cabuyaowaterdistrict@gmail.com
-                </p>
-                {/* Service Record Title */}
-                <h2 className="font-jost mt-4 bg-white text-center text-2xl font-extrabold tracking-wide">
-                  SERVICE RECORD
-                </h2>
-              </div>
-              <div className="absolute right-35 mt-23">
-                <label htmlFor="" className="text-xs">
-                  (Employee ID)
-                </label>
+                {/* Header Text */}
+                <div className="flex-grow text-center">
+                  <h1 className="text-xl font-bold">CABUYAO WATER DISTRICT</h1>
+                  <p
+                    className="mt-2 text-sm"
+                    style={{ fontFamily: "'Times New Roman'" }}
+                  >
+                    B1 L40 Katapatan Homes, Banay-Banay, Cabuyao, Laguna
+                  </p>
+                  <p
+                    className="mt-2 text-sm"
+                    style={{ fontFamily: "'Times New Roman'" }}
+                  >
+                    Tel: (049) 832-1620 / 304-0049
+                  </p>
+                  <p
+                    className="mt-2 text-sm"
+                    style={{ fontFamily: "'Times New Roman'" }}
+                  >
+                    E-mail: cabuyaowaterdistrict@gmail.com
+                  </p>
+                  <h2 className="font-jost mt-4 text-2xl font-extrabold tracking-wide">
+                    SERVICE RECORD
+                  </h2>
+                </div>
+
+                {/* Employee ID */}
+                <div className="">
+                  <label htmlFor="employee-id" className="text-xs">
+                    (Employee ID)
+                  </label>
+                </div>
               </div>
             </div>
 
             {/* Name Input Fields */}
-            <div className="mt-4 mb-4 border-b border-black pb-2">
+            <div className="mt-4 mr-5 mb-4 ml-5 border-b border-black pb-2">
               <label className="block text-left font-semibold">Name:</label>
               <div className="mt-1 flex gap-2">
                 <input
                   type="text"
-                  className="w-1/3 border border-gray-300 bg-gray-100 p-2 uppercase"
+                  className="border border-gray-300 bg-gray-100 p-2 uppercase"
+                  style={{ width: "400px" }}
                   placeholder="Surname"
                 />
                 <input
                   type="text"
-                  className="w-1/3 border border-gray-300 bg-gray-100 p-2 uppercase"
+                  className="border border-gray-300 bg-gray-100 p-2 uppercase"
+                  style={{ width: "400px" }}
                   placeholder="Given Name"
                 />
                 <input
                   type="text"
-                  className="w-1/3 border border-gray-300 bg-gray-100 p-2 uppercase"
+                  className="border border-gray-300 bg-gray-100 p-2 uppercase"
+                  style={{ width: "400px" }}
                   placeholder="Middle Name"
                 />
                 <p className="mt-1 text-xs text-black">
@@ -84,16 +93,18 @@ const ServiceRecordForm: React.FC = () => {
             </div>
 
             {/* Birth Input Fields */}
-            <div className="mb-4 border-b border-black pb-2">
+            <div className="mr-5 mb-4 ml-5 border-b border-black pb-2">
               <label className="block text-left font-semibold">Birth:</label>
               <div className="mt-1 flex gap-2">
                 <input
                   type="date"
-                  className="w-1/2 border border-gray-300 bg-gray-100 p-2"
+                  className="border border-gray-300 bg-gray-100 p-2"
+                  style={{ width: "550px" }}
                 />
                 <input
                   type="text"
-                  className="w-1/2 border border-gray-300 bg-gray-100 p-2 uppercase"
+                  className="border border-gray-300 bg-gray-100 p-2 uppercase"
+                  style={{ width: "550px" }}
                   placeholder="Place of Birth"
                 />
                 <p className="mt-1 text-xs text-black">
@@ -146,43 +157,50 @@ const ServiceRecordForm: React.FC = () => {
                     <td className="border border-black px-2 py-3">
                       <input
                         type="date"
-                        className="w-full bg-transparent text-center outline-none"
+                        className="bg-transparent text-center outline-none"
+                        style={{ width: "150px" }}
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
                       <input
                         type="date"
-                        className="w-full bg-transparent text-center outline-none"
+                        className="bg-transparent text-center outline-none"
+                        style={{ width: "150px" }}
                       />
                     </td>
                     <td className="border border-black px-10 py-3">
                       <input
                         type="text"
-                        className="w-full bg-transparent text-center uppercase outline-none"
+                        className="bg-transparent text-center uppercase outline-none"
+                        style={{ width: "200px" }}
                       />
                     </td>
                     <td className="border border-black py-3">
                       <input
                         type="text"
-                        className="w-full bg-transparent text-center uppercase outline-none"
+                        className="bg-transparent text-center uppercase outline-none"
+                        style={{ width: "200px" }}
                       />
                     </td>
                     <td className="border border-black py-3">
                       <input
                         type="number"
-                        className="w-full bg-transparent text-center outline-none"
+                        className="bg-transparent text-center outline-none"
+                        style={{ width: "100px" }}
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
                       <input
                         type="text"
-                        className="w-full bg-transparent text-center uppercase outline-none"
+                        className="bg-transparent text-center uppercase outline-none"
+                        style={{ width: "250px" }}
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
                       <input
                         type="text"
-                        className="w-full bg-transparent text-center uppercase outline-none"
+                        className="bg-transparent text-center uppercase outline-none"
+                        style={{ width: "150px" }}
                       />
                     </td>
                   </tr>
@@ -198,7 +216,7 @@ const ServiceRecordForm: React.FC = () => {
             </p>
 
             {/* Certification & Noted By Section */}
-            <div className="mt-8 flex justify-between px-10 text-center">
+            <div className="mt-8 mb-10 flex justify-between px-10 text-center">
               <div className="w-1/2">
                 <p className="mb-15 text-left text-sm font-semibold italic">
                   CERTIFIED CORRECT:
@@ -218,22 +236,7 @@ const ServiceRecordForm: React.FC = () => {
                 <p className="text-sm">General Manager</p>
               </div>
             </div>
-          </div>
-          {/* Save Button */}
-          <div className="mx-auto mt-6 flex items-end justify-end text-center">
-            <button
-              type="button"
-              className="mr-5 rounded-full bg-yellow-500 px-10 py-2 text-white hover:bg-yellow-400"
-            >
-              Save
-            </button>
-            <button
-              type="button"
-              className="rounded-full bg-green-500 px-10 py-2 text-white hover:bg-green-400"
-            >
-              Print
-            </button>
-          </div>
+          </form>
         </div>
       </div>
       <Footer />
