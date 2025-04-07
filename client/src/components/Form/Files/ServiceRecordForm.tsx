@@ -18,7 +18,7 @@ const ServiceRecordForm: React.FC = () => {
         </div>
         <div className="mx-auto w-full overflow-x-auto">
           <form
-            className="mx-auto w-[1400px] border-4 bg-white"
+            className="mx-auto w-[1001px] border-4 bg-white"
             autoComplete="off"
           >
             {/* Header Section */}
@@ -158,28 +158,28 @@ const ServiceRecordForm: React.FC = () => {
                       <input
                         type="date"
                         className="bg-transparent text-center outline-none"
-                        style={{ width: "150px" }}
+                        style={{ width: "130px" }}
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
                       <input
                         type="date"
                         className="bg-transparent text-center outline-none"
-                        style={{ width: "150px" }}
+                        style={{ width: "130px" }}
                       />
                     </td>
                     <td className="border border-black px-10 py-3">
                       <input
                         type="text"
                         className="bg-transparent text-center uppercase outline-none"
-                        style={{ width: "200px" }}
+                        style={{ width: "125px" }}
                       />
                     </td>
                     <td className="border border-black py-3">
                       <input
                         type="text"
                         className="bg-transparent text-center uppercase outline-none"
-                        style={{ width: "200px" }}
+                        style={{ width: "100px" }}
                       />
                     </td>
                     <td className="border border-black py-3">
@@ -193,14 +193,14 @@ const ServiceRecordForm: React.FC = () => {
                       <input
                         type="text"
                         className="bg-transparent text-center uppercase outline-none"
-                        style={{ width: "250px" }}
+                        style={{ width: "125px" }}
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
                       <input
                         type="text"
                         className="bg-transparent text-center uppercase outline-none"
-                        style={{ width: "150px" }}
+                        style={{ width: "125px" }}
                       />
                     </td>
                   </tr>
@@ -237,6 +237,16 @@ const ServiceRecordForm: React.FC = () => {
               </div>
             </div>
           </form>
+
+          {/* Print and Save Buttons */}
+          <div className="mt-6 flex justify-end gap-4 px-55">
+            <button className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600">
+              Print
+            </button>
+            <button className="rounded bg-green-500 px-6 py-2 text-white hover:bg-green-600">
+              Save
+            </button>
+          </div>
         </div>
       </div>
       <Footer />
