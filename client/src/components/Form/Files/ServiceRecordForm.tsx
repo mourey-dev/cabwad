@@ -158,21 +158,21 @@ const ServiceRecordForm: React.FC = () => {
                       <input
                         type="date"
                         className="bg-transparent text-center outline-none"
-                        style={{ width: "130px" }}
+                        style={{ width: "105px" }}
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
                       <input
                         type="date"
                         className="bg-transparent text-center outline-none"
-                        style={{ width: "130px" }}
+                        style={{ width: "105px" }}
                       />
                     </td>
                     <td className="border border-black px-10 py-3">
                       <input
                         type="text"
                         className="bg-transparent text-center uppercase outline-none"
-                        style={{ width: "125px" }}
+                        style={{ width: "140px" }}
                       />
                     </td>
                     <td className="border border-black py-3">
