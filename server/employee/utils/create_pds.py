@@ -51,16 +51,3 @@ def create_pds(data):
     output_pdf.seek(0)  # Move the cursor to the beginning of the BytesIO object
 
     return output_pdf
-
-    parent_folder = "1bXWiVgFCnq7J93SjKjkeeGBX1uOFN30G"
-    folder_name = f"{data.get('p_surname')}, {data.get('p_first_name')}"
-    file_name = f"{folder_name}_PDS"
-    folder_id = create_folder(folder_name, parent_folder)
-
-    file = upload_to_drive(
-        output_pdf,
-        file_name,
-        folder_id,
-    )
-
-    return {"folder_id": folder_id, "file": file}

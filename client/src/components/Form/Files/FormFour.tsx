@@ -5,6 +5,8 @@ import {
 } from "react-hook-form";
 import PDSForm from "../../../types/form";
 
+import { useParams } from "react-router-dom";
+
 // Components
 import LoadingModal from "../../Loading/Loading";
 import { PDSPostModal } from "../../Modal";
@@ -17,6 +19,8 @@ import { useRequest } from "../../../hooks";
 // Utils
 import { convertToBase64 } from "../../../utils/fileHandler";
 
+type RouteParams = Record<string, string | undefined>;
+
 type FormFourProps = {
   register: UseFormRegister<PDSForm>;
   setValue: UseFormSetValue<PDSForm>;
@@ -28,6 +32,7 @@ type PDSResponse = {
 };
 
 const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
+  const { employeeId, mode } = useParams<RouteParams>();
   const [showErrorAlert, setShowErrorAlert] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const submitRef = useRef<HTMLInputElement>(null);
@@ -35,7 +40,7 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
   const { loading, error, errorMessage, response, handleRequest } = useRequest<
     PDSResponse,
     PDSForm
-  >("/employee/create-pds/");
+  >("/employee/pds/");
 
   useEffect(() => {
     if (error) setShowErrorAlert(true);
@@ -66,14 +71,17 @@ const FormFour = ({ register, setValue, handleSubmit }: FormFourProps) => {
   };
 
   const submit = (data: PDSForm) => {
+    console.log("Form data submitted:", data);
     handleRequest(data, {
-      method: "POST",
+      method: mode === "update" ? "PUT" : "POST",
     });
   };
 
   return (
     <div>
-      {response && <PDSPostModal url={response.pds_link} />}
+      {response && (
+        <PDSPostModal url={response.pds_link} employeeId={employeeId} />
+      )}
       {error && showErrorAlert && <AlertError message={errorMessage} />}
       <LoadingModal loading={loading} />
       <form

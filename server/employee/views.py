@@ -13,6 +13,8 @@ from .helper.pds_builder import PDSBuilder
 from .models import Employee, File, FileType
 from .serializers import EmployeeSerializer
 
+from pds.mixins import CompletePdsMixin
+
 from .utils.file_handler import file64_to_file
 
 from services.drive_services import (
@@ -63,9 +65,15 @@ def to_uppercase(data):
         return data
 
 
-class PDSView(APIView):
+class PDSView(CompletePdsMixin, APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAdminOrSuperAdmin]
+
+    def get(self, request, employee_id):
+        """Get complete PDS data for an employee"""
+        employee = self.get_employee(employee_id)
+        data = self.get_complete_pds_data(employee)
+        return Response(data)
 
     def post(self, request):
         try:
@@ -152,6 +160,7 @@ class PDSView(APIView):
 
                         existing_employee.files.add(new_file)
 
+                    self.save_pds_data(employee_id, request.data)
                     return Response(
                         {
                             "detail": "PDS created successfully for existing employee",
@@ -296,6 +305,8 @@ class PDSView(APIView):
                     )
                     emp_instance.files.add(file)
 
+                self.save_pds_data(employee_id, request.data)
+
                 return Response(
                     {
                         "detail": "Employee created successfully",
@@ -311,12 +322,118 @@ class PDSView(APIView):
             )
 
     def put(self, request):
-        employee_id = request.get("employee_id")
-        data = to_uppercase(request.data)
-        pds_builder = (
-            PDSBuilder(data).update_pds_data().destruct_pds_data().update().create_pds()
-        )
-        pds = pds_builder.build()
+        """Update PDS for an existing employee"""
+        try:
+            employee_id = request.data.get("employee_id")
+            if not employee_id:
+                return Response(
+                    {"detail": "Employee ID is required"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Get the employee
+            try:
+                employee = self.get_employee(employee_id)
+            except Exception as e:
+                return Response(
+                    {"detail": f"Employee not found: {str(e)}"},
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+
+            # Convert data to uppercase for consistency
+            data = to_uppercase(request.data)
+            personal_information = data.get("personal_information", {})
+
+            # Validate personal information
+            if not personal_information:
+                return Response(
+                    {"detail": "Personal information is required"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Check if employee has a folder
+            folder_id = employee.folder_id
+            if not folder_id:
+                return Response(
+                    {"detail": "Employee has no associated folder"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Check if PDS file already exists
+            pds_file = None
+            for file in employee.files.all():
+                if file.file_type.lower() == "pds":
+                    pds_file = file
+                    break
+
+            # Require existing PDS file for update
+            if not pds_file:
+                return Response(
+                    {
+                        "detail": "No PDS file found to update. Use POST to create new PDS."
+                    },
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+
+            try:
+                self.save_pds_data(employee_id, request.data)
+
+                # Create PDS File
+                pds_builder = (
+                    PDSBuilder(data)
+                    .update_pds_data()
+                    .destruct_pds_data()
+                    .update()
+                    .create_pds()
+                )
+                pds = pds_builder.build()
+
+                # Create file name
+                file_name = f"PERSONAL DATA SHEET_{personal_information.get('p_surname', '')}, {personal_information.get('p_first_name', '')}"
+
+                g_file = update_file(pds_file.file_id, pds, file_name)
+
+                # Update file record with new ID from replacement file
+                pds_file.file_id = g_file["id"]
+                pds_file.name = g_file["name"]
+                pds_file.save()
+            except Exception as e:
+                if "File not found" in str(e) or "404" in str(e):
+                    # If file no longer exists in Drive, upload as replacement
+                    g_file = upload_to_drive(pds, file_name, folder_id)
+
+                    if not g_file or "id" not in g_file:
+                        return Response(
+                            {
+                                "detail": "Failed to upload replacement PDS file to Google Drive"
+                            },
+                            status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                        )
+
+                    # Update file record with new ID
+                    pds_file.file_id = g_file["id"]
+                    pds_file.name = g_file["name"]
+                    pds_file.save()
+                else:
+                    # Other error occurred
+                    return Response(
+                        {"detail": f"PDS file update error: {str(e)}"},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                    )
+
+            return Response(
+                {
+                    "detail": "PDS updated successfully",
+                    "pds_link": f"https://drive.google.com/file/d/{g_file.get('id')}/view?usp=sharing",
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        except Exception as e:
+            return Response(
+                {"detail": f"PDS update error: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
 
 class EmployeeView(APIView):
@@ -489,7 +606,7 @@ class EmployeeCount(APIView):
         )
 
 
-class EmployeeFile(APIView):
+class EmployeeFile(CompletePdsMixin, APIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAdminOrSuperAdmin]
     parser_classes = [JSONParser]
@@ -611,6 +728,10 @@ class EmployeeFile(APIView):
 
         # Get the file instance
         file_instance = get_object_or_404(File, file_id=file_id)
+
+        # Check if the file is a PDS file
+        if file_instance.file_type.lower() == "pds":
+            self.delete_pds_data(employee_instance)
 
         # Store file data before deletion for response
         file_data = {

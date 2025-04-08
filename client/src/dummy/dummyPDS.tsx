@@ -24,7 +24,7 @@ const dummyPDS: PDSForm = {
     p_sss_no: "5566778899",
     p_tin_no: "6677889900",
     p_agency_no: "A12345",
-    p_citizen_flipino: "p_citizen_flipino",
+    p_citizen_filipino: "p_citizen_flipino",
     p_citizen_dual: "",
     p_citizen_by_birth: "p_citizen_by_birth",
     p_citizen_by_naturalization: "",
@@ -255,10 +255,17 @@ const dummyPDS: PDSForm = {
     of_government_id: "Passport",
     of_id_no: "A123456789",
     of_issuance: "2023-05-10",
-    profile: new File([], "profile.jpg"),
+    of_profile: {
+      fileName: "",
+      fileType: "",
+      fileContent: "",
+    },
   },
   position: "PERMANENT",
   department: "OFFICE OF THE GENERAL",
+  employee_id: "",
+  employment_status: "",
+  first_day_service: "",
 };
 
 export default dummyPDS;

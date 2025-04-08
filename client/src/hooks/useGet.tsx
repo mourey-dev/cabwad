@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../instance";
 
-const useGet = <T,>(path: string) => {
+const useGet = <T,>(path: string | null) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [data, setData] = useState<T | null>(null);
 
   const handleGet = async () => {
+    if (!path) {
+      // Skip API call if path is empty or null
+      return;
+    }
+
     setLoading(true);
     setError(false);
     setErrorMessage("");
@@ -18,7 +23,7 @@ const useGet = <T,>(path: string) => {
     } catch (error: any) {
       setError(true);
       console.log(error);
-      setErrorMessage(error.response.data.detail || "An error occurred");
+      setErrorMessage(error.response?.data?.detail || "An error occurred");
     } finally {
       setLoading(false);
     }

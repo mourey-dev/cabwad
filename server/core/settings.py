@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "employee",
     "account",
+    "pds",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
 ]
@@ -93,8 +94,11 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "data", "db.cabwad"),
+        "ENGINE": "django.db.backends.mysql",
+        "OPTIONS": {
+            "read_default_file": str(BASE_DIR / "configurations.cnf"),
+            "init_command": "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 

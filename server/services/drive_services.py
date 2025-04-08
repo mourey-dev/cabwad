@@ -1,6 +1,7 @@
 from googleapiclient.discovery import build
-from googleapiclient.http import MediaIoBaseUpload
+from googleapiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
 from django.conf import settings
+from io import BytesIO
 
 
 def build_drive_service():
@@ -115,3 +116,43 @@ def delete_file(file_id):
     """Delete a file from Google Drive."""
     service = build_drive_service()
     service.files().delete(fileId=file_id).execute()
+
+
+def download_file(file_id):
+    """
+    Download a file from Google Drive by its file ID.
+
+    Args:
+        file_id (str): The Google Drive file ID
+
+    Returns:
+        bytes: The file content as bytes, or None if download fails
+    """
+    try:
+        service = build_drive_service()
+
+        # Get file metadata to confirm it exists
+        file = service.files().get(fileId=file_id).execute()
+        if not file:
+            print(f"File with ID {file_id} not found")
+            return None
+
+        # Get download URL
+        request = service.files().get_media(fileId=file_id)
+
+        # Create a BytesIO stream
+        file_content = BytesIO()
+
+        # Use the Google API client to download the file
+        downloader = MediaIoBaseDownload(file_content, request)
+
+        done = False
+        while not done:
+            status, done = downloader.next_chunk()
+
+        # Return the file content as bytes
+        return file_content.getvalue()
+
+    except Exception as e:
+        print(f"Error downloading file from Google Drive: {str(e)}")
+        return None
