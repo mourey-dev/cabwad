@@ -48,7 +48,7 @@ const ServiceRecordForm: React.FC = () => {
                     className="mt-2 text-sm"
                     style={{ fontFamily: "'Times New Roman'" }}
                   >
-                    E-mail: cabuyaowaterdistrict@gmail.com
+                    E-mail add: cabuyaowaterdistrict@gmail.com
                   </p>
                   <h2 className="font-jost mt-4 text-2xl font-extrabold tracking-wide">
                     SERVICE RECORD
@@ -70,19 +70,19 @@ const ServiceRecordForm: React.FC = () => {
               <div className="mt-1 flex gap-2">
                 <input
                   type="text"
-                  className="border border-gray-300 bg-gray-100 p-2 uppercase"
+                  className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "400px" }}
                   placeholder="Surname"
                 />
                 <input
                   type="text"
-                  className="border border-gray-300 bg-gray-100 p-2 uppercase"
+                  className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "400px" }}
                   placeholder="Given Name"
                 />
                 <input
                   type="text"
-                  className="border border-gray-300 bg-gray-100 p-2 uppercase"
+                  className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "400px" }}
                   placeholder="Middle Name"
                 />
@@ -98,12 +98,12 @@ const ServiceRecordForm: React.FC = () => {
               <div className="mt-1 flex gap-2">
                 <input
                   type="date"
-                  className="border border-gray-300 bg-gray-100 p-2"
+                  className="border border-gray-300 bg-gray-100 p-2 font-semibold"
                   style={{ width: "630px" }}
                 />
                 <input
                   type="text"
-                  className="border border-gray-300 bg-gray-100 p-2 uppercase"
+                  className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "630px" }}
                   placeholder="Place of Birth"
                 />
@@ -148,7 +148,7 @@ const ServiceRecordForm: React.FC = () => {
                   <th className="border border-black px-2 py-1">
                     Station/Place of Assignment
                   </th>
-                  <th className="border border-black px-2 py-1">Pay</th>
+                  <th className="border border-black px-2 py-1"></th>
                 </tr>
               </thead>
               <tbody>
