@@ -18,7 +18,7 @@ const ServiceRecordForm: React.FC = () => {
         </div>
         <div className="mx-auto w-full overflow-x-auto">
           <form
-            className="mx-auto w-[1001px] border-4 bg-white"
+            className="mx-auto w-[1100px] border-4 bg-white"
             autoComplete="off"
           >
             {/* Header Section */}
@@ -99,26 +99,26 @@ const ServiceRecordForm: React.FC = () => {
                 <input
                   type="date"
                   className="border border-gray-300 bg-gray-100 p-2"
-                  style={{ width: "550px" }}
+                  style={{ width: "630px" }}
                 />
                 <input
                   type="text"
                   className="border border-gray-300 bg-gray-100 p-2 uppercase"
-                  style={{ width: "550px" }}
+                  style={{ width: "630px" }}
                   placeholder="Place of Birth"
                 />
                 <p className="mt-1 text-xs text-black">
-                  (Date should be verified from birth certificate or other
-                  reliable documents)
+                  (Date herein should be checked from birth or baptismal
+                  certificate or some other reliable documents)
                 </p>
               </div>
             </div>
             <p className="mt-4 text-center text-xs text-black">
-              This is to certify that the employee above rendered services in
-              this office as shown in the service record below, each line
-              <br />
-              supported by appointment and other official documents issued by
-              this Office.
+              This is to certify that the employee herein above actually
+              rendered services in this office as shown by the service record
+              below each line which is supported by <br />
+              appointment and other papers actually issued by this Office and
+              approved by the authorities concerned.
             </p>
 
             {/* Table Section */}
@@ -153,7 +153,7 @@ const ServiceRecordForm: React.FC = () => {
               </thead>
               <tbody>
                 {[...Array(21)].map((_, index) => (
-                  <tr key={index} className="text-center">
+                  <tr key={index} className="text-center text-xs">
                     <td className="border border-black px-2 py-3">
                       <input
                         type="date"
@@ -172,7 +172,7 @@ const ServiceRecordForm: React.FC = () => {
                       <input
                         type="text"
                         className="bg-transparent text-center uppercase outline-none"
-                        style={{ width: "140px" }}
+                        style={{ width: "190px" }}
                       />
                     </td>
                     <td className="border border-black py-3">
@@ -193,7 +193,7 @@ const ServiceRecordForm: React.FC = () => {
                       <input
                         type="text"
                         className="bg-transparent text-center uppercase outline-none"
-                        style={{ width: "125px" }}
+                        style={{ width: "200px" }}
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
@@ -239,7 +239,7 @@ const ServiceRecordForm: React.FC = () => {
           </form>
 
           {/* Print and Save Buttons */}
-          <div className="mt-6 flex justify-end gap-4 px-55">
+          <div className="mx-auto mt-6 flex w-[1400px] justify-end gap-4 px-38">
             <button className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600">
               Print
             </button>
