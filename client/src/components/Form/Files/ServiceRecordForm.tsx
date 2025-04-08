@@ -18,7 +18,7 @@ const ServiceRecordForm: React.FC = () => {
         </div>
         <div className="mx-auto w-full overflow-x-auto">
           <form
-            className="mx-auto w-[1001px] border-4 bg-white"
+            className="mx-auto w-[1100px] border-4 bg-white"
             autoComplete="off"
           >
             {/* Header Section */}
@@ -153,7 +153,7 @@ const ServiceRecordForm: React.FC = () => {
               </thead>
               <tbody>
                 {[...Array(21)].map((_, index) => (
-                  <tr key={index} className="text-center">
+                  <tr key={index} className="text-center text-xs">
                     <td className="border border-black px-2 py-3">
                       <input
                         type="date"
@@ -172,7 +172,7 @@ const ServiceRecordForm: React.FC = () => {
                       <input
                         type="text"
                         className="bg-transparent text-center uppercase outline-none"
-                        style={{ width: "140px" }}
+                        style={{ width: "190px" }}
                       />
                     </td>
                     <td className="border border-black py-3">
@@ -193,7 +193,7 @@ const ServiceRecordForm: React.FC = () => {
                       <input
                         type="text"
                         className="bg-transparent text-center uppercase outline-none"
-                        style={{ width: "125px" }}
+                        style={{ width: "200px" }}
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
