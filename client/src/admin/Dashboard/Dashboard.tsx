@@ -19,6 +19,10 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const { status } = useStatus();
   const { loading, data } = useGet<EmployeeCount>("/employee/count/");
+  const totalEmployees =
+    (data?.total_permanent || 0) +
+    (data?.total_casual || 0) +
+    (data?.total_job_order || 0);
 
   return (
     <div className="flex min-h-screen flex-col text-white">
@@ -29,17 +33,6 @@ const Dashboard: React.FC = () => {
 
       {/* Main Content */}
       <main className="flex flex-1 flex-col items-center justify-center bg-[url(/src/assets/images/logo-bg.png)] bg-cover bg-center bg-no-repeat p-8 text-center">
-        <div className="absolute top-20 right-8">
-          <button
-            className="flex cursor-pointer items-center rounded-full bg-yellow-500 px-4 py-2 text-lg font-bold text-white hover:bg-yellow-400"
-            onClick={() => navigate("/admin/service_record")}
-          >
-            Service Record
-            <span className="ml-2 text-xl">
-              <img src={arrow} alt="right-arrow" className="w-5" />
-            </span>
-          </button>
-        </div>
         <h2 className="font-krona-one text-3xl">EMPLOYEE MANAGEMENT SYSTEM</h2>
         <p className="font-inter mt-15 grid grid-cols-1 gap-69 text-sm md:grid-cols-3">
           SUMMARY
@@ -57,20 +50,10 @@ const Dashboard: React.FC = () => {
             <h3 className="font-jost font-semibold">Job Orders:</h3>
             <p className="font-jost text-lg">{data?.total_job_order}</p>
           </div>
-          <div className="rounded-lg bg-white p-6 text-black shadow-lg">
-            <h3 className="font-jost font-semibold">Co-Terminus:</h3>
-            <p className="font-jost text-lg">{data?.total_co_terminus}</p>
-          </div>
-          <div className="rounded-lg bg-white p-6 text-black shadow-lg">
-            <h3 className="font-jost font-semibold">Contract of Service:</h3>
-            <p className="font-jost text-lg">
-              {data?.total_contract_of_service}
-            </p>
-          </div>
-          <div className="rounded-lg bg-white p-6 text-black shadow-lg">
-            <h3 className="font-jost font-semibold">Temporary:</h3>
-            <p className="font-jost text-lg">{data?.total_temporary}</p>
-          </div>
+        </div>
+        <div className="mt-10 rounded-lg bg-white p-6 text-black shadow-lg">
+          <h3 className="font-jost font-semibold">Total Employees:</h3>
+          <p className="font-jost text-lg">{totalEmployees}</p>
         </div>
         <div className="mt-2">
           <button

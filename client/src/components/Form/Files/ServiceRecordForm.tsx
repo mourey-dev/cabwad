@@ -13,9 +13,23 @@ const ServiceRecordForm: React.FC = () => {
       <Header />
       <div className="min-h-screen bg-blue-700 p-8 text-black">
         {/* Back Button */}
-        <div className="mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <BackButton onClick={handleBackClick} />
+
+          {/* Add the toggle switch here */}
+          <div className="mr-4 inline-block">
+            <label className="inline-flex cursor-pointer items-center">
+              <input type="checkbox" className="peer sr-only" />
+              <div
+                className={`peer relative h-6 w-11 rounded-full bg-gray-500 peer-checked:bg-yellow-400 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white`}
+              ></div>
+              <span className="text-yellow ms-3 text-sm font-medium">
+                UPDATE
+              </span>
+            </label>
+          </div>
         </div>
+
         <div className="mx-auto w-full overflow-x-auto">
           <form
             className="mx-auto w-[1100px] border-4 bg-white"
@@ -48,7 +62,7 @@ const ServiceRecordForm: React.FC = () => {
                     className="mt-2 text-sm"
                     style={{ fontFamily: "'Times New Roman'" }}
                   >
-                    E-mail: cabuyaowaterdistrict@gmail.com
+                    E-mail add: cabuyaowaterdistrict@gmail.com
                   </p>
                   <h2 className="font-jost mt-4 text-2xl font-extrabold tracking-wide">
                     SERVICE RECORD
@@ -70,19 +84,19 @@ const ServiceRecordForm: React.FC = () => {
               <div className="mt-1 flex gap-2">
                 <input
                   type="text"
-                  className="border border-gray-300 bg-gray-100 p-2 uppercase"
+                  className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "400px" }}
                   placeholder="Surname"
                 />
                 <input
                   type="text"
-                  className="border border-gray-300 bg-gray-100 p-2 uppercase"
+                  className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "400px" }}
                   placeholder="Given Name"
                 />
                 <input
                   type="text"
-                  className="border border-gray-300 bg-gray-100 p-2 uppercase"
+                  className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "400px" }}
                   placeholder="Middle Name"
                 />
@@ -97,13 +111,13 @@ const ServiceRecordForm: React.FC = () => {
               <label className="block text-left font-semibold">Birth:</label>
               <div className="mt-1 flex gap-2">
                 <input
-                  type="text"
-                  className="border border-gray-300 bg-gray-100 p-2"
+                  type="date"
+                  className="border border-gray-300 bg-gray-100 p-2 font-semibold"
                   style={{ width: "630px" }}
                 />
                 <input
                   type="text"
-                  className="border border-gray-300 bg-gray-100 p-2 uppercase"
+                  className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "630px" }}
                   placeholder="Place of Birth"
                 />
@@ -148,7 +162,7 @@ const ServiceRecordForm: React.FC = () => {
                   <th className="border border-black px-2 py-1">
                     Station/Place of Assignment
                   </th>
-                  <th className="border border-black px-2 py-1">Pay</th>
+                  <th className="border border-black px-2 py-1"></th>
                 </tr>
               </thead>
               <tbody>
