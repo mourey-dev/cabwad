@@ -19,6 +19,10 @@ const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const { status } = useStatus();
   const { loading, data } = useGet<EmployeeCount>("/employee/count/");
+  const totalEmployees =
+    (data?.total_permanent || 0) +
+    (data?.total_casual || 0) +
+    (data?.total_job_order || 0);
 
   return (
     <div className="flex min-h-screen flex-col text-white">
@@ -46,20 +50,10 @@ const Dashboard: React.FC = () => {
             <h3 className="font-jost font-semibold">Job Orders:</h3>
             <p className="font-jost text-lg">{data?.total_job_order}</p>
           </div>
-          <div className="rounded-lg bg-white p-6 text-black shadow-lg">
-            <h3 className="font-jost font-semibold">Co-Terminus:</h3>
-            <p className="font-jost text-lg">{data?.total_co_terminus}</p>
-          </div>
-          <div className="rounded-lg bg-white p-6 text-black shadow-lg">
-            <h3 className="font-jost font-semibold">Contract of Service:</h3>
-            <p className="font-jost text-lg">
-              {data?.total_contract_of_service}
-            </p>
-          </div>
-          <div className="rounded-lg bg-white p-6 text-black shadow-lg">
-            <h3 className="font-jost font-semibold">Temporary:</h3>
-            <p className="font-jost text-lg">{data?.total_temporary}</p>
-          </div>
+        </div>
+        <div className="mt-10 rounded-lg bg-white p-6 text-black shadow-lg">
+          <h3 className="font-jost font-semibold">Total Employees:</h3>
+          <p className="font-jost text-lg">{totalEmployees}</p>
         </div>
         <div className="mt-2">
           <button
