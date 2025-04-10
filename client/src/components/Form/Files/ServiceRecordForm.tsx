@@ -97,7 +97,7 @@ const ServiceRecordForm: React.FC = () => {
               <label className="block text-left font-semibold">Birth:</label>
               <div className="mt-1 flex gap-2">
                 <input
-                  type="date"
+                  type="text"
                   className="border border-gray-300 bg-gray-100 p-2"
                   style={{ width: "630px" }}
                 />
@@ -156,14 +156,14 @@ const ServiceRecordForm: React.FC = () => {
                   <tr key={index} className="text-center text-xs">
                     <td className="border border-black px-2 py-3">
                       <input
-                        type="date"
+                        type="text"
                         className="bg-transparent text-center outline-none"
                         style={{ width: "105px" }}
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
                       <input
-                        type="date"
+                        type="text"
                         className="bg-transparent text-center outline-none"
                         style={{ width: "105px" }}
                       />
