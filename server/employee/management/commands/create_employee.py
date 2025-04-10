@@ -8,30 +8,26 @@ import json
 class Command(BaseCommand):
     help = "Creates a new employee from JSON data"
 
-    def get_civil_status(self, data):
-        if data.get("p_civil_single"):
-            return "SINGLE"
-        elif data.get("p_civil_married"):
-            return "MARRIED"
-        elif data.get("p_civil_widowed"):
-            return "WIDOWED"
-        elif data.get("p_civil_separated"):
-            return "SEPARATED"
-        elif data.get("p_civil_others"):
-            return "OTHERS"
-        return "SINGLE"  # default value
-
-    def get_sex(self, data):
-        if data.get("p_sex_male"):
-            return "MALE"
-        elif data.get("p_sex_female"):
-            return "FEMALE"
-        return "MALE"  # default value
-
     def convert_date(self, date_string):
         if not date_string:
             return None
-        return datetime.strptime(date_string, "%Y-%m-%d").date()
+        try:
+            # Try the standard YYYY-MM-DD format first
+            return datetime.strptime(date_string, "%Y-%m-%d").date()
+        except ValueError:
+            try:
+                # Try the "MONTH DAY, YEAR" format
+                return datetime.strptime(date_string, "%B %d, %Y").date()
+            except ValueError:
+                try:
+                    # Try the "YY/MM/DD" format where first number is year
+                    date_obj = datetime.strptime(date_string, "%y/%m/%d").date()
+                    return date_obj
+                except ValueError:
+                    # If all formats fail, raise an error with helpful message
+                    raise ValueError(
+                        f"Date '{date_string}' not in expected format. Use either 'YYYY-MM-DD', 'MONTH DAY, YEAR', or 'YY/MM/DD'"
+                    )
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -53,21 +49,22 @@ class Command(BaseCommand):
                     # Prepare data for serializer
                     employee_data = {
                         "employee_id": data.get("employee_id"),
-                        "first_name": data.get("p_first_name", "").upper(),
-                        "surname": data.get("p_surname", "").upper(),
-                        "middle_name": data.get("p_middle_name", "").upper(),
+                        "first_name": data.get("first_name", "").upper(),
+                        "surname": data.get("surname", "").upper(),
+                        "middle_name": data.get("middle_name", "").upper(),
                         "appointment_status": data.get(
-                            "appointment_status", "PERMANENT"
+                            "employment_status", "PERMANENT"
                         ),
                         "position": data.get("position", "").upper(),
                         "department": data.get("department", "").upper(),
-                        "civil_status": self.get_civil_status(data),
-                        "birth_date": self.convert_date(data.get("p_birth_date")),
+                        "civil_status": data.get("civil_status", ""),
+                        "address": data.get("address", ""),
+                        "birth_date": self.convert_date(data.get("birth_date")),
                         "first_day_service": self.convert_date(
                             data.get("first_day_service")
                         ),
-                        "civil_service": data.get("civil_service_eligibility", ""),
-                        "sex": self.get_sex(data),
+                        "civil_service": data.get("civil_service", ""),
+                        "sex": data.get("sex", ""),
                         "phone": data.get("phone", ""),
                         "email": data.get("email", ""),
                         "files": [],  # Add empty files list since it's required by serializer
@@ -78,7 +75,7 @@ class Command(BaseCommand):
                         f"{employee_data['first_name']} {employee_data['surname']}"
                     )
                     folder_id = create_folder(
-                        folder_name.upper(), "1bXWiVgFCnq7J93SjKjkeeGBX1uOFN30G"
+                        folder_name.upper(), "1ilogk-mrRBIOFL7RNJsEC8v-cc4wNWRa"
                     )
                     employee_data["folder_id"] = folder_id
 

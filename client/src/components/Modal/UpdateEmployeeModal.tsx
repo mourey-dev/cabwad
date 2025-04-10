@@ -470,12 +470,11 @@ export default function EmployeeUpdateModal({
                   htmlFor="email"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  Email *
+                  Email
                 </label>
                 <input
                   id="email"
                   {...register("email", {
-                    required: "Email is required",
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                       message: "Invalid email address",

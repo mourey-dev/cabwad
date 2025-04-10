@@ -66,7 +66,7 @@ class Employee(models.Model):
     department = models.CharField(max_length=100)
     folder_id = models.CharField(max_length=255)
     files = models.ManyToManyField(File)
-    phone = models.CharField(max_length=11)
+    phone = models.CharField(max_length=50)
     email = models.EmailField(default=None)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now=True)

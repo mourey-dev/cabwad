@@ -9,10 +9,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         try:
             # Default superuser details
-            DEFAULT_EMAIL = "admin@cabwad.com"
-            DEFAULT_FIRST_NAME = "Super"
-            DEFAULT_LAST_NAME = "Admin"
-            DEFAULT_BIRTHDATE = datetime(2025, 1, 1)  # 1990-01-01
+            DEFAULT_EMAIL = "cabuyaowaterdistricta@gmail.com"
+            DEFAULT_FIRST_NAME = "Mary Rose"
+            DEFAULT_LAST_NAME = "Aguillo"
+            DEFAULT_BIRTHDATE = datetime(1969, 12, 24)
 
             # Check if superuser already exists
             if User.objects.filter(email=DEFAULT_EMAIL).exists():
@@ -36,7 +36,6 @@ class Command(BaseCommand):
                 self.style.SUCCESS(
                     f"\nDefault superuser created successfully:"
                     f"\nUsername: {superuser.username}"
-                    f"\nPassword: 1990-01-01"
                     f"\nEmail: {superuser.email}"
                     f"\nIs Superuser: {superuser.is_superuser}"
                     f"\nIs Admin: {superuser.is_admin}"
