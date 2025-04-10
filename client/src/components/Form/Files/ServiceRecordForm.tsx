@@ -21,9 +21,9 @@ const ServiceRecordForm: React.FC = () => {
             <label className="inline-flex cursor-pointer items-center">
               <input type="checkbox" className="peer sr-only" />
               <div
-                className={`peer relative h-6 w-11 rounded-full bg-gray-200 peer-checked:bg-yellow-300 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white`}
+                className={`peer relative h-6 w-11 rounded-full bg-gray-500 peer-checked:bg-yellow-400 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white`}
               ></div>
-              <span className="ms-3 text-sm font-medium text-black">
+              <span className="text-yellow ms-3 text-sm font-medium">
                 UPDATE
               </span>
             </label>
