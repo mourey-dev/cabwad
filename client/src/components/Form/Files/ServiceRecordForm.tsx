@@ -13,9 +13,23 @@ const ServiceRecordForm: React.FC = () => {
       <Header />
       <div className="min-h-screen bg-blue-700 p-8 text-black">
         {/* Back Button */}
-        <div className="mb-4">
+        <div className="mb-4 flex items-center justify-between">
           <BackButton onClick={handleBackClick} />
+
+          {/* Add the toggle switch here */}
+          <div className="mr-4 inline-block">
+            <label className="inline-flex cursor-pointer items-center">
+              <input type="checkbox" className="peer sr-only" />
+              <div
+                className={`peer relative h-6 w-11 rounded-full bg-gray-200 peer-checked:bg-yellow-300 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white`}
+              ></div>
+              <span className="ms-3 text-sm font-medium text-black">
+                UPDATE
+              </span>
+            </label>
+          </div>
         </div>
+
         <div className="mx-auto w-full overflow-x-auto">
           <form
             className="mx-auto w-[1100px] border-4 bg-white"

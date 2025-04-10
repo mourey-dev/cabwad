@@ -29,17 +29,6 @@ const Dashboard: React.FC = () => {
 
       {/* Main Content */}
       <main className="flex flex-1 flex-col items-center justify-center bg-[url(/src/assets/images/logo-bg.png)] bg-cover bg-center bg-no-repeat p-8 text-center">
-        <div className="absolute top-20 right-8">
-          <button
-            className="flex cursor-pointer items-center rounded-full bg-yellow-500 px-4 py-2 text-lg font-bold text-white hover:bg-yellow-400"
-            onClick={() => navigate("/admin/service_record")}
-          >
-            Service Record
-            <span className="ml-2 text-xl">
-              <img src={arrow} alt="right-arrow" className="w-5" />
-            </span>
-          </button>
-        </div>
         <h2 className="font-krona-one text-3xl">EMPLOYEE MANAGEMENT SYSTEM</h2>
         <p className="font-inter mt-15 grid grid-cols-1 gap-69 text-sm md:grid-cols-3">
           SUMMARY
