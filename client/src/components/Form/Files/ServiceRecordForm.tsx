@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../../../assets/images/logo-white.png";
 import { Header, Footer } from "../../../components";
-import BackButton from "../../../components/BackButton"; // Import BackButton
+import BackButton from "../../../components/BackButton";
 
 const ServiceRecordForm: React.FC = () => {
+  const [isEditable, setIsEditable] = useState(false);
+
   const handleBackClick = () => {
     window.history.back();
+  };
+
+  const handleToggleChange = () => {
+    setIsEditable((prev) => !prev);
   };
 
   return (
@@ -16,10 +22,14 @@ const ServiceRecordForm: React.FC = () => {
         <div className="mb-4 flex items-center justify-between">
           <BackButton onClick={handleBackClick} />
 
-          {/* Add the toggle switch here */}
+          {/* Toggle Switch */}
           <div className="mr-4 inline-block">
             <label className="inline-flex cursor-pointer items-center">
-              <input type="checkbox" className="peer sr-only" />
+              <input
+                type="checkbox"
+                className="peer sr-only"
+                onChange={handleToggleChange}
+              />
               <div
                 className={`peer relative h-6 w-11 rounded-full bg-gray-500 peer-checked:bg-yellow-400 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white`}
               ></div>
@@ -87,18 +97,21 @@ const ServiceRecordForm: React.FC = () => {
                   className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "400px" }}
                   placeholder="Surname"
+                  disabled={!isEditable}
                 />
                 <input
                   type="text"
                   className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "400px" }}
                   placeholder="Given Name"
+                  disabled={!isEditable}
                 />
                 <input
                   type="text"
                   className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "400px" }}
                   placeholder="Middle Name"
+                  disabled={!isEditable}
                 />
                 <p className="mt-1 text-xs text-black">
                   (If married woman, provide full maiden name)
@@ -114,12 +127,14 @@ const ServiceRecordForm: React.FC = () => {
                   type="date"
                   className="border border-gray-300 bg-gray-100 p-2 font-semibold"
                   style={{ width: "630px" }}
+                  disabled={!isEditable}
                 />
                 <input
                   type="text"
                   className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "630px" }}
                   placeholder="Place of Birth"
+                  disabled={!isEditable}
                 />
                 <p className="mt-1 text-xs text-black">
                   (Date herein should be checked from birth or baptismal
@@ -127,13 +142,6 @@ const ServiceRecordForm: React.FC = () => {
                 </p>
               </div>
             </div>
-            <p className="mt-4 text-center text-xs text-black">
-              This is to certify that the employee herein above actually
-              rendered services in this office as shown by the service record
-              below each line which is supported by <br />
-              appointment and other papers actually issued by this Office and
-              approved by the authorities concerned.
-            </p>
 
             {/* Table Section */}
             <table className="mt-4 w-full border-collapse border border-black text-sm">
@@ -173,6 +181,7 @@ const ServiceRecordForm: React.FC = () => {
                         type="date"
                         className="bg-transparent text-center outline-none"
                         style={{ width: "105px" }}
+                        disabled={!isEditable}
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
@@ -180,6 +189,7 @@ const ServiceRecordForm: React.FC = () => {
                         type="date"
                         className="bg-transparent text-center outline-none"
                         style={{ width: "105px" }}
+                        disabled={!isEditable}
                       />
                     </td>
                     <td className="border border-black px-10 py-3">
@@ -187,6 +197,7 @@ const ServiceRecordForm: React.FC = () => {
                         type="text"
                         className="bg-transparent text-center uppercase outline-none"
                         style={{ width: "190px" }}
+                        disabled={!isEditable}
                       />
                     </td>
                     <td className="border border-black py-3">
@@ -194,6 +205,7 @@ const ServiceRecordForm: React.FC = () => {
                         type="text"
                         className="bg-transparent text-center uppercase outline-none"
                         style={{ width: "100px" }}
+                        disabled={!isEditable}
                       />
                     </td>
                     <td className="border border-black py-3">
@@ -201,6 +213,7 @@ const ServiceRecordForm: React.FC = () => {
                         type="number"
                         className="bg-transparent text-center outline-none"
                         style={{ width: "100px" }}
+                        disabled={!isEditable}
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
@@ -208,6 +221,7 @@ const ServiceRecordForm: React.FC = () => {
                         type="text"
                         className="bg-transparent text-center uppercase outline-none"
                         style={{ width: "200px" }}
+                        disabled={!isEditable}
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
@@ -215,6 +229,7 @@ const ServiceRecordForm: React.FC = () => {
                         type="text"
                         className="bg-transparent text-center uppercase outline-none"
                         style={{ width: "125px" }}
+                        disabled={!isEditable}
                       />
                     </td>
                   </tr>
@@ -254,10 +269,16 @@ const ServiceRecordForm: React.FC = () => {
 
           {/* Print and Save Buttons */}
           <div className="mx-auto mt-6 flex w-[1400px] justify-end gap-4 px-38">
-            <button className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600">
+            <button
+              className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600"
+              disabled={!isEditable}
+            >
               Print
             </button>
-            <button className="rounded bg-green-500 px-6 py-2 text-white hover:bg-green-600">
+            <button
+              className="rounded bg-green-500 px-6 py-2 text-white hover:bg-green-600"
+              disabled={!isEditable}
+            >
               Save
             </button>
           </div>
