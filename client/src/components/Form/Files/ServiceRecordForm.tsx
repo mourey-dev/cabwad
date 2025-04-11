@@ -250,9 +250,18 @@ const ServiceRecordForm: React.FC = () => {
                 <p className="mb-15 text-left text-sm font-semibold italic">
                   CERTIFIED CORRECT:
                 </p>
+
+                <input
+                  type="text"
+                  className="border border-gray-300 bg-gray-100 p-2 text-center font-bold uppercase"
+                  style={{ width: "250px" }}
+                  defaultValue="MARY ROSE A. AGUILLO"
+                  disabled={!isEditable}
+                />
+
                 <hr className="mx-auto my-2 w-64 border-black" />
-                <p className="font-bold">MARY ROSE A. AGUILLO</p>
                 <p className="text-sm">Division Manager C</p>
+
                 <p className="text-sm">Administrative and General Services</p>
               </div>
 
@@ -260,8 +269,15 @@ const ServiceRecordForm: React.FC = () => {
                 <p className="mb-15 text-left text-sm font-semibold italic">
                   NOTED BY:
                 </p>
+
+                <input
+                  type="text"
+                  className="border border-gray-300 bg-gray-100 p-2 text-center font-bold uppercase"
+                  style={{ width: "250px" }}
+                  defaultValue="ARNOLD G. VALENCIA"
+                  disabled={!isEditable}
+                />
                 <hr className="mx-auto my-2 w-64 border-black" />
-                <p className="font-bold">ARNOLD G. VALENCIA</p>
                 <p className="text-sm">General Manager</p>
               </div>
             </div>
