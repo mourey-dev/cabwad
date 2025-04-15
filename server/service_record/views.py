@@ -69,7 +69,7 @@ class ServiceRecordView(APIView):
             # Get a specific employee's service records
             try:
                 employee = Employee.objects.get(employee_id=employee_id)
-                service_records = ServiceRecord.objects.filter(employee=employee)
+                service_records = ServiceRecord.get_records_for_employee(employee_id)
 
                 # Format service records with properly formatted dates
                 formatted_records = []

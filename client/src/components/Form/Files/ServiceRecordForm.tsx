@@ -105,7 +105,7 @@ const ServiceRecordForm = () => {
       <Header />
       <div className="min-h-screen bg-blue-700 p-8 text-black">
         {/* Back Button */}
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mx-auto mb-4 flex w-[1100px] items-center justify-between">
           <BackButton onClick={handleBackClick} />
 
           {/* Toggle Switch */}
@@ -115,6 +115,7 @@ const ServiceRecordForm = () => {
                 type="checkbox"
                 className="peer sr-only"
                 onChange={handleToggleChange}
+                checked={isEditable}
               />
               <div
                 className={`peer relative h-6 w-11 rounded-full bg-gray-500 peer-checked:bg-yellow-400 peer-focus:outline-none after:absolute after:start-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:after:translate-x-full peer-checked:after:border-white`}
@@ -184,27 +185,27 @@ const ServiceRecordForm = () => {
                   className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "400px" }}
                   placeholder="Surname"
-                  disabled={true} // Always disabled
-                  readOnly
-                  {...register("surname")}
+                  disabled={true}
+                  {...register("surname", { required: true })}
+                  readOnly={true}
                 />
                 <input
                   type="text"
                   className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "400px" }}
                   placeholder="Given Name"
-                  disabled={true} // Always disabled
-                  readOnly
-                  {...register("first_name")}
+                  disabled={true}
+                  {...register("first_name", { required: true })}
+                  readOnly={true}
                 />
                 <input
                   type="text"
                   className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "400px" }}
                   placeholder="Middle Name"
-                  disabled={true} // Always disabled
-                  readOnly
+                  disabled={true}
                   {...register("middle_name")}
+                  readOnly={true}
                 />
                 <p className="mt-1 text-xs text-black">
                   (If married woman, provide full maiden name)
@@ -221,18 +222,16 @@ const ServiceRecordForm = () => {
                   type="text"
                   className="w-[630px] border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   placeholder="Date of Birth"
-                  disabled={true} // Always disabled
-                  readOnly
-                  {...register("birth_date")}
+                  disabled={true}
+                  {...register("birth_date", { required: true })}
                 />
                 <input
                   title="Place of Birth"
                   type="text"
                   className="w-[630px] border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   placeholder="Place of Birth"
-                  disabled={true} // Always disabled
-                  readOnly
-                  {...register("birth_place")}
+                  disabled={true}
+                  {...register("birth_place", { required: true })}
                 />
                 <p className="mt-1 text-xs text-black">
                   (Date herein should be checked from birth or baptismal
@@ -356,18 +355,9 @@ const ServiceRecordForm = () => {
                 <p className="mb-15 text-left text-sm font-semibold italic">
                   CERTIFIED CORRECT:
                 </p>
-
-                <input
-                  type="text"
-                  className="border border-gray-300 bg-gray-100 p-2 text-center font-bold uppercase"
-                  style={{ width: "250px" }}
-                  defaultValue="MARY ROSE A. AGUILLO"
-                  disabled={!isEditable}
-                />
-
                 <hr className="mx-auto my-2 w-64 border-black" />
+                <p className="font-bold">MARY ROSE A. AGUILLO</p>
                 <p className="text-sm">Division Manager C</p>
-
                 <p className="text-sm">Administrative and General Services</p>
               </div>
 
@@ -375,15 +365,8 @@ const ServiceRecordForm = () => {
                 <p className="mb-15 text-left text-sm font-semibold italic">
                   NOTED BY:
                 </p>
-
-                <input
-                  type="text"
-                  className="border border-gray-300 bg-gray-100 p-2 text-center font-bold uppercase"
-                  style={{ width: "250px" }}
-                  defaultValue="ARNOLD G. VALENCIA"
-                  disabled={!isEditable}
-                />
                 <hr className="mx-auto my-2 w-64 border-black" />
+                <p className="font-bold">ARNOLD G. VALENCIA</p>
                 <p className="text-sm">General Manager</p>
               </div>
             </div>
@@ -394,7 +377,6 @@ const ServiceRecordForm = () => {
           <div className="mx-auto mt-6 flex w-[1400px] justify-end gap-4 px-38">
             <button
               className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600 disabled:bg-gray-400"
-              disabled={!isEditable}
               onClick={() => window.print()} // Simple print functionality
             >
               Print
