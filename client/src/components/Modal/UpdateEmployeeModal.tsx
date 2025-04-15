@@ -321,9 +321,6 @@ export default function EmployeeUpdateModal({
                 <option value="PERMANENT">PERMANENT</option>
                 <option value="CASUAL">CASUAL</option>
                 <option value="JOB ORDER">JOB ORDER</option>
-                <option value="CO-TERMINUS">CO-TERMINUS</option>
-                <option value="CONTACT OF SERVICE">CONTACT OF SERVICE</option>
-                <option value="TEMPORARY">TEMPORARY</option>
               </select>
               {errors.employment_status && (
                 <p className="text-sm text-red-500" role="alert">

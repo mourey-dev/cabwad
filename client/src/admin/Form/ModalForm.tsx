@@ -83,9 +83,6 @@ const ModalForm = ({ register, setValue }: ModalFormProps) => {
               <option value="PERMANENT">Permanent</option>
               <option value="CASUAL">Casual</option>
               <option value="JOB ORDER">Job Order</option>
-              <option value="CO-TERMINUS">Co-Terminus</option>
-              <option value="CONTACT 0F SERVICE">Contact of Service</option>
-              <option value="TEMPORARY">Temporary</option>
             </select>
           </div>
 

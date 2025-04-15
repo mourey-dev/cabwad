@@ -25,7 +25,7 @@ import { getAge } from "../../utils/dataHandler";
 const EmployeePersonalDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const { employee, isLoading, isError, error } = useEmployeeData(id);
+  const { employee, isLoading } = useEmployeeData(id);
   const [dropdown, setDropdown] = useState<number | null>(null);
   const [fileType, setFileType] = useState("");
   const [fileId, setFileId] = useState("");

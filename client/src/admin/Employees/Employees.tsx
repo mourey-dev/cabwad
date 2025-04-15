@@ -24,15 +24,7 @@ import { formatName } from "../../utils/formatters";
 // Types
 import { PaginatedEmployeesData } from "../../types/employee";
 
-const options = [
-  "ALL",
-  "PERMANENT",
-  "CASUAL",
-  "JOB ORDER",
-  "CO-TERMINUS",
-  "CONTRACT OF SERVICE",
-  "TEMPORARY",
-];
+const options = ["ALL", "PERMANENT", "CASUAL", "JOB ORDER"];
 
 const Employees = () => {
   const {
