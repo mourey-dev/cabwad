@@ -49,6 +49,10 @@ const Employees = () => {
   );
   const [searchQuery, setSearchQuery] = useState(""); // State for search query
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(""); // Debounced search query
+  const [isServiceRecord, setIsServiceRecord] = useState(() => {
+    const savedValue = localStorage.getItem("isServiceRecord");
+    return savedValue ? JSON.parse(savedValue) === true : false;
+  }); // State for service record toggle
 
   const { status, setStatus } = useStatus();
   const confirmationMessage = isActive
@@ -88,9 +92,24 @@ const Employees = () => {
 
   const { prefetchEmployee } = useEmployeeData();
 
+  const toggleServiceRecord = () => {
+    setIsServiceRecord((prev) => {
+      const newValue = !prev;
+      // Save to localStorage whenever the value changes
+      localStorage.setItem("isServiceRecord", JSON.stringify(newValue));
+      return newValue;
+    });
+  };
+
   const handleOpenEmployeePage = (employee: EmployeeData) => {
-    prefetchEmployee(employee); // Cache the employee data before navigation
-    navigate(`/admin/employee_details/${employee.employee_id}`);
+    if (isServiceRecord) {
+      navigate(
+        `/admin/service_record/service_record_form/${employee.employee_id}`,
+      );
+    } else {
+      prefetchEmployee(employee); // Cache the employee data before navigation
+      navigate(`/admin/employee_details/${employee.employee_id}`);
+    }
   };
 
   const handleOpenConfirmModal = (employee: EmployeeData) => {
@@ -208,6 +227,8 @@ const Employees = () => {
           <div className="flex gap-4">
             <FilterBar
               category={category}
+              isServiceRecord={isServiceRecord}
+              toggleServiceRecord={toggleServiceRecord}
               onCategoryChange={handleCategoryChange}
               isActive={isActive}
               onActiveChange={handleActiveChange}

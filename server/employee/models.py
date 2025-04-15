@@ -58,6 +58,7 @@ class Employee(models.Model):
     appointment_status = models.CharField(max_length=20, null=True, blank=True)
     position = models.CharField(max_length=255, default=None)
     birth_date = models.DateField()
+    birth_place = models.CharField(max_length=100, blank=True, null=True, default=None)
     address = models.CharField(max_length=255, default="NONE", blank=True)
     first_day_service = models.DateField()
     civil_service = models.CharField(max_length=255)

@@ -4,4 +4,5 @@ urlpatterns = [
     path("employee/", include("employee.urls")),
     path("account/", include("account.urls")),
     path("pds/", include("pds.urls")),
+    path("service-record/", include("service_record.urls")),
 ]

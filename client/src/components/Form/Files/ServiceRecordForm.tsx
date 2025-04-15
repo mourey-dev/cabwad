@@ -1,10 +1,94 @@
-import React, { useState } from "react";
-import logo from "../../../assets/images/logo-white.png";
-import { Header, Footer } from "../../../components";
+import { useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { useParams, useNavigate } from "react-router-dom"; // Add useNavigate
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"; // Add useMutation and useQueryClient
+import {
+  fetchEmployeeServiceRecord,
+  addOrUpdateEmployeeServiceRecord,
+} from "../../../api/employeeRecord";
+import { ServiceRecordFormType } from "../../../types/service_record";
+import { Header, Footer, Loading } from "../../../components";
 import BackButton from "../../../components/BackButton";
+import logo from "../../../assets/images/logo-white.png";
+import { toast } from "react-toastify"; // Import toast for notifications (install if needed)
 
-const ServiceRecordForm: React.FC = () => {
+const ServiceRecordForm = () => {
+  const { employeeId } = useParams();
+  const navigate = useNavigate(); // For navigation after save
+  const queryClient = useQueryClient(); // For invalidating queries after update
+  const submitRef = useRef<HTMLInputElement>(null);
   const [isEditable, setIsEditable] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<ServiceRecordFormType>();
+
+  // Query for fetching employee data
+  const { data: employeeServiceRecord, isLoading } = useQuery({
+    queryFn: () => fetchEmployeeServiceRecord(employeeId || "1"),
+    queryKey: ["employeeServiceRecord", employeeId],
+    enabled: !!employeeId, // Only run query if employeeId exists
+  });
+
+  // Mutation for saving employee data
+  const mutation = useMutation({
+    mutationFn: (data: ServiceRecordFormType) =>
+      addOrUpdateEmployeeServiceRecord(employeeId || "", data),
+    onSuccess: () => {
+      // Invalidate and refetch queries related to this employee
+      queryClient.invalidateQueries({
+        queryKey: ["employeeServiceRecord", employeeId],
+      });
+      toast.success("Service record saved successfully!");
+      setIsSaving(false);
+      setIsEditable(false); // Disable editing after successful save
+    },
+    onError: (error) => {
+      console.error("Error saving service record:", error);
+      toast.error("Failed to save service record. Please try again.");
+      setIsSaving(false);
+    },
+  });
+
+  // Submit handler
+  const onSubmit = (data: ServiceRecordFormType) => {
+    // Add the employee_id to the form data
+    const formData = {
+      ...data,
+      employee_id: employeeId,
+    };
+
+    setIsSaving(true);
+    mutation.mutate(formData);
+  };
+
+  // Populate form with existing data when it's loaded
+  useEffect(() => {
+    if (employeeServiceRecord) {
+      // Set all form fields with data from the API
+      Object.entries(employeeServiceRecord).forEach(([key, value]) => {
+        if (key !== "service_records") {
+          setValue(key as keyof ServiceRecordFormType, value);
+        }
+      });
+
+      // Set service records array if it exists
+      if (employeeServiceRecord.service_records?.length) {
+        employeeServiceRecord.service_records.forEach((record, index) => {
+          Object.entries(record).forEach(([field, value]) => {
+            setValue(
+              `service_records.${index}.${field}` as keyof ServiceRecordFormType,
+              value,
+            );
+          });
+        });
+      }
+    }
+  }, [employeeServiceRecord, setValue]);
 
   const handleBackClick = () => {
     window.history.back();
@@ -14,8 +98,10 @@ const ServiceRecordForm: React.FC = () => {
     setIsEditable((prev) => !prev);
   };
 
+  // Modify the Save button in the JSX part
   return (
     <div>
+      <Loading loading={isLoading || isSaving} />
       <Header />
       <div className="min-h-screen bg-blue-700 p-8 text-black">
         {/* Back Button */}
@@ -44,6 +130,7 @@ const ServiceRecordForm: React.FC = () => {
           <form
             className="mx-auto w-[1100px] border-4 bg-white"
             autoComplete="off"
+            onSubmit={handleSubmit(onSubmit)}
           >
             {/* Header Section */}
             <div className="bg-white px-10 py-10">
@@ -82,7 +169,7 @@ const ServiceRecordForm: React.FC = () => {
                 {/* Employee ID */}
                 <div className="">
                   <label htmlFor="employee-id" className="text-xs">
-                    (Employee ID)
+                    {employeeId}
                   </label>
                 </div>
               </div>
@@ -97,21 +184,27 @@ const ServiceRecordForm: React.FC = () => {
                   className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "400px" }}
                   placeholder="Surname"
-                  disabled={!isEditable}
+                  disabled={true} // Always disabled
+                  readOnly
+                  {...register("surname")}
                 />
                 <input
                   type="text"
                   className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "400px" }}
                   placeholder="Given Name"
-                  disabled={!isEditable}
+                  disabled={true} // Always disabled
+                  readOnly
+                  {...register("first_name")}
                 />
                 <input
                   type="text"
                   className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   style={{ width: "400px" }}
                   placeholder="Middle Name"
-                  disabled={!isEditable}
+                  disabled={true} // Always disabled
+                  readOnly
+                  {...register("middle_name")}
                 />
                 <p className="mt-1 text-xs text-black">
                   (If married woman, provide full maiden name)
@@ -124,17 +217,22 @@ const ServiceRecordForm: React.FC = () => {
               <label className="block text-left font-semibold">Birth:</label>
               <div className="mt-1 flex gap-2">
                 <input
-                  type="date"
-                  className="border border-gray-300 bg-gray-100 p-2 font-semibold"
-                  style={{ width: "630px" }}
-                  disabled={!isEditable}
+                  title="Date of Birth"
+                  type="text"
+                  className="w-[630px] border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
+                  placeholder="Date of Birth"
+                  disabled={true} // Always disabled
+                  readOnly
+                  {...register("birth_date")}
                 />
                 <input
+                  title="Place of Birth"
                   type="text"
-                  className="border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
-                  style={{ width: "630px" }}
+                  className="w-[630px] border border-gray-300 bg-gray-100 p-2 font-semibold uppercase"
                   placeholder="Place of Birth"
-                  disabled={!isEditable}
+                  disabled={true} // Always disabled
+                  readOnly
+                  {...register("birth_place")}
                 />
                 <p className="mt-1 text-xs text-black">
                   (Date herein should be checked from birth or baptismal
@@ -178,57 +276,65 @@ const ServiceRecordForm: React.FC = () => {
                   <tr key={index} className="text-center text-xs">
                     <td className="border border-black px-2 py-3">
                       <input
+                        title="From Date"
                         type="text"
-                        className="bg-transparent text-center outline-none"
-                        style={{ width: "105px" }}
+                        className="w-[105px] bg-transparent text-center outline-none"
+                        placeholder="MM/DD/YYYY"
                         disabled={!isEditable}
+                        {...register(`service_records.${index}.service_from`)}
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
                       <input
                         type="text"
-                        className="bg-transparent text-center outline-none"
-                        style={{ width: "105px" }}
+                        className="w-[105px] bg-transparent text-center outline-none"
+                        placeholder="MM/DD/YYYY"
                         disabled={!isEditable}
+                        {...register(`service_records.${index}.service_to`)}
                       />
                     </td>
                     <td className="border border-black px-10 py-3">
                       <input
                         type="text"
-                        className="bg-transparent text-center uppercase outline-none"
-                        style={{ width: "190px" }}
+                        className="w-[190px] bg-transparent text-center uppercase outline-none"
+                        placeholder="Designation"
                         disabled={!isEditable}
+                        {...register(`service_records.${index}.designation`)}
                       />
                     </td>
                     <td className="border border-black py-3">
                       <input
                         type="text"
-                        className="bg-transparent text-center uppercase outline-none"
-                        style={{ width: "100px" }}
+                        className="w-[100px] bg-transparent text-center uppercase outline-none"
+                        placeholder="Status"
                         disabled={!isEditable}
+                        {...register(`service_records.${index}.status`)}
                       />
                     </td>
                     <td className="border border-black py-3">
                       <input
-                        type="number"
-                        className="bg-transparent text-center outline-none"
-                        style={{ width: "100px" }}
+                        type="text"
+                        className="w-[100px] bg-transparent text-center outline-none"
+                        placeholder="Salary"
+                        {...register(`service_records.${index}.salary`)}
                         disabled={!isEditable}
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
                       <input
                         type="text"
-                        className="bg-transparent text-center uppercase outline-none"
-                        style={{ width: "200px" }}
+                        className="w-[200px] bg-transparent text-center uppercase outline-none"
+                        placeholder="Station/Place of Assignment"
+                        {...register(`service_records.${index}.station`)}
                         disabled={!isEditable}
                       />
                     </td>
                     <td className="border border-black px-2 py-3">
                       <input
                         type="text"
-                        className="bg-transparent text-center uppercase outline-none"
-                        style={{ width: "125px" }}
+                        className="w-[125px] bg-transparent text-center uppercase outline-none"
+                        placeholder="Leave of Absence w/o Pay"
+                        {...register(`service_records.${index}.absence`)}
                         disabled={!isEditable}
                       />
                     </td>
@@ -265,21 +371,25 @@ const ServiceRecordForm: React.FC = () => {
                 <p className="text-sm">General Manager</p>
               </div>
             </div>
+            <input type="submit" ref={submitRef} hidden />
           </form>
 
           {/* Print and Save Buttons */}
           <div className="mx-auto mt-6 flex w-[1400px] justify-end gap-4 px-38">
             <button
-              className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600"
+              className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600 disabled:bg-gray-400"
               disabled={!isEditable}
+              onClick={() => window.print()} // Simple print functionality
             >
               Print
             </button>
             <button
-              className="rounded bg-green-500 px-6 py-2 text-white hover:bg-green-600"
-              disabled={!isEditable}
+              className="rounded bg-green-500 px-6 py-2 text-white hover:bg-green-600 disabled:bg-gray-400"
+              onClick={() => submitRef.current?.click()}
+              type="button"
+              disabled={!isEditable || isSaving}
             >
-              Save
+              {isSaving ? "Saving..." : "Save"}
             </button>
           </div>
         </div>

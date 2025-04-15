@@ -74,9 +74,7 @@ class Command(BaseCommand):
                     folder_name = (
                         f"{employee_data['first_name']} {employee_data['surname']}"
                     )
-                    folder_id = create_folder(
-                        folder_name.upper(), "1ilogk-mrRBIOFL7RNJsEC8v-cc4wNWRa"
-                    )
+                    folder_id = create_folder(folder_name.upper())
                     employee_data["folder_id"] = folder_id
 
                     # Validate and create employee using serializer

@@ -8,12 +8,12 @@ type ServiceRecord = {
   absence: string;
 };
 
-export type ServiceRecordForm = {
+export type ServiceRecordFormType = {
   employee_id: string;
   surname: string;
   first_name: string;
   middle_name: string;
-  date_of_birth: string;
-  place_of_birth: string;
+  birth_date: string;
+  birth_place: string;
   service_records: ServiceRecord[];
 };

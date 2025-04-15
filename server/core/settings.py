@@ -11,20 +11,37 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 import os
-from google.oauth2 import service_account
 from pathlib import Path
 from datetime import timedelta
+from utils.config_reader import get_config
+from google.oauth2.service_account import Credentials
+import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Configuration File Path
-SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, "service_account.json")
-
 SCOPES = ["https://www.googleapis.com/auth/drive"]
-GOOGLE_DRIVE_CREDENTIALS = service_account.Credentials.from_service_account_file(
-    SERVICE_ACCOUNT_FILE, scopes=SCOPES
-)
+
+# Get Google Drive credentials from configuration
+google_drive_config = get_config("google_drive")
+
+GOOGLE_DRIVE_CREDENTIALS = None
+
+if google_drive_config:
+    try:
+        if "credentials_file" in google_drive_config:
+            credentials_file = google_drive_config["credentials_file"]
+            if os.path.exists(credentials_file):
+                GOOGLE_DRIVE_CREDENTIALS = Credentials.from_service_account_file(
+                    credentials_file, scopes=SCOPES
+                )
+        elif "credentials_json" in google_drive_config:
+            credentials_info = json.loads(google_drive_config["credentials_json"])
+            GOOGLE_DRIVE_CREDENTIALS = Credentials.from_service_account_info(
+                credentials_info, scopes=["https://www.googleapis.com/auth/drive"]
+            )
+    except Exception as e:
+        print(f"Error loading Google Drive credentials: {e}")
 
 
 # Quick-start development settings - unsuitable for production
@@ -50,6 +67,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "corsheaders",
     "rest_framework",
+    "service_record",
     "employee",
     "account",
     "pds",

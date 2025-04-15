@@ -2,6 +2,10 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaIoBaseUpload, MediaIoBaseDownload
 from django.conf import settings
 from io import BytesIO
+from utils.config_reader import get_config
+
+# Get default parent folder ID from config
+DEFAULT_PARENT_FOLDER_ID = get_config("google_drive", "parent_folder_id")
 
 
 def build_drive_service():
@@ -15,9 +19,13 @@ def build_drive_service():
     return service
 
 
-def create_folder(folder_name, parent_folder_id="1ilogk-mrRBIOFL7RNJsEC8v-cc4wNWRa"):
+def create_folder(folder_name, parent_folder_id=None):
     """Create a folder in Google Drive."""
     service = build_drive_service()
+
+    # Use the provided parent_folder_id or fall back to default
+    if parent_folder_id is None:
+        parent_folder_id = DEFAULT_PARENT_FOLDER_ID
 
     FOLDER_METADATA = {
         "name": folder_name,

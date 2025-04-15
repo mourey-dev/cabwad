@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react"; // Add these imports
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StatusProvider } from "./context/StatusContext";
 import Loading from "./components/Loading"; // Make sure you have this component
+import { ToastContainer } from "react-toastify";
 
 // Routes
 import { ProtectedRoute, LoginRoute } from "./routes";
@@ -37,6 +38,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <StatusProvider>
+        <ToastContainer position="top-right" autoClose={3000} />
         <Router>
           {/* Wrap routes in Suspense for lazy loading */}
           <Suspense fallback={<Loading loading={true} />}>
@@ -67,7 +69,7 @@ function App() {
                   element={<ServiceRecord />}
                 />
                 <Route
-                  path="/admin/service_record/service_record_form"
+                  path="/admin/service_record/service_record_form/:employeeId"
                   element={<ServiceRecordForm />}
                 />
               </Route>
