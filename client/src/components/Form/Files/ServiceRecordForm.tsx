@@ -128,6 +128,14 @@ const ServiceRecordForm = () => {
         </div>
 
         <div className="mx-auto w-full overflow-x-auto">
+          <div className="mx-auto mb-4 flex w-[1100px] items-center gap-4 rounded border-l-4 border-blue-500 bg-blue-100 p-4 text-blue-700">
+            <p className="font-semibold">Note:</p>
+            <p>
+              Employee personal information (name and birth details) cannot be
+              edited through this form.
+            </p>
+          </div>
+
           <form
             className="mx-auto w-[1100px] border-4 bg-white"
             autoComplete="off"
@@ -356,7 +364,13 @@ const ServiceRecordForm = () => {
                   CERTIFIED CORRECT:
                 </p>
                 <hr className="mx-auto my-2 w-64 border-black" />
-                <p className="font-bold">MARY ROSE A. AGUILLO</p>
+                <input
+                  type="text"
+                  className="border border-gray-300 bg-gray-100 p-2 text-center font-semibold uppercase"
+                  placeholder="Divison Manager C"
+                  disabled={!isEditable}
+                  {...register("division_manager_c")}
+                />
                 <p className="text-sm">Division Manager C</p>
                 <p className="text-sm">Administrative and General Services</p>
               </div>
@@ -366,7 +380,13 @@ const ServiceRecordForm = () => {
                   NOTED BY:
                 </p>
                 <hr className="mx-auto my-2 w-64 border-black" />
-                <p className="font-bold">ARNOLD G. VALENCIA</p>
+                <input
+                  type="text"
+                  className="border border-gray-300 bg-gray-100 p-2 text-center font-semibold uppercase"
+                  placeholder="General Manager"
+                  disabled={!isEditable}
+                  {...register("general_manager")}
+                />
                 <p className="text-sm">General Manager</p>
               </div>
             </div>

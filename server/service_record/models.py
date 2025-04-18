@@ -85,3 +85,31 @@ class ServiceRecord(models.Model):
 
         # Sort records by service_from date (most recent first)
         return sorted(records, key=lambda record: parse_date(record.service_from))
+
+
+class ServiceRecordManager(models.Model):
+    """
+    Model to store the management information for service records,
+    including division manager and general manager names.
+    This is a singleton model not connected to specific employees.
+    """
+
+    # Using division_manager_c to match your frontend structure
+    division_manager_c = models.CharField(max_length=255, blank=True, null=True)
+    general_manager = models.CharField(max_length=255, blank=True, null=True)
+    last_updated = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Service Record Manager"
+        verbose_name_plural = "Service Record Managers"
+
+    def __str__(self):
+        return "Service Record Manager"
+
+    @classmethod
+    def get_instance(cls):
+        """
+        Get or create the singleton instance of the manager
+        """
+        instance, created = cls.objects.get_or_create(pk=1)
+        return instance

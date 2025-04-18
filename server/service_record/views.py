@@ -71,6 +71,18 @@ class ServiceRecordView(APIView):
                 employee = Employee.objects.get(employee_id=employee_id)
                 service_records = ServiceRecord.get_records_for_employee(employee_id)
 
+                # Get manager information from ServiceRecordManager
+                try:
+                    from .models import ServiceRecordManager
+
+                    manager = ServiceRecordManager.get_instance()
+                    division_manager_c = manager.division_manager_c or ""
+                    general_manager = manager.general_manager or ""
+                except Exception:
+                    # Fallback if model doesn't exist or another error occurs
+                    division_manager_c = ""
+                    general_manager = ""
+
                 # Format service records with properly formatted dates
                 formatted_records = []
                 for record in ServiceRecordSerializer(service_records, many=True).data:
@@ -83,14 +95,14 @@ class ServiceRecordView(APIView):
 
                 # Format the response with employee details and service records
                 response_data = {
-                    "employee_id": employee.id,
+                    "employee_id": employee.employee_id,  # Use employee_id, not id
                     "surname": employee.surname,
                     "first_name": employee.first_name,
                     "middle_name": employee.middle_name,
-                    "birth_date": format_date(
-                        employee.birth_date
-                    ),  # Format the birth date
+                    "birth_date": format_date(employee.birth_date),
                     "birth_place": employee.birth_place,
+                    "division_manager_c": division_manager_c,  # Match frontend type
+                    "general_manager": general_manager,
                     "service_records": formatted_records,
                 }
                 return Response(response_data)
@@ -123,9 +135,7 @@ class ServiceRecordView(APIView):
 
     def post(self, request, employee_id=None, format=None):
         """
-        Create or update an employee's service records.
-        If employee_id is provided in the URL, it takes precedence over the request body.
-        This method only updates service records, not employee information.
+        Create or update an employee's service records and optionally update manager info.
         """
         # Use employee_id from URL parameter or request data
         employee_id = employee_id or request.data.get("employee_id")
@@ -143,6 +153,26 @@ class ServiceRecordView(APIView):
                 {"error": f"Employee with ID {employee_id} not found"},
                 status=status.HTTP_404_NOT_FOUND,
             )
+
+        # Update manager info if provided
+        if "division_manager_c" in request.data or "general_manager" in request.data:
+            try:
+                from .models import ServiceRecordManager
+
+                manager = ServiceRecordManager.get_instance()
+
+                if "division_manager_c" in request.data:
+                    manager.division_manager_c = request.data.get(
+                        "division_manager_c", ""
+                    )
+
+                if "general_manager" in request.data:
+                    manager.general_manager = request.data.get("general_manager", "")
+
+                manager.save()
+            except Exception as e:
+                # Just log the error but continue processing service records
+                print(f"Error updating manager info: {str(e)}")
 
         # Get all service records without filtering empty ones
         all_service_records = request.data.get("service_records", [])
@@ -208,13 +238,16 @@ class ServiceRecordView(APIView):
                     status=status.HTTP_400_BAD_REQUEST,
                 )
 
-        # Return only the service records without employee data
+        # Return the response including manager info
         return Response(
             {
                 "employee_id": employee.employee_id,
                 "service_records": created_updated_records,
+                # Include manager info in the response
+                "division_manager_c": ServiceRecordManager.get_instance().division_manager_c,
+                "general_manager": ServiceRecordManager.get_instance().general_manager,
             },
-            status=status.HTTP_200_OK,  # 200 OK for updates
+            status=status.HTTP_200_OK,
         )
 
     def put(self, request, record_id=None, format=None):

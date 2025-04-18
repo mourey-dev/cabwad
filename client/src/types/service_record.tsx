@@ -15,5 +15,7 @@ export type ServiceRecordFormType = {
   middle_name: string;
   birth_date: string;
   birth_place: string;
+  division_manager_c: string;
+  general_manager: string;
   service_records: ServiceRecord[];
 };
