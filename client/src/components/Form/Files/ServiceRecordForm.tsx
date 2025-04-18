@@ -5,6 +5,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"; /
 import {
   fetchEmployeeServiceRecord,
   addOrUpdateEmployeeServiceRecord,
+  downloadEmployeeServiceRecordPDF,
+  openEmployeeServiceRecordPDF, // Import the function for downloading PDF
 } from "../../../api/employeeRecord";
 import { ServiceRecordFormType } from "../../../types/service_record";
 import { Header, Footer, Loading } from "../../../components";
@@ -98,7 +100,25 @@ const ServiceRecordForm = () => {
     setIsEditable((prev) => !prev);
   };
 
-  // Modify the Save button in the JSX part
+  const handlePrintPDF = async () => {
+    if (!employeeId) return;
+
+    try {
+      // Show loading state
+      setIsSaving(true);
+
+      // Download the PDF
+      await openEmployeeServiceRecordPDF(employeeId);
+
+      // Hide loading state
+      setIsSaving(false);
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      toast.error("Failed to generate PDF. Please try again.");
+      setIsSaving(false);
+    }
+  };
+
   return (
     <div>
       <Loading loading={isLoading || isSaving} />
@@ -394,15 +414,18 @@ const ServiceRecordForm = () => {
           </form>
 
           {/* Print and Save Buttons */}
-          <div className="mx-auto mt-6 flex w-[1400px] justify-end gap-4 px-38">
+          <div className="mx-auto mt-6 flex w-[1100px] justify-end gap-4 pb-6">
             <button
-              className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600 disabled:bg-gray-400"
-              onClick={() => window.print()} // Simple print functionality
+              className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600 focus:ring-2 focus:ring-blue-300 focus:outline-none disabled:bg-gray-400"
+              onClick={handlePrintPDF}
+              type="button"
+              disabled={isSaving}
             >
-              Print
+              {isSaving ? "Generating PDF..." : "Generate PDF"}
             </button>
+
             <button
-              className="rounded bg-green-500 px-6 py-2 text-white hover:bg-green-600 disabled:bg-gray-400"
+              className="rounded bg-green-500 px-6 py-2 text-white hover:bg-green-600 focus:ring-2 focus:ring-green-300 focus:outline-none disabled:cursor-not-allowed disabled:bg-gray-400"
               onClick={() => submitRef.current?.click()}
               type="button"
               disabled={!isEditable || isSaving}

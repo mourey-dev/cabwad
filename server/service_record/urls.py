@@ -9,4 +9,9 @@ urlpatterns = [
         views.ServiceRecordView.as_view(),
         name="employee_service_records",
     ),
+    path(
+        "<str:employee_id>/pdf/",
+        views.ServiceRecordPDF.as_view(),
+        name="service-record-pdf",
+    ),
 ]

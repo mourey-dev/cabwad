@@ -9,6 +9,12 @@ from employee.models import Employee
 from .models import ServiceRecord
 from .serializers import ServiceRecordSerializer
 
+import os
+from pypdf import PdfReader, PdfWriter
+import base64
+from io import BytesIO
+from pypdf.generic import NameObject
+
 
 def format_date(date_value):
     """
@@ -313,3 +319,138 @@ class ServiceRecordDetailView(APIView):
         record = self.get_object(record_id)
         record.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class ServiceRecordPDF(APIView):
+    permission_classes = [IsAuthenticated]
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    input_path = os.path.join(base_path, "../static/service_record.pdf")
+
+    def get(self, request, employee_id=None, format=None):
+        """
+        Generate a filled PDF service record for an employee and return as JSON with base64 encoded file
+        """
+        if not employee_id:
+            return Response(
+                {"error": "Employee ID is required"}, status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            # Get employee data
+            employee = Employee.objects.get(employee_id=employee_id)
+            service_records = ServiceRecord.get_records_for_employee(employee_id)
+
+            # Get manager information
+            try:
+                from .models import ServiceRecordManager
+
+                manager = ServiceRecordManager.get_instance()
+                division_manager = manager.division_manager_c or ""
+                general_manager = manager.general_manager or ""
+            except Exception:
+                division_manager = ""
+                general_manager = ""
+
+            # Prepare fillable fields dictionary
+            fillable_fields = {
+                "employee_id": employee.employee_id,
+                "surname": employee.surname,
+                "given_name": employee.first_name,
+                "middle_name": employee.middle_name,
+                "date_of_birth": format_date(employee.birth_date),
+                "place_of_birth": employee.birth_place,
+            }
+
+            # Initialize all service record fields to empty strings
+            for i in range(1, 22):
+                fillable_fields[f"id_from_{i}"] = ""
+                fillable_fields[f"id_to_{i}"] = ""
+                fillable_fields[f"id_designated_{i}"] = ""
+                fillable_fields[f"id_status_{i}"] = ""
+                fillable_fields[f"id_salary_{i}"] = ""
+                fillable_fields[f"id_assignment_{i}"] = ""
+                fillable_fields[f"id_loa_{i}"] = ""
+
+            # Fill service record fields with actual data
+            for i, record in enumerate(service_records, 1):
+                if i > 21:  # Maximum of 21 records can fit in the form
+                    break
+
+                fillable_fields[f"id_from_{i}"] = format_date(record.service_from)
+                fillable_fields[f"id_to_{i}"] = format_date(record.service_to)
+                fillable_fields[f"id_designated_{i}"] = record.designation
+                fillable_fields[f"id_status_{i}"] = record.status
+                fillable_fields[f"id_salary_{i}"] = record.salary
+                fillable_fields[f"id_assignment_{i}"] = record.station
+                fillable_fields[f"id_loa_{i}"] = record.absence
+
+            # Use the provided PDF filling logic
+            reader = PdfReader(self.input_path)
+            writer = PdfWriter()
+
+            # Copy pages from reader to writer
+            for page in reader.pages:
+                writer.add_page(page)
+
+            # Copy the /AcroForm dictionary from reader to writer
+            if "/AcroForm" in reader.trailer["/Root"]:
+                writer._root_object.update(
+                    {NameObject("/AcroForm"): reader.trailer["/Root"]["/AcroForm"]}
+                )
+
+            fields = reader.get_fields()
+
+            # Fill form fields using correct field types
+            for page_num, page in enumerate(writer.pages):
+                for field_name, field in fields.items():
+                    if field_name in fillable_fields:
+                        field_type = field.get("/FT")
+                        if field_type == "/Btn":  # Checkbox field
+                            value = fillable_fields.get(field_name, "")
+                            writer.update_page_form_field_values(
+                                page,
+                                {
+                                    field_name: f"/{value.lower() if not isinstance(value, bool) else ''}"
+                                },
+                            )
+                        else:
+                            value = fillable_fields.get(field_name, "")
+                            writer.update_page_form_field_values(
+                                page,
+                                {
+                                    field_name: value
+                                    if value and len(str(value)) > 0
+                                    else ""
+                                },
+                            )
+
+            # Save the modified PDF to a BytesIO object
+            output_pdf = BytesIO()
+            writer.write(output_pdf)
+            output_pdf.seek(0)
+
+            # Convert to base64 for response
+            pdf_data = output_pdf.getvalue()
+            pdf_base64 = base64.b64encode(pdf_data).decode("utf-8")
+
+            # Return JSON response with base64 encoded PDF
+            response_data = {
+                "filename": f"service_record_{employee_id}.pdf",
+                "mime_type": "application/pdf",
+                "data": pdf_base64,
+                "employee_id": employee.employee_id,
+                "employee_name": f"{employee.first_name} {employee.surname}",
+            }
+
+            return Response(response_data)
+
+        except Employee.DoesNotExist:
+            return Response(
+                {"error": f"Employee with ID {employee_id} not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        except Exception as e:
+            return Response(
+                {"error": f"Error generating PDF: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
