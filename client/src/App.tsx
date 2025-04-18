@@ -21,6 +21,7 @@ const ServiceRecord = lazy(() => import("./admin/ServiceRecord/ServiceRecord"));
 const ServiceRecordForm = lazy(
   () => import("./components/Form/Files/ServiceRecordForm"),
 );
+const Backup = lazy(() => import("./admin/Backup/Backup"));
 
 // Create an optimized query client
 const queryClient = new QueryClient({
@@ -72,6 +73,7 @@ function App() {
                   path="/admin/service_record/service_record_form/:employeeId"
                   element={<ServiceRecordForm />}
                 />
+                <Route path="/admin/backup" element={<Backup />} />
               </Route>
 
               {/* NOT INCLUDED ON PATH */}

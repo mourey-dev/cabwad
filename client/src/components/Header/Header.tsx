@@ -50,6 +50,9 @@ const Header = () => {
         >
           HOME
         </a>
+        <a href="/admin/backup" className="mr-10 font-semibold text-blue-700">
+          BACKUP
+        </a>
         {isSuperAdmin && (
           <a
             href="/admin/users/page/1"

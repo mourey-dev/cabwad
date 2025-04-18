@@ -184,3 +184,6 @@ migrations/
 
 # Data folder
 data/*
+
+# Backups
+backups/

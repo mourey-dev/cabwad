@@ -77,18 +77,17 @@ export const formatAddress = (address: string): string => {
  * @param options - Intl.DateTimeFormatOptions
  * @returns Formatted date string
  */
-export const formatDate = (
-  dateString: string,
-  options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  },
-): string => {
-  if (!dateString) return "";
+export const formatDate = (dateString: string): string => {
+  if (!dateString) return "N/A";
 
   const date = new Date(dateString);
-  return new Intl.DateTimeFormat("en-US", options).format(date);
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
 };
 
 /**
@@ -199,4 +198,46 @@ export const isMonthDayYearFormat = (dateString: string): boolean => {
   if (!dateString) return false;
   const monthDayYearRegex = /^[A-Z][a-z]+ \d{1,2}, \d{4}$/;
   return monthDayYearRegex.test(dateString);
+};
+
+/**
+ * Formats file size in bytes to a readable format
+ * @param bytes - File size in bytes
+ * @returns Formatted file size string
+ */
+export const formatBytes = (bytes: number | null | undefined): string => {
+  if (bytes === null || bytes === undefined) return "Unknown";
+
+  if (bytes === 0) return "0 Bytes";
+
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+};
+
+/**
+ * Formats duration in seconds to a readable format
+ * @param seconds - Duration in seconds
+ * @returns Formatted duration string
+ */
+export const formatDuration = (seconds: number): string => {
+  if (!seconds) return "Unknown";
+
+  if (seconds < 60) {
+    return `${seconds.toFixed(1)} seconds`;
+  }
+
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  if (minutes < 60) {
+    return `${minutes}m ${remainingSeconds.toFixed(0)}s`;
+  }
+
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  return `${hours}h ${remainingMinutes}m ${remainingSeconds.toFixed(0)}s`;
 };

@@ -20,6 +20,17 @@ import json
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Define backup directory
+BACKUP_DIR = BASE_DIR / "backups"
+
+# Create the backup directory if it doesn't exist
+if not os.path.exists(BACKUP_DIR):
+    try:
+        os.makedirs(BACKUP_DIR)
+        print(f"Created backup directory at {BACKUP_DIR}")
+    except Exception as e:
+        print(f"Warning: Could not create backup directory: {e}")
+
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 
 # Get Google Drive credentials from configuration
@@ -71,6 +82,7 @@ INSTALLED_APPS = [
     "employee",
     "account",
     "pds",
+    "backup",
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
 ]
