@@ -86,15 +86,27 @@ const EmployeePersonalDetails = () => {
               </p>
             </div>
             <div className="text-xs/1 text-gray-500">
-              ADDRESS:
+              PLACE OF BIRTH:
               <p className="text-lg text-black">
-                <strong>{employee.address}</strong>
+                <strong>{getValidDisplay(employee.birth_place)}</strong>
               </p>
             </div>
             <div className="text-xs/1 text-gray-500">
               EMPLOYMENT STATUS:{" "}
               <p className="text-lg text-black">
                 <strong>{getValidDisplay(employee.appointment_status)}</strong>
+              </p>
+            </div>
+            <div className="text-xs/1 text-gray-500">
+              ADDRESS:
+              <p className="text-lg text-black">
+                <strong>{getValidDisplay(employee.address)}</strong>
+              </p>
+            </div>
+            <div className="text-xs/1 text-gray-500">
+              POSITION TITLE:
+              <p className="text-lg text-black">
+                <strong>{getValidDisplay(employee.position)}</strong>
               </p>
             </div>
             <div className="text-xs/1 text-gray-500">

@@ -57,6 +57,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
             "appointment_status",
             "position",
             "birth_date",
+            "birth_place",
             "address",
             "first_day_service",
             "civil_service",

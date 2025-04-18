@@ -186,6 +186,7 @@ class PDSView(CompletePdsMixin, APIView):
                     "department": data.get("department", ""),
                     "civil_status": get_civil_status(personal_information),
                     "birth_date": personal_information.get("p_birth_date", ""),
+                    "birth_place": personal_information.get("p_birth_place", ""),
                     "first_day_service": data.get("first_day_service"),
                     "sex": get_sex(personal_information),
                     "phone": personal_information.get("p_mobile", ""),

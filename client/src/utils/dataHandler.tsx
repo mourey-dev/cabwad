@@ -1,4 +1,5 @@
 import { jwtDecode } from "jwt-decode";
+import { formatToMonthDayYear } from "./formatters";
 
 interface JWTPayload {
   user_id: number;
@@ -6,6 +7,34 @@ interface JWTPayload {
   is_superuser: boolean;
   exp: number;
 }
+
+const isValidDate = (dateStr: string) => {
+  // Match either yy-mm-dd or yyyy-mm-dd
+  const regex = /^(\d{2}|\d{4})-(\d{2})-(\d{2})$/;
+  const match = dateStr.match(regex);
+  if (!match) return false;
+
+  let [_, yearStr, mmStr, ddStr] = match;
+  let year = parseInt(yearStr);
+  const month = parseInt(mmStr);
+  const day = parseInt(ddStr);
+
+  // Convert 2-digit year to 4-digit (assume 2000–2099)
+  if (yearStr.length === 2) {
+    year += 2000;
+  }
+
+  // Validate month and day ranges
+  if (month < 1 || month > 12 || day < 1 || day > 31) return false;
+
+  // Create date and validate real date
+  const date = new Date(`${year}-${mmStr}-${ddStr}`);
+  return (
+    date.getFullYear() === year &&
+    date.getMonth() + 1 === month &&
+    date.getDate() === day
+  );
+};
 
 export const validateAdminAccess = (): boolean => {
   try {
@@ -72,7 +101,15 @@ export const getValidDisplay = (
   value: string,
   defaultValue: string = "NONE",
 ) => {
-  return value.length === 0 ? defaultValue : value;
+  if (!value || value.trim().length === 0) {
+    return defaultValue;
+  }
+
+  if (isValidDate(value)) {
+    return formatToMonthDayYear(value);
+  }
+
+  return value;
 };
 
 export const getAge = (birthDate: string) => {

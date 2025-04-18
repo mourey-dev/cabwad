@@ -31,6 +31,7 @@ export type EmployeeData = {
   department: string;
   files: Array<EmployeeFile>;
   birth_date: string;
+  birth_place: string;
   sex: string;
   civil_status: string;
   civil_service: string;

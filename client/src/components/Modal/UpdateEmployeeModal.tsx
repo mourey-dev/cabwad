@@ -28,6 +28,7 @@ type EmployeeUpdateForm = {
   eligibility: string;
   position: string;
   birth_date: string;
+  birth_place: string;
   first_day_service: string;
   address: string;
 };
@@ -59,6 +60,7 @@ export default function EmployeeUpdateModal({
       eligibility: employee.civil_service?.toUpperCase(),
       position: employee.position.toUpperCase(),
       birth_date: employee.birth_date,
+      birth_place: employee.birth_place.toUpperCase(),
       first_day_service: employee.first_day_service,
       address: employee.address.toUpperCase(),
     },
@@ -97,6 +99,7 @@ export default function EmployeeUpdateModal({
           civil_service: data.eligibility || "",
           position: data.position,
           birth_date: data.birth_date,
+          birth_place: data.birth_place,
           first_day_service: data.first_day_service,
           address: data.address,
         },
@@ -410,6 +413,22 @@ export default function EmployeeUpdateModal({
                   {errors.birth_date.message}
                 </p>
               )}
+            </div>
+
+            <div>
+              <label
+                htmlFor="birth_place"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Birth Place
+              </label>
+              <input
+                id="birth_place"
+                type="text"
+                {...register("birth_place")}
+                className="input-field mt-1 w-full rounded border px-2 py-1"
+                autoComplete="off"
+              />
             </div>
 
             <div>
